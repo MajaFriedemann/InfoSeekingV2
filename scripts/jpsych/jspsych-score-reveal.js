@@ -59,7 +59,7 @@ jsPsych.plugins['jspsych-score-reveal'] = (function () {
         // calculate total bonus
         newBonusPayment = bonusPayment + currentBonus; // bonusPayment defined globally
         // update messages
-        paymentMessage = 'Congratulations, you have achieved an overall accuracy of ' + dots_jointOverallAccuracy + '% in this experiment!';
+        paymentMessage = 'Congratulations, you have achieved an overall accuracy of ' + dots_overallAccuracy + '% in this experiment!';
         break;
 
       case 'score':
@@ -82,7 +82,8 @@ jsPsych.plugins['jspsych-score-reveal'] = (function () {
         // calculate total bonus
         newBonusPayment = bonusPayment + currentBonus;
         // update messages
-        paymentMessage = 'Congratulations, you have scored a total of ' + roundedScore + ' points in the previous ' + dots_totalTrials + ' game rounds!';
+        //paymentMessage = 'Congratulations, you have scored a total of ' + roundedScore + ' points in the previous ' + dots_totalTrials + ' game rounds!';
+        paymentMessage = 'Congratulations! You earned yourself a cash bonus of £1 :)';
         break;
     }
 
@@ -110,15 +111,6 @@ jsPsych.plugins['jspsych-score-reveal'] = (function () {
       'main-message',
       'score-reveal-message',
       '<h1>' + paymentMessage + '</h1>'
-    );
-
-    var subMessage = createGeneral(
-      subMessage,
-      splashPage,
-      'div',
-      'sub-message',
-      'score-reveal-submessage',
-      'This equates to a cash bonus of £' + currentBonus + ' for you :)'
     );
 
     var continueButton = createGeneral(

@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3df47766-bd0d-44d8-9d5e-755754b7705f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-overconfident-feedback.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-underconfident-feedback.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/dots-try.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/dots-try.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-feedback-form.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-feedback-form.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-message-splash.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-message-splash.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-overconfident-feedback.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-overconfident-feedback.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-score-reveal.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-score-reveal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-underconfident-feedback.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-underconfident-feedback.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,6 +157,8 @@
       <workItem from="1589291413313" duration="183000" />
       <workItem from="1589352884426" duration="23000" />
       <workItem from="1591253706975" duration="20926000" />
+      <workItem from="1593429210743" duration="1063000" />
+      <workItem from="1593430355111" duration="9031000" />
     </task>
     <servers />
   </component>
@@ -171,17 +173,15 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="604" y="337" key="NewPhpFileDialog/0.0.1536.824@0.0.1536.824" timestamp="1591270298816" />
-    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1591295486954">
+    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1593430246834">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1536.824/1920.0.1920.1160@0.0.1536.824" timestamp="1584010946555" />
-    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1591295486954" />
-    <state x="332" y="-13" width="774" height="799" key="find.popup" timestamp="1591298702116">
+    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1593430246834" />
+    <state x="332" y="-13" width="774" height="799" key="find.popup" timestamp="1593532578358">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="371" y="-5" width="774" height="799" key="find.popup/0.0.1536.824/1920.0.1280.680@0.0.1536.824" timestamp="1586772074304" />
-    <state x="371" y="-5" width="774" height="799" key="find.popup/0.0.1536.824/1920.0.1920.1160@0.0.1536.824" timestamp="1584278437523" />
-    <state x="332" y="-13" width="774" height="799" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1591298702116" />
+    <state x="332" y="-13" width="774" height="799" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1593532578358" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1591293632221">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

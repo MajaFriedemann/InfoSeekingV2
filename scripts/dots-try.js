@@ -684,8 +684,8 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
                 }
             }, 600);
 
-            // draw box around response with higher confidence
-            // note here: the stored confidence values in the data object are confidences in the correct choice;
+
+            // the stored confidence values in the data object are confidences in the correct choice;
             // the normal confidences are on a scale of 0-50 regardless of left/right correct/wrong choice; they are necessary to compare who had higher confidence in the case that participant and partner choose different sides
             // the confidence scores for the markers are on a scale from 0-100 going from left to right on the confidence scale
 
@@ -703,7 +703,7 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
                 //automatically trigger click on continue button
                 setTimeout(function () {
                     buttonBackend('submit');
-                }, 3500);
+                }, 2000);
 
                 setTimeout(function () {
                     var participantConfidence;
@@ -714,93 +714,11 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
                         participantConfidence = 50 - participantConfidenceMarker
                     }
 
-                    //draw box around higher confidence response and provide feedback depending on higher confidence response being correct/incorrect
-                    setTimeout(function () {
-                        if (partnerConfidence < participantConfidence) {
-                            participantChosen++;
-                            if (participantConfidenceMarker > 50) {
-                                $('#higherConfidenceBox').css('left', 'calc(' + participantConfidenceMarker + '% + 2px)');
-                            } else {
-                                $('#higherConfidenceBox').css('left', 'calc(' + participantConfidenceMarker + '% - 2px)');
-                            }
-                            $('#higherConfidenceBox').css('border', '6px solid rgb(13, 219, 255)');
-                            $('#higherConfidenceBox').css('visibility', 'visible');
-                            setTimeout(function (){
-                                if (participantConfidenceCorrect > 50) {
-                                    document.getElementById('confidence-question').innerHTML = '<h1>JOINT DECISION: <highlight style="color: limegreen">CORRECT</highlight></h1>';
-                                    $('#higherConfidenceBox').css('border', '6px solid limegreen');
-                                    jointCorrectResponse = true;
-                                } else {
-                                    document.getElementById('confidence-question').innerHTML = '<h1>JOINT DECISION: <highlight style="color: red">INCORRECT</highlight></h1>';
-                                    $('#higherConfidenceBox').css('border', '6px solid red');
-                                    jointCorrectResponse = false;
-                                }
-                            }, 700);
-
-
-                        } else {
-                            $('#higherConfidenceBox').css('left', partnerConfidenceMarker + '%');
-                            if (partner === "underconfident") {
-                                $('#higherConfidenceBox').css('border', '6px solid ' + color1);
-                            } else if (partner === "overconfident") {
-                                $('#higherConfidenceBox').css('border', '6px solid ' + color2);
-                            } else {
-                                $('#higherConfidenceBox').css('border', '6px solid darkorange');
-                            }
-                            $('#higherConfidenceBox').css('visibility', 'visible');
-                            setTimeout(function (){
-                                if (partnerConfidenceCorrect > 50) {
-                                    document.getElementById('confidence-question').innerHTML = '<h1>JOINT DECISION: <highlight style="color: limegreen">CORRECT</highlight></h1>';
-                                    $('#higherConfidenceBox').css('border', '6px solid limegreen');
-                                    jointCorrectResponse = true;
-                                } else {
-                                    document.getElementById('confidence-question').innerHTML = '<h1>JOINT DECISION: <highlight style="color: red">INCORRECT</highlight></h1>';
-                                    $('#higherConfidenceBox').css('border', '6px solid red');
-                                    jointCorrectResponse = false;
-                                }
-                            }, 700);
-                        }
-
-                        // shot submit button
-                        // setTimeout(function (){
-                        //     $('.scale-button').removeClass('invisible');
-                        // }, 500);
-
-
-                    }, 200);
-
-
-                    console.log("participantConfidenceMarker " + participantConfidenceMarker);
-                    console.log("participantConfidence " + participantConfidence);
-                    console.log("participantConfidenceCorrect " + participantConfidenceCorrect);
-
-                    console.log("partnerConfidenceMarker " + partnerConfidenceMarker);
-                    console.log("partnerConfidence " + partnerConfidence);
-                    console.log("partnerConfidenceCorrect " + partnerConfidenceCorrect);
                 }, 1000);
-
-
 
 
             // if there is no partner
             } else {
-                // give feedback based on individual choice
-                setTimeout(function (){
-                    if (backendConfidence > 50) {
-                        $('#higherConfidenceBox').css('left', 'calc(' + backendConfidence + '% + 2px)');
-                    } else {
-                        $('#higherConfidenceBox').css('left', 'calc(' + backendConfidence + '% - 2px)');
-                    }
-                    if (correctResponse == true) {
-                        document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(13,255,146)">CORRECT</h1>';
-                        $('#higherConfidenceBox').css('border', '6px solid limegreen');
-                    } else {
-                        document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,51)">INCORRECT</h1>';
-                        $('#higherConfidenceBox').css('border', '6px solid red');
-                    }
-                    $('#higherConfidenceBox').css('visibility', 'visible');
-                }, 700);
-
                 // shot submit button more quickly if there is no partner to wait for
                 // setTimeout(function (){
                 //     $('.scale-button').removeClass('invisible');
@@ -808,7 +726,7 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
                 //automatically trigger click on continue button more quickly when there is no partner to wait for
                 setTimeout(function () {
                     buttonBackend('submit');
-                }, 1500)
+                }, 1000)
             }
         },
     });

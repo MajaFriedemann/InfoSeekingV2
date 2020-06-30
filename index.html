@@ -74,8 +74,8 @@
 
     var subjectID;
     var studyName = 'Confidence in group decision-making';
-    var version = 'strategic version';
-    var release_date = '2020/05/12';
+    var version = 'non-strategic version';
+    var release_date = '2020/07/02';
     var testing_timeline = false;
     var trialTypeOrder = 'all';          /* "testing" or "all"  |  for "testing" the right click context menu is enabled and the data will be downloaded as a csv file*/
     var scoreRuleOrder;
@@ -209,7 +209,7 @@
     var partnerAccu;
     var participantChosen = 0;
     var partner;
-    var trialsPerBlock = 20; //make trial count 20 here (5x20 trials = 100 trials per partner)
+    var trialsPerBlock = 2; //make trial count 20 here (5x20 trials = 100 trials per partner)
     var dotCountHigherList = [];
     var finalHigh;
 
@@ -310,7 +310,7 @@
         rightColor: 'rgb(255,255,255)',
         waitTimeLimit: 2000,
         isTutorialMode: true,
-        trial_count: 100,             //make trial count 100 here
+        trial_count: 2,             //make trial count 100 here
         yellowButtonEnabled: false,
         greenButtonName: 'CONTINUE',
         seeAgain: 'practice1',
@@ -327,7 +327,7 @@
         rightColor: 'rgb(255,255,255)',
         waitTimeLimit: 2000,
         isTutorialMode: true,
-        trial_count: 5,                 //make trial count 5 here
+        trial_count: 2,                 //make trial count 5 here
         greenButtonName: 'CONTINUE',
         seeAgain: 'easier',
         partner: 'none'
@@ -377,8 +377,8 @@
 
     var dotTaskInstructions2 = {
         type: 'jspsych-notice',
-        section1_text: 'From now on, you will indicate your confidence in your decisions and get feedback if your choice was correct or incorrect.',
-        section2_text: 'After responding with a left or right click, you will now <u>indicate your confidence</u> in the decision <u>on a sliding scale</u>. Hover over the slider bar to change the slider position - towards the middle if you aren\'t sure of your answer, and towards the left/right side if you\'re confident that the respective side is the correct answer - then click on the slider bar to register your confidence rating. After you respond, <u>you will get feedback</u> about whether the side you picked was <highlight style="color: rgb(13,255,146)">CORRECT</highlight> or <highlight style="color: rgb(255,0,51)">INCORRECT</highlight>.' +
+        section1_text: 'From now on, you will indicate your confidence in your decisions.',
+        section2_text: 'After responding with a left or right click, you will now <u>indicate your confidence</u> in the decision <u>on a sliding scale</u>. Hover over the slider bar to change the slider position - towards the middle if you aren\'t sure of your answer, and towards the left/right side if you\'re confident that the respective side is the correct answer - then click on the slider bar to register your confidence rating. ' +
             ' <br><br>Press the "continue" button to do a few trials with the confidence slider.',
         img_id: 'dotTask-gif2'
     };
@@ -386,14 +386,14 @@
     var dotTaskInstructions3 = {
         type: 'jspsych-notice',
         section1_text: 'Great! You are half-way through. For the second half you will be paired with a different partner',
-        section2_text: 'Based on your responses, we will select another participant who did about as well as you did on the dot task. Different partner, same rules: After responding with a left or right click and indicating your confidence on the slider, you will see the your partner\'s response for the same dots-grid. Your partner did about as well as you did in the practice trials. The <highlight style="color: rgb(13,255,146)">decision that is reported with HIGHER CONFIDENCE</highlight> will be selected as <highlight style="color: rgb(13,255,146)"> your joint decision</highlight>  based on which you will get feedback. Therefore, if you are sure you got it right, report high confidence such that your decision counts. However, if you are not very sure, it might be best to report low confidence and thus let your partner\'s decision be chosen. <highlight style="color: rgb(13,255,146)">Acting strategic like this is crucial as you will be awarded a cash bonus based on the accuracy of your JOINT decisions.</highlight> <br><br>Press the "continue" button to do 5 more blocks of the dot task.',
+        section2_text: 'Based on your responses, we will select another participant who did about as well as you did on the dot task. Different partner, same rules: After responding with a left or right click and indicating your confidence on the slider, you will see the your partner\'s response for the same dots-grid. <br><br><highlight style="color: rgb(13,255,146)">You will earn points depending on whether your response is correct and how accurate your confidence judgment was.</highlight> At the end of the game, we will take all trials where you indicated, for example, a confidence of 70-80% and check if in fact 70-80% of those trials were correct. The closer your confidence judgements align with your actual accuracy, the higher your cash bonus will be at the end of the experiment, so <highlight style="color: rgb(13,255,146)">you will earn more with more accurate confidence judgments</highlight>. <br><br>Press the "continue" button to do 5 more blocks of the dot task.',
         img_id: 'dotTask-gif3'
     };
 
     var dotTaskStart = {
         type: 'jspsych-notice',
         section1_text: 'You have now completed the first two phases of the dot game.',
-        section2_text: 'For the rest of the experiment, you\'ll be doing the task you just practiced. However, from now on you will see the response of another past participant for the same dots-grid. Your partner did about as well as you did in the practice trials. The <highlight style="color: rgb(13,255,146)">decision that is reported with HIGHER CONFIDENCE</highlight> will be selected as <highlight style="color: rgb(13,255,146)"> your joint decision</highlight> based on which you will get feedback. Therefore, if you are sure you got it right, report high confidence such that your decision counts. However, if you are not very sure, it might be best to report low confidence and thus let your partner\'s decision be chosen. <highlight style="color: rgb(13,255,146)">Acting strategic like this is crucial as you will be awarded a cash bonus based on the accuracy of your JOINT decisions.</highlight> <br><br>There will be 10 blocks of 20 trials, which should take approximately 25 minutes to complete altogether. Press "continue" to continue to the first block of 20 trials',
+        section2_text: 'For the rest of the experiment, you\'ll be doing the task you just practiced. However, from now on you will see the response of another past participant for the same dots-grid. Your partner did about as well as you did in the practice trials. <br><br><highlight style="color: rgb(13,255,146)">You will earn points depending on whether your response is correct and how accurate your confidence judgment was.</highlight> At the end of the game, we will take all trials where you indicated, for example, a confidence of 70-80% and check if in fact 70-80% of those trials were correct. The closer your confidence judgements align with your actual accuracy, the higher your cash bonus will be at the end of the experiment, so <highlight style="color: rgb(13,255,146)">you will earn more with more accurate confidence judgments</highlight>. <br><br>There will be 10 blocks of 20 trials, which should take approximately 25 minutes to complete altogether. Press "continue" to continue to the first block of 20 trials',
         img_id: 'dotTask-gif3'
     };
 
@@ -413,13 +413,13 @@
 
     var partner1 = {
         type: 'jspsych-partner-message1',
-        section2_text: 'We have selected your first partner! <br><br>Their decision and confidence rating will be indicated with a <highlight style="color: ' + partner1c +  '" >' + partner1color + ' </highlight> bar. <br><br>The decision reported with<highlight style="color: rgb(13,255,146)"> higher confidence</highlight> will be selected as your joint decision.',
+        section2_text: 'We have selected your first partner! <br><br>Their decision and confidence rating will be indicated with a <highlight style="color: ' + partner1c +  '" >' + partner1color + ' </highlight> bar.',
         img_id: 'dotTask-partner'
     };
 
     var partner2 = {
         type: 'jspsych-partner-message2',
-        section2_text: 'We have selected your second partner! <br><br>Their decision and confidence rating will be indicated with a <highlight style="color: ' + partner2c +  '" >' + partner2color + ' </highlight> bar. <br><br>The decision reported with<highlight style="color: rgb(13,255,146)"> higher confidence</highlight> will be selected as your joint decision.',
+        section2_text: 'We have selected your second partner! <br><br>Their decision and confidence rating will be indicated with a <highlight style="color: ' + partner2c +  '" >' + partner2color + ' </highlight> bar.',
         img_id: 'dotTask-partner'
     };
 
@@ -439,7 +439,7 @@
 
     var dotsScoreReveal = {
         type: 'jspsych-score-reveal',
-        performanceType: 'accuracy',
+        performanceType: 'Brier',
         bonusThreshold: 60,
         flatBonusAmount: 1
     };
@@ -490,12 +490,12 @@
     switch(trialTypeOrder) {
 
         case 'all':
-            if (partnerOrder < 0.501) {
+            if (partnerOrder > 0.499) {
                 var order;
                 order = "underconfident, then overconfident";
                 dataObject["experiment_condition"] = order;
                 var timeline = [
-                    loading,
+                    //loading,
                     PIS,
                     consent,
                     demographics,
@@ -541,7 +541,7 @@
                 order = "overconfident, then underconfident";
                 dataObject["experiment_condition"] = order;
                 var timeline = [
-                    loading,
+                    //loading,
                     PIS,
                     consent,
                     demographics,

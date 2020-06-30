@@ -109,15 +109,6 @@ jsPsych.plugins['jspsych-overconfident-feedback'] = (function () {
             ['1<br>much less confident', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>much more confident']
         );
 
-        createSurveyMatrix(
-            feedbackPoll,
-            '',
-            'feedbackPoll-overconf-workTogether',
-            [
-                'How well do you think you and your partner worked together in the game?'
-            ],
-            ['1<br>not at all', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>very well']
-        );
 
         var feedbackCaption = createGeneral(
             feedbackCaption,
