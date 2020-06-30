@@ -209,7 +209,7 @@
     var partnerAccu;
     var participantChosen = 0;
     var partner;
-    var trialsPerBlock = 2; //make trial count 20 here (5x20 trials = 100 trials per partner)
+    var trialsPerBlock = 20; //make trial count 20 here (5x20 trials = 100 trials per partner)
     var dotCountHigherList = [];
     var finalHigh;
 
@@ -310,7 +310,7 @@
         rightColor: 'rgb(255,255,255)',
         waitTimeLimit: 2000,
         isTutorialMode: true,
-        trial_count: 2,             //make trial count 100 here
+        trial_count: 100,             //make trial count 100 here
         yellowButtonEnabled: false,
         greenButtonName: 'CONTINUE',
         seeAgain: 'practice1',
@@ -327,7 +327,7 @@
         rightColor: 'rgb(255,255,255)',
         waitTimeLimit: 2000,
         isTutorialMode: true,
-        trial_count: 2,                 //make trial count 5 here
+        trial_count: 5,                 //make trial count 5 here
         greenButtonName: 'CONTINUE',
         seeAgain: 'easier',
         partner: 'none'
@@ -495,7 +495,7 @@
                 order = "underconfident, then overconfident";
                 dataObject["experiment_condition"] = order;
                 var timeline = [
-                    //loading,
+                    loading,
                     PIS,
                     consent,
                     demographics,
@@ -541,7 +541,7 @@
                 order = "overconfident, then underconfident";
                 dataObject["experiment_condition"] = order;
                 var timeline = [
-                    //loading,
+                    loading,
                     PIS,
                     consent,
                     demographics,
