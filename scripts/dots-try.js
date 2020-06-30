@@ -703,7 +703,7 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
                 //automatically trigger click on continue button
                 setTimeout(function () {
                     buttonBackend('submit');
-                }, 2000);
+                }, 1500);
 
                 setTimeout(function () {
                     var participantConfidence;
