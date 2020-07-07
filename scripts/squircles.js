@@ -1,3 +1,30 @@
+// % initialise rectangles
+// setting.theta = linspace(0,360,setting.numel+1);
+// setting.theta = setting.theta(1:end-1);
+// setting.x = sin(deg2rad(setting.theta));
+// setting.y = cos(deg2rad(setting.theta));
+// setting.rw = 25;
+// setting.radi = 100*.7;
+// setting.tiny = 5;
+// % Hyperelliptic (squircle) shapes
+// setting.Harea = 2500*.6; % area is kept constant for all shapes
+// setting.Ht = 0:(2*pi/180):(2*pi); % shapes are defined by parametric curves of Ht (angle)
+// setting.Hr = 45*pi/180; % the rotation of the hyperellipse
+//
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// % levels for shape and color, mean and variance %
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %color levels
+// setting.clevels = 0.5+[-0.05 -0.026 0.026 0.05]; %mean color (4 options: .45, .474, .526, .55)
+// setting.vclevels = [0.0333 0.1]; %variance of colour (2 options: .0333, .1)
+// setting.crange = [0.1 0.9]; %range: (.1,.9)
+
+
+
+
+
+
+
 /**
  * @function drawDots()
  * @param {Object} parent - parent div
@@ -7,13 +34,13 @@
  * @param {boolean} moreRight - the greater dot count on the right?
  * @param {string} upperColor - colour for the right side of the scale
  * @param {string} lowerColor - colour for the left side of the scale
- * @param {Array} dots_tooltipLabels
- * @param {Array} dots_endLabels
+ * @param {Array} tooltipLabels
+ * @param {Array} endLabels
  * @param {boolean} showPercentage = show percentage on scale?
  * @param {string} seeAgain - options for the "See Again" button: 'same', 'similar', 'easier'
  * @param {int} waitTimeLimit - maximum wait time
  * @param {int} fixationPeriod
- * @param {int} dotPeriod
+ * @param {int} squirclePeriod
  * @param {int} transitionPeriod
  * @param {int} trialCount
  * @param {int} trialCounterVariable
@@ -23,7 +50,7 @@
  * @param {int} accuracyThreshold
  */
 
-function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, dots_tooltipLabels, dots_endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, dotPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled, partner) {
+function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, squirclePeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled, partner) {
 
     // default variables
     var backendConfidence;
@@ -32,7 +59,7 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
     var partnerCorrectResponse;
     var sliderActive = true;
     var start_timer;
-    var dotPairs;
+    var colorPairs;
     var dotConfidences;
     var initialChoices;
     var partnerConfidences;
@@ -78,8 +105,8 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
         dots = [high, low];
         majoritySide = 'left';
     }
-    trialDataVariable['dots_majoritySide'].push(majoritySide) ;
-    dotPairs = dots;
+    trialDataVariable['higherValueSide'].push(majoritySide) ;
+    colorPairs = dots;
 
 
     // draw the grid
@@ -229,7 +256,7 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
         'response-area',
         ''
     );
-    var confidence_meter = noDragSlider('dots_slider', response_area, dots_tooltipLabels, dots_endLabels, buttonsToShow);
+    var confidence_meter = noDragSlider('slider', response_area, tooltipLabels, endLabels, buttonsToShow);
 
 
     // decision & confidence question
@@ -369,25 +396,25 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
 
 
         //record trial data
-        trialDataVariable['dots_waitTimes'].push(waitTime);
-        trialDataVariable['dots_isCorrect'].push(correctResponse);
+        trialDataVariable['waitTimes'].push(waitTime);
+        trialDataVariable['isCorrect'].push(correctResponse);
         trialDataVariable['dots_jointCorrect'].push(jointCorrectResponse);// this is for calculating the bonus
         trialDataVariable['dots_partnerCorrect'].push(partnerCorrectResponse);
         dots_jointTotalCorrect += trialDataVariable.dots_jointCorrect.filter(Boolean).length;
-        trialDataVariable['dots_pairs'].push(JSON.stringify(dotPairs));
-        trialDataVariable['dots_confidences'].push(dotConfidences);
+        trialDataVariable['color_pairs'].push(JSON.stringify(colorPairs));
+        trialDataVariable['confidences'].push(dotConfidences);
         trialDataVariable['initial_choices'].push(initialChoices);
         trialDataVariable['partner_confidences'].push(partnerConfidences);
-        trialDataVariable['dots_RTs'].push(dotRTs);
-        //trialDataVariable['dots_isTutorialMode'].push(isTutorialMode);
+        trialDataVariable['RTs'].push(dotRTs);
+        //trialDataVariable['isTutorialMode'].push(isTutorialMode);
         trialCounterVariable++;
-        dots_totalTrials++;
-        trialDataVariable['trial_count'].push(dots_totalTrials);
+        totalTrials++;
+        trialDataVariable['trial_count'].push(totalTrials);
 
 
         // if current trial-number is less than total trial-number, call the drawFixation function and begin new trial
         if (trialCounterVariable < trialCount) {
-            setTimeout(function () { drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, dots_tooltipLabels, dots_endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, dotPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled, partner); }, 400);
+            setTimeout(function () { drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, squirclePeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled, partner); }, 400);
 
 
         // if current trial-number is equal to total trial-number, then evaluate accuracy and end the block
@@ -398,10 +425,10 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
                 // if there is no partner, accuracy is based on individual responses, otherwise its based on joint decision accuracy
                 if (partner != "none") {
                     accuracy = round(mean(trialDataVariable['dots_jointCorrect']), 2) * 100;
-                    participantAccu = round(mean(trialDataVariable['dots_isCorrect']), 2) * 100;
+                    participantAccu = round(mean(trialDataVariable['isCorrect']), 2) * 100;
                     partnerAccu = round(mean(trialDataVariable['dots_partnerCorrect']), 2) * 100;
                 } else {
-                    accuracy = round(mean(trialDataVariable['dots_isCorrect']), 2) * 100;
+                    accuracy = round(mean(trialDataVariable['isCorrect']), 2) * 100;
                 }
 
                 //if we are in tutorial mode, practice trials need to be repeated in case accuracy is below accuracy threshold
@@ -410,9 +437,9 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
                         var section4_button = 'CONTINUE';
                         var section4_text = 'Congratulations, your accuracy during the last set of trials was ' + accuracy + '%.';
                         if (seeAgain !== "practice1") {
-                            dots_blockCount = 0;
+                            blockCount = 0;
                         } else {
-                            dots_blockCount = -1;
+                            blockCount = -1;
                         }
                     } else {
                         var section4_button = 'REPEAT';
@@ -459,20 +486,20 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
                         // we save the data
 
                         $('#dots-tutorial-continue').on('click', function () {
-                            permanentDataVariable["dots_accuracy"].push(accuracy);
+                            permanentDataVariable["accuracy"].push(accuracy);
                             permanentDataVariable["trial_count"].push(trialDataVariable["trial_count"]);
-                            permanentDataVariable["dots_pairs"].push(trialDataVariable["dots_pairs"]);
-                            permanentDataVariable["dots_majoritySide"].push(trialDataVariable["dots_majoritySide"]);
-                            permanentDataVariable["dots_confidences"].push(trialDataVariable["dots_confidences"]);
+                            permanentDataVariable["color_pairs"].push(trialDataVariable["color_pairs"]);
+                            permanentDataVariable["higherValueSide"].push(trialDataVariable["higherValueSide"]);
+                            permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
                             permanentDataVariable["initial_choices"].push(trialDataVariable["initial_choices"]);
                             permanentDataVariable["partner_confidences"].push(trialDataVariable["partner_confidences"]);
-                            //permanentDataVariable["dots_moreAsked"].push(trialDataVariable["dots_moreAsked"]);
-                            permanentDataVariable["dots_isCorrect"].push(trialDataVariable["dots_isCorrect"]);
+                            //permanentDataVariable["moreAsked"].push(trialDataVariable["moreAsked"]);
+                            permanentDataVariable["isCorrect"].push(trialDataVariable["isCorrect"]);
                             permanentDataVariable["dots_jointCorrect"].push(trialDataVariable["dots_jointCorrect"]);
                             permanentDataVariable["dots_partnerCorrect"].push(trialDataVariable["dots_partnerCorrect"]);
-                            permanentDataVariable["dots_RTs"].push(trialDataVariable["dots_RTs"]);
-                            permanentDataVariable["dots_waitTimes"].push(trialDataVariable["dots_waitTimes"]);
-                            permanentDataVariable["block_count"].push(dots_blockCount);
+                            permanentDataVariable["RTs"].push(trialDataVariable["RTs"]);
+                            permanentDataVariable["waitTimes"].push(trialDataVariable["waitTimes"]);
+                            permanentDataVariable["block_count"].push(blockCount);
 
                             saveCSV(subjectID, currentAttempt);
 
@@ -487,27 +514,27 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
 
                     // if the practice block was not successful, we do not save the data and start a new block of trials
                     } else {
-                        dots_totalTrials = 0;
+                        totalTrials = 0;
                         trialCounterVariable = 0;
                         // reset trial data variable
                         trialDataVariable = {
                             trial_count: [],
-                            dots_pairs: [],
-                            dots_majoritySide: [],
-                            dots_confidences: [],
+                            color_pairs: [],
+                            higherValueSide: [],
+                            confidences: [],
                             initial_choices: [],
                             partner_confidences: [],
-                            dots_moreAsked: [],
-                            dots_isCorrect: [],
+                            moreAsked: [],
+                            isCorrect: [],
                             dots_jointCorrect: [],
                             dots_partnerCorrect: [],
-                            dots_isTutorialMode: [],
+                            isTutorialMode: [],
                             dots_firstIsCorrect: [],
-                            dots_RTs: [],
-                            dots_waitTimes: []
+                            RTs: [],
+                            waitTimes: []
                         };
                         $('#dots-tutorial-continue').on('click', function () {
-                            setTimeout(function () { drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, dots_tooltipLabels, dots_endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, dotPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled, partner); }, 400);
+                            setTimeout(function () { drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, squirclePeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled, partner); }, 400);
                         });
                     }
 
@@ -516,28 +543,28 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
                 } else {
                     // we save the data
 
-                    permanentDataVariable["dots_accuracy"].push(accuracy);
+                    permanentDataVariable["accuracy"].push(accuracy);
                     permanentDataVariable["trial_count"].push(trialDataVariable["trial_count"]);
-                    //permanentDataVariable["dots_isTutorialMode"].push(trialDataVariable["dots_isTutorialMode"]);
-                    permanentDataVariable["dots_pairs"].push(trialDataVariable["dots_pairs"]);
-                    permanentDataVariable["dots_majoritySide"].push(trialDataVariable["dots_majoritySide"]);
-                    permanentDataVariable["dots_confidences"].push(trialDataVariable["dots_confidences"]);
+                    //permanentDataVariable["isTutorialMode"].push(trialDataVariable["isTutorialMode"]);
+                    permanentDataVariable["color_pairs"].push(trialDataVariable["color_pairs"]);
+                    permanentDataVariable["higherValueSide"].push(trialDataVariable["higherValueSide"]);
+                    permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
                     permanentDataVariable["initial_choices"].push(trialDataVariable["initial_choices"]);
                     permanentDataVariable["partner_confidences"].push(trialDataVariable["partner_confidences"]);
-                    //permanentDataVariable["dots_moreAsked"].push(trialDataVariable["dots_moreAsked"]);
-                    permanentDataVariable["dots_isCorrect"].push(trialDataVariable["dots_isCorrect"]);
+                    //permanentDataVariable["moreAsked"].push(trialDataVariable["moreAsked"]);
+                    permanentDataVariable["isCorrect"].push(trialDataVariable["isCorrect"]);
                     permanentDataVariable["dots_jointCorrect"].push(trialDataVariable["dots_jointCorrect"]);
                     permanentDataVariable["dots_partnerCorrect"].push(trialDataVariable["dots_partnerCorrect"]);
-                    permanentDataVariable["dots_RTs"].push(trialDataVariable["dots_RTs"]);
-                    permanentDataVariable["dots_waitTimes"].push(trialDataVariable["dots_waitTimes"]);
+                    permanentDataVariable["RTs"].push(trialDataVariable["RTs"]);
+                    permanentDataVariable["waitTimes"].push(trialDataVariable["waitTimes"]);
 
                     saveCSV(subjectID, currentAttempt);
 
 
                    // increase the block count
-                    dots_totalCorrect += trialDataVariable.dots_isCorrect.filter(Boolean).length;
-                    dots_blockCount++;
-                    permanentDataVariable["block_count"].push(dots_blockCount);
+                    totalCorrect += trialDataVariable.isCorrect.filter(Boolean).length;
+                    blockCount++;
+                    permanentDataVariable["block_count"].push(blockCount);
 
                     // enable the cursor for the whole screen
                     $('body').css('cursor', 'auto');
@@ -639,7 +666,7 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
                         }
 
                         if (!isTutorialMode && type == 'submit') {
-                            dots_cumulativeScore += reverseBrierScore(invertedConfidence, correctResponse); //this is false for the joint decision making but I don't use Brier Score anyways
+                            cumulativeScore += reverseBrierScore(invertedConfidence, correctResponse); //this is false for the joint decision making but I don't use Brier Score anyways
                         }
                     } else {
                         participantConfidenceCorrect = backendConfidence;
@@ -652,7 +679,7 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
                         }
 
                         if (!isTutorialMode && type == 'submit') {
-                            dots_cumulativeScore += reverseBrierScore(backendConfidence, correctResponse);
+                            cumulativeScore += reverseBrierScore(backendConfidence, correctResponse);
                         }
                     }
                 }
@@ -743,7 +770,7 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
         // unhide the masks
         $('.grid-mask').css('visibility', 'visible');
         $('.confidence-question').css('visibility', 'visible');
-    }, dotPeriod);
+    }, squirclePeriod);
 
 
 }
@@ -759,13 +786,13 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
  * @param {boolean} moreRight - the greater dot count on the right?
  * @param {string} upperColor - colour for the right side of the scale
  * @param {string} lowerColor - colour for the left side of the scale
- * @param {Array} dots_tooltipLabels
- * @param {Array} dots_endLabels
+ * @param {Array} tooltipLabels
+ * @param {Array} endLabels
  * @param {boolean} showPercentage = show percentage on scale?
  * @param {string} seeAgain - options for the "See Again" button: 'same', 'similar', 'easier'
  * @param {int} waitTimeLimit - maximum wait time
  * @param {int} fixationPeriod - duration of fixation period
- * @param {int} dotPeriod
+ * @param {int} squirclePeriod
  * @param {int} transitionPeriod
  * @param {int} trialCount
  * @param {int} trialCounterVariable
@@ -776,7 +803,7 @@ function drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsSta
  */
 
 //the script starts with the drawFixation function which is called in the jspsych-dots (this is also where all the necessary variable values are specified!)
-function drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, dots_tooltipLabels, dots_endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, dotPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled, partner) {
+function drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, squirclePeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled, partner) {
 
     // set style defaults for page
     parent.innerHTML = '';
@@ -820,6 +847,6 @@ function drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase
         parent.innerHTML += html;
 
         // call the draw dots function
-        drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, dots_tooltipLabels, dots_endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, dotPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled, partner);
+        drawDots(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, squirclePeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled, partner);
     }, fixationPeriod);
 }
