@@ -142,29 +142,29 @@ jsPsych.plugins['jspsych-dots'] = (function () {
 
     var tempStorage = {
       trial_count: [],
-      color_pairs: [],
-      higherValueSide: [],
-      confidences: [],
+      dots_pairs: [],
+      dots_majoritySide: [],
+      dots_confidences: [],
       initial_choices: [],
       partner_confidences: [],
-      moreAsked: [],
-      isCorrect: [],
+      dots_moreAsked: [],
+      dots_isCorrect: [],
       dots_jointCorrect: [],
       dots_partnerCorrect: [],
-      isTutorialMode: [],
+      dots_isTutorialMode: [],
       dots_firstIsCorrect: [],
-      RTs: [],
-      waitTimes: []
+      dots_RTs: [],
+      dots_waitTimes: []
     };
 
     // set confidence slider options
-    var tooltipLabels = [
+    var dots_tooltipLabels = [
       'probably<br>LEFT',
       'maybe<br>LEFT',
       'maybe<br>RIGHT',
       'probably<br>RIGHT'
     ];
-    var endLabels = [
+    var dots_endLabels = [
       '<div>certainly<br>LEFT</div>',
       '<div>certainly<br>RIGHT</div>'
     ];
@@ -174,13 +174,13 @@ jsPsych.plugins['jspsych-dots'] = (function () {
     document.body.style.setProperty('--rightColor', trial.rightColor);
 
     var fixationPeriod = 1000;
-    var squirclePeriod = 300;
+    var dotPeriod = 300;
     var transitionPeriod = 500;
     var trialCounter = 0;
 
     if (trial.blockCounterEnabled) {
-      BlockCounter++;
-      //permanentDataVariable["block_count"].push(BlockCounter);
+      dotsBlockCounter++;
+      //permanentDataVariable["block_count"].push(dotsBlockCounter);
     }
 
     $(document).ready(drawFixation(
@@ -191,13 +191,13 @@ jsPsych.plugins['jspsych-dots'] = (function () {
       dotsStaircase,
       upperColor,
       lowerColor,
-      tooltipLabels,
-      endLabels,
+      dots_tooltipLabels,
+      dots_endLabels,
       trial.showPercentage,
       trial.seeAgain,
       trial.waitTimeLimit,
       fixationPeriod,
-      squirclePeriod,
+      dotPeriod,
       transitionPeriod,
       trial.trial_count,
       trialCounter,

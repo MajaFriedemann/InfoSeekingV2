@@ -1464,32 +1464,32 @@ button.default-white-button.start-tutorial, .button.default-white-button.start-t
   visibility: hidden;
 }
 
-.noDragSlider.slider {
+.noDragSlider.dots_slider {
   margin-top: 10vh;
 }
 
-.noDragSlider.slider .tooltip-top {
+.noDragSlider.dots_slider .tooltip-top {
   margin-top: 0vh !important;
 }
 
-.noDragSlider.slider .tooltip-top.tooltip-2 {
+.noDragSlider.dots_slider .tooltip-top.tooltip-2 {
   margin-right: 4vmin !important;
 }
 
-.noDragSlider.slider .tooltip-top.tooltip-3 {
+.noDragSlider.dots_slider .tooltip-top.tooltip-3 {
   margin-left: 4vmin !important;
 }
 
-.noDragSlider.slider .scale-content {
+.noDragSlider.dots_slider .scale-content {
   background: #aaaaaa;
 }
 
-.noDragSlider.slider .scale-fill.scale-left {
+.noDragSlider.dots_slider .scale-fill.scale-left {
   background-color: transparent;
   border-left: 5px solid white;
 }
 
-.noDragSlider.slider .scale-fill.scale-right {
+.noDragSlider.dots_slider .scale-fill.scale-right {
   background-color: transparent;
   border-right: 5px solid white;
 }

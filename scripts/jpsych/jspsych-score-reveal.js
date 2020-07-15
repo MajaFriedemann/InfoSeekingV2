@@ -37,13 +37,13 @@ jsPsych.plugins['jspsych-score-reveal'] = (function () {
     var newBonusPayment;
 
     // calculate overall accuracy
-    overallAccuracy = round(totalCorrect / totalTrials, 2) * 100;
+    dots_overallAccuracy = round(dots_totalCorrect / dots_totalTrials, 2) * 100;
 
-    //dots_jointOverallAccuracy = round(dots_jointTotalCorrect / totalTrials, 2) * 100;
+    //dots_jointOverallAccuracy = round(dots_jointTotalCorrect / dots_totalTrials, 2) * 100;
 
     var accurate = 0;
     for (var block=3; block <=5; block++) {
-      accurate += dataObject["accuracy"][block];
+      accurate += dataObject["dots_accuracy"][block];
     }
     accurate += accuracy;   //for the last block as this has not yet been pushed to the dataObject
     dots_jointOverallAccuracy = accurate / 4;
@@ -59,7 +59,7 @@ jsPsych.plugins['jspsych-score-reveal'] = (function () {
         // calculate total bonus
         newBonusPayment = bonusPayment + currentBonus; // bonusPayment defined globally
         // update messages
-        paymentMessage = 'Congratulations, you have achieved an overall accuracy of ' + overallAccuracy + '% in this experiment!';
+        paymentMessage = 'Congratulations, you have achieved an overall accuracy of ' + dots_overallAccuracy + '% in this experiment!';
         break;
 
       case 'score':
@@ -76,13 +76,13 @@ jsPsych.plugins['jspsych-score-reveal'] = (function () {
 
       case 'Brier':
         // round score
-        var roundedScore = Math.round(cumulativeScore);
+        var roundedScore = Math.round(dots_cumulativeScore);
         // calculate final Brier score
-        currentBonus = round((cumulativeScore / totalTrials) * trial.conversionFactor, 2);
+        currentBonus = round((dots_cumulativeScore / dots_totalTrials) * trial.conversionFactor, 2);
         // calculate total bonus
         newBonusPayment = bonusPayment + currentBonus;
         // update messages
-        //paymentMessage = 'Congratulations, you have scored a total of ' + roundedScore + ' points in the previous ' + totalTrials + ' game rounds!';
+        //paymentMessage = 'Congratulations, you have scored a total of ' + roundedScore + ' points in the previous ' + dots_totalTrials + ' game rounds!';
         paymentMessage = 'Congratulations! You earned yourself a cash bonus of £1 :)';
         break;
     }
