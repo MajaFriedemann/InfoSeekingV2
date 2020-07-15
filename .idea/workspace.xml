@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3df47766-bd0d-44d8-9d5e-755754b7705f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/dots-try.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/squircles.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/dots.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-dots.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-squircles.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-loading-partner.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-message-splash.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-message-splash.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-overconfident-feedback.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-partner-message1.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-partner-message2.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-score-reveal.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-score-reveal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-underconfident-feedback.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/style.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,6 +162,7 @@
       <workItem from="1593548462108" duration="28000" />
       <workItem from="1593601090102" duration="72000" />
       <workItem from="1594123726167" duration="3019000" />
+      <workItem from="1594809278308" duration="15000" />
     </task>
     <servers />
   </component>
