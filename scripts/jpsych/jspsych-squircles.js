@@ -1,24 +1,14 @@
-jsPsych.plugins['jspsych-dots'] = (function () {
+jsPsych.plugins['jspsych-squircles'] = (function () {
 
   var plugin = {};
 
   plugin.info = {
-    name: 'jspsych-dots',
+    name: 'jspsych-squircles',
     parameters: {
       isTutorialMode: {
         type: jsPsych.plugins.parameterType.BOOL,
         default: false,
         description: 'Specifies whether the block is in tutorial mode or not.'
-      },
-      dot_minimum: {
-        type: jsPsych.plugins.parameterType.INT,
-        default: 200,
-        description: 'Minimum dot density of the grid'
-      },
-      dotDifference: {
-        type: jsPsych.plugins.parameterType.INT,
-        default: 10,
-        description: 'Difference in number of dots between the two grids'
       },
       canvasHTML: {
         type: jsPsych.plugins.parameterType.HTML_STRING,
@@ -30,13 +20,13 @@ jsPsych.plugins['jspsych-dots'] = (function () {
       canvasWidth: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Canvas width',
-        default: 600,
+        default: 1000,
         description: 'Sets the width of the canvas.'
       },
       canvasHeight: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Canvas height',
-        default: 300,
+        default: 600,
         description: 'Sets the height of the canvas.'
       },
       leftColor: {
@@ -50,17 +40,6 @@ jsPsych.plugins['jspsych-dots'] = (function () {
         pretty_name: 'Right-side colour',
         default: '#62BFED',
         description: 'Colour for the right side of the confidence slider'
-      },
-      showPercentage: {
-        type: jsPsych.plugins.parameterType.BOOLEAN,
-        default: false,
-        description: 'Show percentage for confidence slider?'
-      },
-      seeAgain: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: '"See Again" options',
-        default: 'easier',
-        description: 'Describes what the "See Again" option presents: the exact same matrix ("same"), a same-count but differently distributed matrix ("similar"), or a different matrix ("easier").'
       },
       waitTimeLimit: {
         type: jsPsych.plugins.parameterType.INT,
@@ -122,18 +101,6 @@ jsPsych.plugins['jspsych-dots'] = (function () {
         default: false,
         description: 'Is the block counter enabled?'
       },
-      defaultOptionEnabled: {
-        type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: 'Default option for "See Again" enabled',
-        default: false,
-        description: 'Is the default option for "See Again" choice enabled?'
-      },
-      partner: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: 'Partner confidence skewed to being over- or underconfident',
-        default: 'underconfident',
-        description: 'Partner confidence low or high'
-      }
     }
   };
 
@@ -142,29 +109,29 @@ jsPsych.plugins['jspsych-dots'] = (function () {
 
     var tempStorage = {
       trial_count: [],
-      dots_pairs: [],
-      dots_majoritySide: [],
-      dots_confidences: [],
+      meanColorPairs: [],
+      moreRedSide: [],
+      confidences: [],
       initial_choices: [],
       partner_confidences: [],
-      dots_moreAsked: [],
-      dots_isCorrect: [],
-      dots_jointCorrect: [],
-      dots_partnerCorrect: [],
-      dots_isTutorialMode: [],
-      dots_firstIsCorrect: [],
-      dots_RTs: [],
-      dots_waitTimes: []
+      moreAsked: [],
+      isCorrect: [],
+      jointCorrect: [],
+      partnerCorrect: [],
+      isTutorialMode: [],
+      firstIsCorrect: [],
+      RTs: [],
+      waitTimes: []
     };
 
     // set confidence slider options
-    var dots_tooltipLabels = [
+    var tooltipLabels = [
       'probably<br>LEFT',
       'maybe<br>LEFT',
       'maybe<br>RIGHT',
       'probably<br>RIGHT'
     ];
-    var dots_endLabels = [
+    var endLabels = [
       '<div>certainly<br>LEFT</div>',
       '<div>certainly<br>RIGHT</div>'
     ];
@@ -174,30 +141,26 @@ jsPsych.plugins['jspsych-dots'] = (function () {
     document.body.style.setProperty('--rightColor', trial.rightColor);
 
     var fixationPeriod = 1000;
-    var dotPeriod = 300;
+    var stimulusPeriod = 600;
     var transitionPeriod = 500;
     var trialCounter = 0;
 
     if (trial.blockCounterEnabled) {
-      dotsBlockCounter++;
-      //permanentDataVariable["block_count"].push(dotsBlockCounter);
+      blockCounter++;
+      permanentDataVariable["block_count"].push(blockCounter);
     }
 
     $(document).ready(drawFixation(
       display_element,
       trial.canvasWidth,
       trial.canvasHeight,
-      trial.dot_minimum,
-      dotsStaircase,
       upperColor,
       lowerColor,
-      dots_tooltipLabels,
-      dots_endLabels,
-      trial.showPercentage,
-      trial.seeAgain,
+      tooltipLabels,
+      endLabels,
       trial.waitTimeLimit,
       fixationPeriod,
-      dotPeriod,
+      stimulusPeriod,
       transitionPeriod,
       trial.trial_count,
       trialCounter,
@@ -211,11 +174,7 @@ jsPsych.plugins['jspsych-dots'] = (function () {
       trial.yellowButtonName,
       trial.greenButtonEnabled,
       trial.greenButtonName,
-      trial.defaultOptionEnabled,
-      trial.partner
       ));
-
-    partner = trial.partner;
 
   };
 

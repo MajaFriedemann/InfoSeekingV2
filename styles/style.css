@@ -1464,32 +1464,32 @@ button.default-white-button.start-tutorial, .button.default-white-button.start-t
   visibility: hidden;
 }
 
-.noDragSlider.dots_slider {
+.noDragSlider.slider {
   margin-top: 10vh;
 }
 
-.noDragSlider.dots_slider .tooltip-top {
+.noDragSlider.slider .tooltip-top {
   margin-top: 0vh !important;
 }
 
-.noDragSlider.dots_slider .tooltip-top.tooltip-2 {
+.noDragSlider.slider .tooltip-top.tooltip-2 {
   margin-right: 4vmin !important;
 }
 
-.noDragSlider.dots_slider .tooltip-top.tooltip-3 {
+.noDragSlider.slider .tooltip-top.tooltip-3 {
   margin-left: 4vmin !important;
 }
 
-.noDragSlider.dots_slider .scale-content {
+.noDragSlider.slider .scale-content {
   background: #aaaaaa;
 }
 
-.noDragSlider.dots_slider .scale-fill.scale-left {
+.noDragSlider.slider .scale-fill.scale-left {
   background-color: transparent;
   border-left: 5px solid white;
 }
 
-.noDragSlider.dots_slider .scale-fill.scale-right {
+.noDragSlider.slider .scale-fill.scale-right {
   background-color: transparent;
   border-right: 5px solid white;
 }
@@ -1674,14 +1674,14 @@ button.default-white-button.start-tutorial, .button.default-white-button.start-t
 .grid-mask {
   z-index: 100;
   position: absolute;
-  width: 168px;
+  width: 250px;
   height: 166px;
-  border: 4px solid white;
+  border: 4px solid black;
   background: black;
 }
 
 .grid-mask.mask-right {
-  margin-left: 268px;
+  margin-left: 280px;
 }
 
 /* -------------------------------------------------------------

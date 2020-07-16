@@ -6,114 +6,150 @@
  * CLASSES
  *******************/
 
-class DoubleDotGrid {
-  /**
-   * @constructor
-   * @param {int} nDotsL - number of dots in the left grid
-   * @param {int} nDotsR - number of dots in the right grid
-   * @param {Object} [args] - additional arguments.
-   * @param {int} [args.gridWidth=20] - number of squares in a row
-   * @param {int} [args.gridHeight=20] - number of squares in a column
-   * @param {int} [args.dotWidth=2] - pixel width of each dot
-   * @param {int} [args.dotHeight=2] - pixel height of each dot
-   * @param {int} [args.paddingX=6] - horizontal padding of the squares (pixels)
-   * @param {int} [args.paddingY=6] - vertical padding of the squares (pixels)
-   * @param {int} [args.spacing=26] - spacing between the boxes
-   */
-  constructor(nDotsL, nDotsR, args = {}) {
-    this.dotCountL = nDotsL;
-    this.dotCountR = nDotsR;
-    this.gridWidth = args.gridWidth || 20;
-    this.gridHeight = args.gridHeight || 20;
-    this.dotWidth = args.dotWidth || 2;
-    this.dotHeight = args.dotHeight || 2;
-    this.paddingX = args.paddingX || 6;
-    this.paddingY = args.paddingY || 6;
-    this.gridL = this.renewGrid(this.dotCountL);
-    this.gridR = this.renewGrid(this.dotCountR);
-    this.displayWidth = this.gridWidth * this.dotWidth + (this.gridWidth + 2) * this.paddingX;
-    this.displayHeight = this.gridHeight * this.dotHeight + (this.gridHeight + 2) * this.paddingY;
-    this.spacing = args.spacing || 26;
+ //     //draw the squircle stimuli
+ // var canvas = document.getElementById(canvasID);
+ // var ctx = canvas.getContext("2d");
+ //
+ // ctx.fillStyle = "red";
+ //
+ // var cy = canvas.height/2;
+ // var cxl = canvas.width / 2 - canvas.width / 3;
+ // var cxr = canvas.width / 2 + canvas.width / 3;
+ //
+ // var total_circles = 8;
+ // var radius = 80;
+ //
+ // //left stimulus
+ // for (i = 0; i < total_circles; i++) {
+ //   var angle = i * 2 * Math.PI / total_circles;
+ //   var xl = cxl + Math.cos(angle) * radius;
+ //   var y = cy + Math.sin(angle) * radius;
+ //   ctx.beginPath();
+ //   ctx.arc(xl, y, 22 - 0.5 * total_circles, 0, Math.PI * 2, true);
+ //   ctx.closePath();
+ //   ctx.fill();
+ // }
+ //
+ // //right stimulus
+ // for (i = 0; i < total_circles; i++) {
+ //   var angle = i * 2 * Math.PI / total_circles;
+ //   var xr = cxr + Math.cos(angle) * radius;
+ //   var y = cy + Math.sin(angle) * radius;
+ //   ctx.beginPath();
+ //   ctx.arc(xr, y, 22 - 0.5 * total_circles, 0, Math.PI * 2, true);
+ //   ctx.closePath();
+ //   ctx.fill();
+ // }
 
-    // style properties
-    this.style = {
-      gridBorderColor: '#ffffff',
-      gridBorderWidth: '3',
-      dotColor: '#ffffff',
-      dotLineWidth: '1'
-    };
-  };
-  /** Create a grid
-   * @param {int} dotCount - number of dots to place in the grid
-   * @returns {int[]} A matrix of 0s with *dotCount* 1s inserted
-   */
-  renewGrid(dotCount) {
-    let grid = [];
-    for (let i = 0; i < this.gridWidth; i++) {
-      let row = [];
-      for (let j = 0; j < this.gridHeight; j++) {
-        row.push(0);
-      }
-      grid.push(row);
-    }
-    grid = this.populateGrid(grid, dotCount);
-    return grid;
-  };
 
-  /** Populate a grid with dots
-   * @param {int[]} grid - grid to populate
-   * @param {int} dotCount - number of dots to populate *grid* with
-   * @returns {int[]} *grid* populated with *dotCount* dots (1s)
-   */
-  populateGrid(grid, dotCount) {
-    for (let i = 0; i < dotCount; i++) {
-      let x = Math.floor(Math.random() * this.gridWidth);
-      let y = Math.floor(Math.random() * this.gridHeight);
-      if (grid[x][y] === 1)
-        i--;
-      else
-        grid[x][y] = 1;
-    }
-    return grid;
-  };
-
-  /** Draw a grid onto an HTML canvas
-   * @param {int[]} grid - grid to draw
-   * @param {object} ctx - HTML canvas on which to draw
-   * @param {boolean} offset - if *true*, draw offset horizontally by *this.spacing*
-   */
-  drawGrid(grid, ctx, offset) {
-    let xMin = (offset) ? this.spacing + this.displayWidth : 0;
-    // Draw frame
-    ctx.beginPath();
-    ctx.lineWidth = this.style.gridBorderWidth;
-    ctx.strokeStyle = this.style.gridBorderColor;
-    ctx.rect(xMin, 0, this.displayWidth, this.displayHeight);
-    ctx.stroke();
-    // Draw dots
-    ctx.lineWidth = this.style.dotLineWidth;
-    ctx.fillStyle = this.style.dotColor;
-    for (let x = 0; x < this.gridWidth; x++) {
-      for (let y = 0; y < this.gridHeight; y++) {
-        if (grid[x][y] === 1) {
-          let startX = xMin + (x + 1) * this.paddingX + x * this.dotWidth;
-          let startY = (y + 1) * this.paddingY + y * this.dotHeight;
-          // alternating the color should prevent brightness being used as a proxy
-          //ctx.fillStyle = ctx.fillStyle==='#000000'? this.style.dotColor : '#000000';
-          ctx.fillRect(startX, startY, this.dotWidth, this.dotHeight);
-          ctx.stroke();
-        }
-      }
-    }
-  };
-
-  draw(canvasId) {
-    let canvas = document.getElementById(canvasId);
-    let ctx = canvas.getContext('2d');
-    this.drawGrid(this.gridL, ctx, false);
-    this.drawGrid(this.gridR, ctx, true);
-  };
-}
+// class DoubleDotGrid {
+//   /**
+//    * @constructor
+//    * @param {int} nDotsL - number of dots in the left grid
+//    * @param {int} nDotsR - number of dots in the right grid
+//    * @param {Object} [args] - additional arguments.
+//    * @param {int} [args.gridWidth=20] - number of squares in a row
+//    * @param {int} [args.gridHeight=20] - number of squares in a column
+//    * @param {int} [args.dotWidth=2] - pixel width of each dot
+//    * @param {int} [args.dotHeight=2] - pixel height of each dot
+//    * @param {int} [args.paddingX=6] - horizontal padding of the squares (pixels)
+//    * @param {int} [args.paddingY=6] - vertical padding of the squares (pixels)
+//    * @param {int} [args.spacing=26] - spacing between the boxes
+//    */
+//   constructor(nDotsL, nDotsR, args = {}) {
+//     this.dotCountL = nDotsL;
+//     this.dotCountR = nDotsR;
+//     this.gridWidth = args.gridWidth || 20;
+//     this.gridHeight = args.gridHeight || 20;
+//     this.dotWidth = args.dotWidth || 2;
+//     this.dotHeight = args.dotHeight || 2;
+//     this.paddingX = args.paddingX || 6;
+//     this.paddingY = args.paddingY || 6;
+//     this.gridL = this.renewGrid(this.dotCountL);
+//     this.gridR = this.renewGrid(this.dotCountR);
+//     this.displayWidth = this.gridWidth * this.dotWidth + (this.gridWidth + 2) * this.paddingX;
+//     this.displayHeight = this.gridHeight * this.dotHeight + (this.gridHeight + 2) * this.paddingY;
+//     this.spacing = args.spacing || 26;
+//
+//     // style properties
+//     this.style = {
+//       gridBorderColor: '#ffffff',
+//       gridBorderWidth: '3',
+//       dotColor: '#ffffff',
+//       dotLineWidth: '1'
+//     };
+//   };
+//   /** Create a grid
+//    * @param {int} dotCount - number of dots to place in the grid
+//    * @returns {int[]} A matrix of 0s with *dotCount* 1s inserted
+//    */
+//   renewGrid(dotCount) {
+//     let grid = [];
+//     for (let i = 0; i < this.gridWidth; i++) {
+//       let row = [];
+//       for (let j = 0; j < this.gridHeight; j++) {
+//         row.push(0);
+//       }
+//       grid.push(row);
+//     }
+//     grid = this.populateGrid(grid, dotCount);
+//     return grid;
+//   };
+//
+//   /** Populate a grid with dots
+//    * @param {int[]} grid - grid to populate
+//    * @param {int} dotCount - number of dots to populate *grid* with
+//    * @returns {int[]} *grid* populated with *dotCount* dots (1s)
+//    */
+//   populateGrid(grid, dotCount) {
+//     for (let i = 0; i < dotCount; i++) {
+//       let x = Math.floor(Math.random() * this.gridWidth);
+//       let y = Math.floor(Math.random() * this.gridHeight);
+//       if (grid[x][y] === 1)
+//         i--;
+//       else
+//         grid[x][y] = 1;
+//     }
+//     return grid;
+//   };
+//
+//   /** Draw a grid onto an HTML canvas
+//    * @param {int[]} grid - grid to draw
+//    * @param {object} ctx - HTML canvas on which to draw
+//    * @param {boolean} offset - if *true*, draw offset horizontally by *this.spacing*
+//    */
+//   drawGrid(grid, ctx, offset) {
+//     let xMin = (offset) ? this.spacing + this.displayWidth : 0;
+//     // Draw frame
+//     ctx.beginPath();
+//     ctx.lineWidth = this.style.gridBorderWidth;
+//     ctx.strokeStyle = this.style.gridBorderColor;
+//     ctx.rect(xMin, 0, this.displayWidth, this.displayHeight);
+//     ctx.stroke();
+//     // Draw dots
+//     ctx.lineWidth = this.style.dotLineWidth;
+//     ctx.fillStyle = this.style.dotColor;
+//     for (let x = 0; x < this.gridWidth; x++) {
+//       for (let y = 0; y < this.gridHeight; y++) {
+//         if (grid[x][y] === 1) {
+//           let startX = xMin + (x + 1) * this.paddingX + x * this.dotWidth;
+//           let startY = (y + 1) * this.paddingY + y * this.dotHeight;
+//           // alternating the color should prevent brightness being used as a proxy
+//           //ctx.fillStyle = ctx.fillStyle==='#000000'? this.style.dotColor : '#000000';
+//           ctx.fillRect(startX, startY, this.dotWidth, this.dotHeight);
+//           ctx.stroke();
+//         }
+//       }
+//     }
+//   };
+//
+//   draw(canvasId) {
+//     let canvas = document.getElementById(canvasId);
+//     let ctx = canvas.getContext('2d');
+//     this.drawGrid(this.gridL, ctx, false);
+//     this.drawGrid(this.gridR, ctx, true);
+//   };
+// }
 
  /******************
  * BASIC FUNCTIONS

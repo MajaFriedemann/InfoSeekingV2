@@ -1484,7 +1484,7 @@ button, .button {
     visibility: hidden;
   }
 
-  &.dots_slider {
+  &.slider {
     margin-top: 10vh;
 
     .tooltip-top {
@@ -1651,7 +1651,7 @@ button, .button {
   position: absolute;
   width: 166px;
   height: 166px;
-  border: 4px solid rgb(255,255,255);
+  border: 4px solid rgb(0,0,0);
   background: rgb(0,0,0);
 
   // &:hover {

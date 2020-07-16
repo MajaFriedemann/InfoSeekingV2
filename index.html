@@ -35,20 +35,15 @@
     <link href="styles/style.css" rel="stylesheet" type="text/css">
     <!--custom JS: helper functions-->
     <script src="scripts/helper.js"></script>
-    <script src="scripts/dots-try.js"></script>
+    <script src="scripts/squircles.js"></script>
     <!--custom JS: trials using jPsych-->
     <script src="scripts/jpsych/jspsych-consent.js"></script>
     <script src="scripts/jpsych/jspsych-debriefing.js"></script>
     <script src="scripts/jpsych/jspsych-demographics.js"></script>
-    <script src="scripts/jpsych/jspsych-dots.js"></script>
+    <script src="scripts/jpsych/jspsych-squircles.js"></script>
     <script src="scripts/jpsych/jspsych-feedback-form.js"></script>
-    <script src="scripts/jpsych/jspsych-overconfident-feedback.js"></script>
-    <script src="scripts/jpsych/jspsych-underconfident-feedback.js"></script>
     <script src="scripts/jpsych/jspsych-loading.js"></script>
-    <script src="scripts/jpsych/jspsych-loading-partner.js"></script>
     <script src="scripts/jpsych/jspsych-message-splash.js"></script>
-    <script src="scripts/jpsych/jspsych-partner-message1.js"></script>
-    <script src="scripts/jpsych/jspsych-partner-message2.js"></script>
     <script src="scripts/jpsych/jspsych-notice.js"></script>
     <script src="scripts/jpsych/jspsych-PIS.js"></script>
     <script src="scripts/jpsych/jspsych-score-reveal.js"></script>
@@ -73,13 +68,11 @@
     /* EXPERIMENT INFORMATION */
 
     var subjectID;
-    var studyName = 'Confidence in group decision-making';
-    var version = 'non-strategic version';
-    var release_date = '2020/06/30';
-    var testing_timeline = false;
-    var trialTypeOrder = 'all';          /* "testing" or "all"  |  for "testing" the right click context menu is enabled and the data will be downloaded as a csv file*/
-    var scoreRuleOrder;
-    var cohort = 'PR';                      /*PR for prolific*/
+    var studyName = 'Information seeking & confidence';
+    var version = 'first pilot';
+    var release_date = '2020/07/30';
+    var trialTypeOrder = 'all';    /* "testing" or "all"*/
+    var cohort = 'PR';             /*PR for prolific*/
     var CUREC_studyName = 'Contextual influences on metacognitive judgements';
     var CUREC_ID = 'R67369/RE001';
     var CUREC_version = '5.0';
@@ -113,56 +106,6 @@
     Math.seedrandom(seed);
 
 
-
-    // randomize partner order
-    var partnerOrder = Math.random();  //used to decide if under- or overconfident partner is first
-
-    // randomize color of partner (used for marker color in dots.try and for background color in jspsych-partner-message)
-    var color = Math.random();
-    var color1;
-    var color2;
-    var partner1color;
-    var partner2color;
-    var partner1c;
-    var partner2c;
-    // if color < 0.5, then the underconfident partner will be gold and the overconfident partner will be purple
-    if (color < 0.5) {
-        color1 = "yellow";
-        color2 = "magenta";
-        // if partnerOrder > 0.5, then the underconfident partner will be the first one and overconfident partner the second one
-        if (partnerOrder > 0.5) {
-            partner1color = "yellow";
-            partner1c = color1;
-            partner2color = "purple";
-            partner2c = color2;
-        // if partnerOrder < 0.5, then the overconfident partner will be the first one and underconfident partner the second one
-        } else {
-            partner1color = "purple";
-            partner1c = color2;
-            partner2color = "yellow";
-            partner2c = color1;
-        }
-    // if color > 0.5, then the underconfident partner will be purple and the overconfident partner will be gold
-    } else {
-        color1 = "magenta";
-        color2 = "yellow";
-        // if partnerOrder > 0.5, then the underconfident partner will be the first one and overconfident partner the second one
-        if (partnerOrder > 0.5) {
-            partner1color = "purple";
-            partner1c = color1;
-            partner2color = "yellow";
-            partner2c = color2;
-        // if partnerOrder < 0.5, then the overconfident partner will be the first one and underconfident partner the second one
-        } else {
-            partner1color = "yellow";
-            partner1c = color2;
-            partner2color = "purple";
-            partner2c = color1;
-        }
-    }
-
-
-
     /* IMAGES TO PRELOAD */
     var images = [
         'assets/oxford-logo.jpg',
@@ -176,42 +119,18 @@
         'assets/partner.png',
     ];
 
-    var dotsStaircase = new Staircase({
-        logSpace: {
-            firstVal: 100,
-            down: 2,
-            up: 1,
-            wait: true,
-            operation: 'logspace',          // accuracy is staircased to .71
-            breaks: [0, 5, 10],
-            stepSizeDown: [0.4, 0.2, 0.1],
-            stepSizeUp: [0.4, 0.2, 0.1],
-            direction: -1,
-            limits: [1, 100],
-            verbosity: 1
-        }
-    });
-
-    dotsStaircase.init();
 
     /* DATA VARIABLES */
-    var dots_totalTrials = 0;
-    var dots_totalCorrect = 0;
-    var dots_jointTotalCorrect = 0;
-    var dots_blockCount = 0;
-    var dotsBlockCounter = 0;
-    var staircaseSteps = 0;
-    var dots_cumulativeScore = 0;
-    var dots_overallAccuracy = 0;
-    var dots_jointOverallAccuracy = 0;
-    var accuracy = 0;
-    var participantAccu;
-    var partnerAccu;
-    var participantChosen = 0;
-    var partner;
+    var blockCount = 0;
+    var blockCounter = 0;
+
+    var totalTrials = 0;
     var trialsPerBlock = 20; //make trial count 20 here (5x20 trials = 100 trials per partner)
-    var dotCountHigherList = [];
-    var finalHigh;
+
+    var totalCorrect = 0;
+    var cumulativeScore = 0;
+    var accuracy = 0;
+    var overallAccuracy = 0;
 
     var bonusPayment = 0;
 
@@ -224,7 +143,6 @@
         experiment_version_date: release_date,
         experiment_condition: undefined,
         trialType_order: trialTypeOrder,
-        scoreRule_order: scoreRuleOrder,
         attempts: currentAttempt,
 
         CUREC_ID: CUREC_ID,
@@ -243,21 +161,16 @@
         demographicsRTs: [],
         demographics_duration: 0,
 
-        dots_accuracy: [],
-        //dots_isTutorialMode: [],
-        dots_staircase: [],
-        dots_majoritySide: [],
-        dots_confidences: [],
-        initial_choices: [],
+        accuracy: [],
+        isTutorialMode: [],
+        moreRedSide: [],
+        confidences: [],
         partner_confidences: [],
-        dots_pairs: [],
-        //dots_defaultOption: [],
-        //dots_moreAsked: [],
-        dots_isCorrect: [],
-        dots_jointCorrect: [],
-        dots_partnerCorrect: [],
-        dots_RTs: [],
-        dots_waitTimes: [],
+        meanColorPairs: [],
+        moreAsked: [],
+        isCorrect: [],
+        RTs: [],
+        waitTimes: [],
 
         technical_issues: undefined,
         feedback_technical: undefined,
@@ -300,11 +213,11 @@
     };
 
 
-    // dot task
-    var dotTaskPractice1 = {
-        type: 'jspsych-dots',
+    // task
+    var Practice = {
+        type: 'jspsych-squircles',
         dot_minimum: 200,
-        canvasWidth: 445,
+        canvasWidth: 500,
         canvasHeight: 180,
         leftColor: 'rgb(255,255,255)',
         rightColor: 'rgb(255,255,255)',
@@ -317,26 +230,10 @@
         partner: 'none',
     };
 
-
-    var dotTaskPractice2 = {
-        type: 'jspsych-dots',
+    var Task1 = {
+        type: 'jspsych-squircles',
         dot_minimum: 200,
-        canvasWidth: 445,
-        canvasHeight: 180,
-        leftColor: 'rgb(255,255,255)',
-        rightColor: 'rgb(255,255,255)',
-        waitTimeLimit: 2000,
-        isTutorialMode: true,
-        trial_count: 5,                 //make trial count 5 here
-        greenButtonName: 'CONTINUE',
-        seeAgain: 'easier',
-        partner: 'none'
-    };
-
-    var dotTask1 = {
-        type: 'jspsych-dots',
-        dot_minimum: 200,
-        canvasWidth: 445,
+        canvasWidth: 500,
         canvasHeight: 180,
         leftColor: 'rgb(255,255,255)',
         rightColor: 'rgb(255,255,255)',
@@ -349,11 +246,10 @@
         partner: 'underconfident'
     };
 
-
-    var dotTask2 = {
-        type: 'jspsych-dots',
+    var Task2 = {
+        type: 'jspsych-squircles',
         dot_minimum: 200,
-        canvasWidth: 445,
+        canvasWidth: 500,
         canvasHeight: 180,
         leftColor: 'rgb(255,255,255)',
         rightColor: 'rgb(255,255,255)',
@@ -367,7 +263,7 @@
     };
 
 
-    var dotTaskInstructions1 = {
+    var Instructions1 = {
         type: 'jspsych-notice',
         section1_text: 'In this experiment, you will be playing a game with dots.',
         section2_text: 'During this game, you will see two boxes containing dots briefly flash on either side of the centre of the screen (marked with a "+" sign). Your task is to decide whether the left or right box contains more dots. If you think the left box contained more dots, you respond with a <u>left mouse-click</u>. If you think the right box contained more dots, you respond with a <u>right mouse-click</u>. The task will start off quite easy <u>but will become harder</u> as you progress. ' +
@@ -375,7 +271,7 @@
         img_id: 'dotTask-gif1'
     };
 
-    var dotTaskInstructions2 = {
+    var Instructions2 = {
         type: 'jspsych-notice',
         section1_text: 'From now on, you will indicate your confidence in your decisions.',
         section2_text: 'After responding with a left or right click, you will now <u>indicate your confidence</u> in the decision <u>on a sliding scale</u>. Hover over the slider bar to change the slider position - towards the middle if you aren\'t sure of your answer, and towards the left/right side if you\'re confident that the respective side is the correct answer - then click on the slider bar to register your confidence rating. ' +
@@ -383,47 +279,15 @@
         img_id: 'dotTask-gif2'
     };
 
-    var dotTaskInstructions3 = {
-        type: 'jspsych-notice',
-        section1_text: 'Great! You are half-way through. For the second half you will be paired with a different partner',
-        section2_text: 'Based on your responses, we will select another participant who did about as well as you did on the dot task. Different partner, same rules: After responding with a left or right click and indicating your confidence on the slider, you will see the your partner\'s response for the same dots-grid. <br><br><highlight style="color: rgb(13,255,146)">You will earn points depending on whether your response is correct and how accurate your confidence judgment was.</highlight> At the end of the game, we will take all trials where you indicated, for example, a confidence of 70-80% and check if in fact 70-80% of those trials were correct. The closer your confidence judgements align with your actual accuracy, the higher your cash bonus will be at the end of the experiment, so <highlight style="color: rgb(13,255,146)">you will earn more with more accurate confidence judgments</highlight>. <br><br>Press the "continue" button to do 5 more blocks of the dot task.',
-        img_id: 'dotTask-gif3'
-    };
 
-    var dotTaskStart = {
+    var Start = {
         type: 'jspsych-notice',
         section1_text: 'You have now completed the first two phases of the dot game.',
         section2_text: 'For the rest of the experiment, you\'ll be doing the task you just practiced. However, from now on you will see the response of another past participant for the same dots-grid. Your partner did about as well as you did in the practice trials. <br><br><highlight style="color: rgb(13,255,146)">You will earn points depending on whether your response is correct and how accurate your confidence judgment was.</highlight> At the end of the game, we will take all trials where you indicated, for example, a confidence of 70-80% and check if in fact 70-80% of those trials were correct. The closer your confidence judgements align with your actual accuracy, the higher your cash bonus will be at the end of the experiment, so <highlight style="color: rgb(13,255,146)">you will earn more with more accurate confidence judgments</highlight>. <br><br>There will be 10 blocks of 20 trials, which should take approximately 25 minutes to complete altogether. Press "continue" to continue to the first block of 20 trials',
         img_id: 'dotTask-gif3'
     };
 
-    // var dotTaskStart = {
-    //     type: 'jspsych-message-splash',
-    //     name: 'dotStart',
-    //     subjectID: subjectID,
-    //     message: 'You have now completed the practice trials for the dot task.',
-    //     submessage: 'For the rest of the experiment, you\'ll be doing the task you just practiced. However, from now on you will see the <u>response of another past participant</u> for the same dots-grid. This other participant <u>did about as well as you did</u> in the practice trials. The <u>decision that is reported with higher confidence</u> will be selected as  <highlight style="color: rgb(13,255,146)"> <u>your joint decision</u> </highlight>  based on which you will get feedback.<br><br>In the example on the left, the other participant\'s choice was reported with higher confidence and thus chosen as the joint decision.  There will be <u>four blocks of 50 trials</u>, which should take approximately 25 minutes to complete altogether. You will be able to take a short break in between the blocks. <br><br> <highlight style="color: rgb(13,255,146)">A cash bonus will be awarded based on the accuracy of your joint decisions.</highlight> <br><br> Press "continue" to continue to the first block of 50 trials.',
-    //     backgroundColor: 'rgb(0,0,0)',
-    //     buttonEnabled: true,
-    //     buttonText: 'CONTINUE',
-    //     lineSpacing: '130%',
-    //     submessageSize: '2.8vmin'
-    // };
-
-
-    var partner1 = {
-        type: 'jspsych-partner-message1',
-        section2_text: 'We have selected your first partner! <br><br>Their decision and confidence rating will be indicated with a <highlight style="color: ' + partner1c +  '" >' + partner1color + ' </highlight> bar.',
-        img_id: 'dotTask-partner'
-    };
-
-    var partner2 = {
-        type: 'jspsych-partner-message2',
-        section2_text: 'We have selected your second partner! <br><br>Their decision and confidence rating will be indicated with a <highlight style="color: ' + partner2c +  '" >' + partner2color + ' </highlight> bar.',
-        img_id: 'dotTask-partner'
-    };
-
-    var dotTaskRest = {
+    var Rest = {
         type: 'jspsych-message-splash',
         name: 'dotTaskRest',
         subjectID: subjectID,
@@ -437,7 +301,7 @@
     };
 
 
-    var dotsScoreReveal = {
+    var ScoreReveal = {
         type: 'jspsych-score-reveal',
         performanceType: 'Brier',
         bonusThreshold: 60,
@@ -457,11 +321,6 @@
         subjectID: subjectID
     };
 
-    var loadingPartner = {
-        type: 'jspsych-loading-partner',
-        subjectID: subjectID
-    };
-
     var questionnaireSplash = {
         type: 'jspsych-message-splash',
         name: 'questionnaireIntro',
@@ -475,144 +334,40 @@
         askStrategy: false
     };
 
-    var feedbackOverconfPartner = {
-        type: 'jspsych-overconfident-feedback',
-        askStrategy: false
-    };
-
-    var feedbackUnderconfPartner = {
-        type: 'jspsych-underconfident-feedback',
-        askStrategy: false
-    };
 
 
     /* TIMELINES FOR RELEASE & TESTING */
     switch(trialTypeOrder) {
-
         case 'all':
-            if (partnerOrder > 0.499999999999) {
-                var order;
-                order = "underconfident, then overconfident";
-                dataObject["experiment_condition"] = order;
-                var timeline = [
-                    loading,
-                    PIS,
-                    consent,
-                    demographics,
-                    dotTaskInstructions1,
-                    dotTaskPractice1,
-                    dotTaskInstructions2,
-                    dotTaskPractice2,
-                    dotTaskStart,
-                    loadingPartner,
-                    partner1,
-                    dotTask1,
-                    dotTaskRest,
-                    dotTask1,
-                    dotTaskRest,
-                    dotTask1,
-                    dotTaskRest,
-                    dotTask1,
-                    dotTaskRest,
-                    dotTask1,
-                    dotTaskRest,
-                    feedbackUnderconfPartner,
-                    dotTaskInstructions3,
-                    loadingPartner,
-                    partner2,
-                    dotTask2,
-                    dotTaskRest,
-                    dotTask2,
-                    dotTaskRest,
-                    dotTask2,
-                    dotTaskRest,
-                    dotTask2,
-                    dotTaskRest,
-                    dotTask2,
-                    dotTaskRest,
-                    feedbackOverconfPartner,
-                    dotsScoreReveal,
-                    feedbackPoll,
-                    debriefing,
-                    thankYou
-                ];
-            } else {
-                var order;
-                order = "overconfident, then underconfident";
-                dataObject["experiment_condition"] = order;
-                var timeline = [
-                    loading,
-                    PIS,
-                    consent,
-                    demographics,
-                    dotTaskInstructions1,
-                    dotTaskPractice1,
-                    dotTaskInstructions2,
-                    dotTaskPractice2,
-                    dotTaskStart,
-                    loadingPartner,
-                    partner1,
-                    dotTask2,
-                    dotTaskRest,
-                    dotTask2,
-                    dotTaskRest,
-                    dotTask2,
-                    dotTaskRest,
-                    dotTask2,
-                    dotTaskRest,
-                    dotTask2,
-                    dotTaskRest,
-                    feedbackOverconfPartner,
-                    dotTaskInstructions3,
-                    loadingPartner,
-                    partner2,
-                    dotTask1,
-                    dotTaskRest,
-                    dotTask1,
-                    dotTaskRest,
-                    dotTask1,
-                    dotTaskRest,
-                    dotTask1,
-                    dotTaskRest,
-                    dotTask1,
-                    dotTaskRest,
-                    feedbackUnderconfPartner,
-                    dotsScoreReveal,
-                    feedbackPoll,
-                    debriefing,
-                    thankYou
-                ];
-            }
+            var timeline = [
+                // loading,
+                // PIS,
+                // consent,
+                // demographics,
+                Instructions1,
+                Practice,
+                Instructions2,
+                //Start,
+                Task2,
+                ScoreReveal,
+                feedbackPoll,
+                debriefing,
+                thankYou
+            ];
             break;
 
         case 'testing':
-            if (partnerOrder > 0.5) {
-                var timeline = [
-                    dotTaskInstructions1,
-                    dotTaskPractice1,
-                    dotTaskInstructions2,
-                    dotTaskPractice2,
-                    dotTaskStart,
-                    thankYou
-                ];
-            } else {
-                var timeline = [
-                    dotTaskInstructions1,
-                    dotTaskPractice1,
-                    dotTaskInstructions2,
-                    dotTaskPractice2,
-                    dotTaskStart,
-                    thankYou
-                ];
-            }
+            var timeline = [
+                Instructions1,
+                thankYou
+            ];
             break;
-
 
         default:
             var timeline = [loading];
     }
 
-    /* JSPSYCH & MONGODB */
+    /* JSPSYCH*/
 
     jsPsych.init({
         timeline: timeline,
@@ -621,29 +376,15 @@
         on_finish: function() {
             var endExperiment = Date.now();
             var testTime = msToMinSec(endExperiment - startExperiment);
-            // link up to Stitch with a promise
-            var clientPromise = stitch.StitchClientFactory.create('uidmul-ist-sbgze');
             // add all experimental details to dataObject
-            dataObject["dots_staircase"] = dotsStaircase.get('logSpace');
-            dataObject["dots_overallAccuracy"] = dots_overallAccuracy;
+            dataObject["staircase"] = dotsStaircase.get('logSpace');
+            dataObject["overallAccuracy"] = overallAccuracy;
             dataObject["bonus_earned"] = bonusPayment;
             dataObject["date_completed"] = longformDate();
             dataObject["duration"] = testTime;
 
             saveCSV(subjectID, currentAttempt);
 
-
-            // link up to Stitch
-            clientPromise.then(client => {
-                const db = client.service('mongodb', 'mongodb-atlas').db('IST');
-                client.login().then(() => {
-                    db.collection('IST1').insertOne(dataObject)
-                }).then(() => {
-                    console.log('[MongoDB Stitch] Connected to Stitch with insertOne');
-                }).catch(err => {
-                    console.error(err);
-                });
-            });
         }
     });
 </script>
