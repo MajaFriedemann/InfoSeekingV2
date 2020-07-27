@@ -10,7 +10,7 @@
      * @param {Array} tooltipLabels
      * @param {Array} endLabels
      * @param {boolean} showPercentage = show percentage on scale?
-     * @param {string} seeAgain - options for the "See Again" button: 'same', 'similar', 'easier'
+     * @param {string} seeMore - options for the "SEE MORE" button: 'same', 'similar', 'easier'
      * @param {int} waitTimeLimit - maximum wait time
      * @param {int} fixationPeriod
      * @param {int} stimulusPeriod
@@ -23,7 +23,7 @@
      * @param {int} accuracyThreshold
      */
 
-function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled) {
+function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeMore, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled) {
 
   // default variables
   var backendConfidence;
@@ -49,9 +49,9 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
   var defaultRandomiser = Math.random();
   if (defaultOptionEnabled && defaultRandomiser >= 0.5) {
     redButtonName = 'SKIP INSTEAD';
-    permanentDataVariable['defaultOption'].push('seeAgain');
+    permanentDataVariable['defaultOption'].push('seeMore');
   } else if (defaultOptionEnabled) {
-    redButtonName = 'SEE AGAIN INSTEAD';
+    redButtonName = 'SEE MORE INSTEAD';
     permanentDataVariable['defaultOption'].push('skip');
   } else {
     redButtonName = 'ESCAPE';
@@ -252,7 +252,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
           sliderActive = true;
           break;
 
-        case 'seeAgain':
+        case 'seeMore':
           secondTimeAround = true;
           recordRating(backendConfidence, moreRedSide, type);
 
@@ -263,10 +263,10 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
           // reset the trial timer
           start_timer = Date.now();
 
-          // set options for 'See Again' based on specified parameter
+          // set options for 'SEE MORE' based on specified parameter
 
           // same grid (simple mask-lifting)
-          if (seeAgain == 'same') {
+          if (seeMore == 'same') {
             // save data
             meanColorPairs.push(dots);
 
@@ -302,12 +302,12 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
             }, fixationPeriod);
 
             // same dot counts, different grid
-          } else if (seeAgain == 'similar') {
+          } else if (seeMore == 'similar') {
             // save data
             meanColorPairs.push(dots);
 
             // clear the grids
-            var dotCanvas = document.getElementById('jspsych-canvas-sliders-response-canvas');
+            var canvas = document.getElementById('jspsych-canvas-sliders-response-canvas');
             var context = dotCanvas.getContext('2d');
             context.clearRect(0, 0, dotCanvas.width, dotCanvas.height);
             context.beginPath();
@@ -482,7 +482,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
 
           if (trialCounterVariable < trialCount) {
             // draw the fixation dot
-            setTimeout(function () { drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled); }, waitTime);
+            setTimeout(function () { drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeMore, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled); }, waitTime);
 
           } else {
             // evaluate accuracy
@@ -550,7 +550,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
                   });
                 } else {
                   $('#dots-tutorial-continue').on('click', function () {
-                    drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, isTutorialMode, accuracyThreshold, yellowButtonEnabled, redButtonEnabled, redButtonName, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled);
+                    drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeMore, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, isTutorialMode, accuracyThreshold, yellowButtonEnabled, redButtonEnabled, redButtonName, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled);
                     return;
                   });
                 }
@@ -664,8 +664,8 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
 
             var defaultQuestionValue = '';
             if (redButtonName == 'SKIP INSTEAD') {
-              defaultQuestionValue = 'See Again?';
-            } else if (redButtonName == 'SEE AGAIN INSTEAD') {
+              defaultQuestionValue = 'SEE MORE?';
+            } else if (redButtonName == 'SEE MORE INSTEAD') {
               defaultQuestionValue = 'Continue?';
             }
 
@@ -690,8 +690,8 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
               $('.response-area, #tooltip-row-bottom').css('visibility', 'hidden');
               $('#jspsych-canvas-sliders-response-canvas').css('visibility', 'visible');
 
-              if (defaultQuestionValue == 'See Again?' && !secondTimeAround) {
-                buttonBackend('seeAgain');
+              if (defaultQuestionValue == 'SEE MORE?' && !secondTimeAround) {
+                buttonBackend('seeMore');
               } else {
                 buttonBackend('submit');
               }
@@ -710,15 +710,15 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
     $('.escape-button').on('click', function () {
       if (redButtonName == 'SKIP INSTEAD') {
         buttonBackend('submit');
-      } else if (redButtonName == 'SEE AGAIN INSTEAD') {
-        buttonBackend('seeAgain');
+      } else if (redButtonName == 'SEE MORE INSTEAD') {
+        buttonBackend('seeMore');
       } else {
         buttonBackend('exit');
       }
     });
 
     $('.more-button').on('click', function () {
-      buttonBackend('seeAgain');
+      buttonBackend('seeMore');
     });
 
     $('.submit-button').on('click', function () {
@@ -741,7 +741,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
      * @param {Array} tooltipLabels
      * @param {Array} endLabels
      * @param {boolean} showPercentage = show percentage on scale?
-     * @param {string} seeAgain - options for the "See Again" button: 'same', 'similar', 'easier'
+     * @param {string} seeMore - options for the "SEE MORE" button: 'same', 'similar', 'easier'
      * @param {int} waitTimeLimit - maximum wait time
      * @param {int} fixationPeriod - duration of fixation period
      * @param {int} stimulusPeriod
@@ -754,7 +754,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
      * @param {int} accuracyThreshold
      */
 
-function drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled) {
+function drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeMore, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled) {
 
   // set style defaults for page
   parent.innerHTML = '';
@@ -795,6 +795,6 @@ function drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase
     parent.innerHTML += html;
 
     // call the draw dots function
-    drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeAgain, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled);
+    drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeMore, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled);
   }, fixationPeriod);
 }

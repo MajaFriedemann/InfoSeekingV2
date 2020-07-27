@@ -28,6 +28,8 @@
     <script src="scripts/external/seedrandom.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.2.2/math.js"></script>
+    <!--calculate with matrices-->
+    <script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
     <!--Modernizr-->
     <script src="scripts/external/modernizr-UIDMUL-IST-180521.js"></script>
     <!--custom CSS-->
@@ -59,7 +61,6 @@
     /* PROLIFIC PARAMETERS */
 
     var ProlificID = getUrlVars()['PROLIFIC_PID'];
-    console.log(ProlificID);
     // NOTE ADD COMPLETION CODE HERE!
     var completionCode = "DEE7049F";
     var completionURL = "https://app.prolific.ac/submissions/complete?cc=" + completionCode;
@@ -226,8 +227,7 @@
         trial_count: 100,             //make trial count 100 here
         yellowButtonEnabled: false,
         greenButtonName: 'CONTINUE',
-        seeAgain: 'practice1',
-        partner: 'none',
+        seeMore: 'practice1',
     };
 
     var Task1 = {
@@ -242,8 +242,7 @@
         trial_count: trialsPerBlock,
         blockCounterEnabled: true,
         greenButtonName: 'CONTINUE',
-        seeAgain: 'easier',
-        partner: 'underconfident'
+        seeMore: 'easier',
     };
 
     var Task2 = {
@@ -258,8 +257,7 @@
         trial_count: trialsPerBlock,
         blockCounterEnabled: true,
         greenButtonName: 'CONTINUE',
-        seeAgain: 'easier',
-        partner: 'overconfident'
+        seeMore: 'easier',
     };
 
 
@@ -347,8 +345,8 @@
                 Instructions1,
                 Practice,
                 Instructions2,
-                //Start,
-                Task2,
+                Start,
+                Task1,
                 ScoreReveal,
                 feedbackPoll,
                 debriefing,

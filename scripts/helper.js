@@ -2,47 +2,161 @@
  * A LIST OF HELPER FUNCTIONS *
  ******************************************************************/
 
- /******************
- * CLASSES
- *******************/
-
- //     //draw the squircle stimuli
- // var canvas = document.getElementById(canvasID);
- // var ctx = canvas.getContext("2d");
- //
- // ctx.fillStyle = "red";
- //
- // var cy = canvas.height/2;
- // var cxl = canvas.width / 2 - canvas.width / 3;
- // var cxr = canvas.width / 2 + canvas.width / 3;
- //
- // var total_circles = 8;
- // var radius = 80;
- //
- // //left stimulus
- // for (i = 0; i < total_circles; i++) {
- //   var angle = i * 2 * Math.PI / total_circles;
- //   var xl = cxl + Math.cos(angle) * radius;
- //   var y = cy + Math.sin(angle) * radius;
- //   ctx.beginPath();
- //   ctx.arc(xl, y, 22 - 0.5 * total_circles, 0, Math.PI * 2, true);
- //   ctx.closePath();
- //   ctx.fill();
- // }
- //
- // //right stimulus
- // for (i = 0; i < total_circles; i++) {
- //   var angle = i * 2 * Math.PI / total_circles;
- //   var xr = cxr + Math.cos(angle) * radius;
- //   var y = cy + Math.sin(angle) * radius;
- //   ctx.beginPath();
- //   ctx.arc(xr, y, 22 - 0.5 * total_circles, 0, Math.PI * 2, true);
- //   ctx.closePath();
- //   ctx.fill();
- // }
 
 
-// class DoubleDotGrid {
+ /* get color samples */
+ /**
+  * @function generateColorSamples()
+  * @param {int} array_mean
+  * @param {int} array_sd
+  * @param {int} total_circles - number of items (color circles)
+  */
+ function generateColorSamples(array_mean,array_sd,total_circles) {
+   function randomList(n, a, b) {
+     // create a list of n numbers between a and b
+     var list = [],
+         i;
+     for (i = 0; i < n; i++) {
+       list[i] = Math.random() * (b - a) + a;
+     }
+     return list;
+   }
+   // create a list of random numbers between 1 and 10
+   var list = randomList(total_circles, 1, 10);
+
+   function descriptives(list) {
+     // compute mean, sd and the interval range: [min, max]
+     var mean,
+         sd,
+         i,
+         len = list.length,
+         sum,
+         a = Infinity,
+         b = -a;
+     for (sum = i = 0; i < len; i++) {
+       sum += list[i];
+       a = Math.min(a, list[i]);
+       b = Math.max(b, list[i]);
+     }
+     mean = sum / len;
+     for (sum = i = 0; i < len; i++) {
+       sum += (list[i] - mean) * (list[i] - mean);
+     }
+     sd = Math.sqrt(sum / (len - 1));
+     return {
+       mean: mean,
+       sd: sd,
+       range: [a, b]
+     };
+   }
+
+   function forceDescriptives(list, mean, sd) {
+     // transfom a list to have an exact mean and sd
+     var oldDescriptives = descriptives(list),
+         oldMean = oldDescriptives.mean,
+         oldSD = oldDescriptives.sd,
+         newList = [],
+         len = list.length,
+         i;
+     for (i = 0; i < len; i++) {
+       newList[i] = sd * (list[i] - oldMean) / oldSD + mean;
+     }
+     return newList;
+   }
+
+   // transform the list to have an exact mean of 5 and sd of 2
+   var newList = forceDescriptives(list, array_mean, array_sd);
+
+   // display the transformed list and descriptive statistics (mean and sd)
+   console.log(descriptives(newList));
+
+   return newList;
+ }
+
+ /* turn the colour samples into RGB values from blue to red */
+ /**
+  * @function generateRGBvalues()
+  * @param {int} singleColorValue
+  */
+ function generateRGBvalues(singleColorValue) {
+   var colorValue = [singleColorValue*255, 0, (1-singleColorValue)*255];
+   return colorValue;
+ }
+
+
+ /* draw the squircle stimuli */
+ /**
+  * @function drawSquircles()
+  * @param {Object} parent - parent div
+  * @param {string} canvasID - ID for the canvas object
+  * @param {int} canvasWidth
+  * @param {int} canvasHeight
+  * @param {int} total_circles
+  * @param {int} radius
+  * @param {int} array_mean
+  * @param {int} array_sd
+  * @param {int} color_mean_difference
+  * @param {string} moreRedSide - "left" or "right"
+  */
+ function drawSquircleStimuli(parent, canvasID, canvasWidth, canvasHeight, total_circles, radius,
+                              array_mean,array_sd, color_mean_difference, moreRedSide) {
+
+   var canvas = document.getElementById(canvasID);
+   var ctx = canvas.getContext("2d");
+
+   //ctx.fillStyle = "red";
+
+   var cy = canvas.height/2;
+   var cxl = canvas.width / 2 - canvas.width / 3;
+   var cxr = canvas.width / 2 + canvas.width / 3;
+
+   var colorValuesArrayLeft = [];
+   var colorValuesArrayRight = [];
+
+   var moreRedMean = array_mean + color_mean_difference;
+   var moreBlueMean = array_mean;
+
+   if (moreRedSide === "left") {
+     colorValuesArrayLeft = generateColorSamples(moreRedMean, array_sd, total_circles); //one number for each circle with defined mean and sd for the numbers
+     colorValuesArrayRight = generateColorSamples(moreBlueMean,array_sd, total_circles);
+   } else {
+     colorValuesArrayLeft = generateColorSamples(moreBlueMean, array_sd, total_circles); //one number for each circle with defined mean and sd for the numbers
+     colorValuesArrayRight = generateColorSamples(moreRedMean, array_sd, total_circles);
+   }
+
+
+   /*draw the left stimulus*/
+   for (i = 0; i < total_circles; i++) {
+     var singleColorValue = colorValuesArrayLeft[i];
+     var colorValues = generateRGBvalues(singleColorValue);
+     ctx.fillStyle = "rgb(" + colorValues[0] + "," + colorValues[1] + "," + colorValues[2] + ")";
+     var angle = i * 2 * Math.PI / total_circles;
+     var xl = cxl + Math.cos(angle) * radius;
+     var y = cy + Math.sin(angle) * radius;
+     ctx.beginPath();
+     ctx.arc(xl, y, 21 - 0.5 * total_circles, 0, Math.PI * 2, true);
+     ctx.closePath();
+     ctx.fill();
+   }
+
+   /*draw the right stimulus*/
+   for (i = 0; i < total_circles; i++) {
+     var singleColorValue = colorValuesArrayRight[i];
+     var colorValues = generateRGBvalues(singleColorValue);
+     ctx.fillStyle = "rgb(" + colorValues[0] + "," + colorValues[1] + "," + colorValues[2] + ")";
+     var angle = i * 2 * Math.PI / total_circles;
+     var xr = cxr + Math.cos(angle) * radius;
+     var y = cy + Math.sin(angle) * radius;
+     ctx.beginPath();
+     ctx.arc(xr, y, 21 - 0.5 * total_circles, 0, Math.PI * 2, true);
+     ctx.closePath();
+     ctx.fill();
+   }
+ }
+
+
+
+/* class DoubleDotGrid {
 //   /**
 //    * @constructor
 //    * @param {int} nDotsL - number of dots in the left grid
@@ -155,6 +269,13 @@
  * BASIC FUNCTIONS
  *******************/
 
+ /* calculate standard deviation of array*/
+ function getStandardDeviation (array) {
+   const n = array.length;
+   const mean = array.reduce((a, b) => a + b) / n;
+   return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
+ }
+
 /*returns a random integer between the specified values. The value is no lower than min
 (or the next integer greater than min if min isn't an integer), and is less than (but not equal to) max. (min is inclusive, max is exclusive) */
  function getRandomInt(min, max) {
@@ -193,7 +314,7 @@ function reverseBrierScore(confidence, outcome) {
 }
 
 /* calculate the dot difference obtained on a log adaptive staircasing procedure */
-function seeAgainStep(stepNumber, lastValue) {
+function seeMoreStep(stepNumber, lastValue) {
   if (stepNumber >= 0 && stepNumber < 5) {
     return Math.E ** (Math.log(lastValue) + 0.4);
   } else if (stepNumber >= 5 && stepNumber < 10) {

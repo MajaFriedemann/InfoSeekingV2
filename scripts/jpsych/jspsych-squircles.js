@@ -45,7 +45,7 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Wait time limit',
         default: Infinity,
-        description: 'Optional parameter to set a wait time limit for the next trial on a SeeAgain trial.'
+        description: 'Optional parameter to set a wait time limit for the next trial on a seeMore trial.'
       },
       trial_count: {
         type: jsPsych.plugins.parameterType.INT,
@@ -74,13 +74,13 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
       yellowButtonEnabled: {
         type: jsPsych.plugins.parameterType.BOOL,
         pretty_name: 'Yellow button enabled?',
-        default: false,
+        default: true,
         description: 'Is the yellow (middle) button enabled?'
       },
       yellowButtonName: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Yellow button name',
-        default: 'SEE AGAIN',
+        default: 'SEE MORE',
         description: 'Text for the yellow (middle) button'
       },
       greenButtonEnabled: {

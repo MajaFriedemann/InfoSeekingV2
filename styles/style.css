@@ -1684,6 +1684,19 @@ button.default-white-button.start-tutorial, .button.default-white-button.start-t
   margin-left: 280px;
 }
 
+.grid-cover {
+  z-index: 100;
+  position: absolute;
+  width: 125px;
+  height: 166px;
+  border: 4px solid black;
+  background: black;
+}
+
+.grid-cover.cover-right {
+  position:relative;
+}
+
 /* -------------------------------------------------------------
 ----------------------- INCORPORATED EXT CLASSES ---------------
 ---------------------------------------------------------------- */
