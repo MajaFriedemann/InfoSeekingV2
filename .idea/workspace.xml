@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3df47766-bd0d-44d8-9d5e-755754b7705f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/dotTask_2.5.0 practice.gif" beforeDir="false" afterPath="$PROJECT_DIR$/assets/dotTask_2.5.0 practice.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/external/jspsych-6.0.2.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/external/jspsych-6.0.2.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-squircles.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-squircles.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/squircles.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/squircles.js" afterDir="false" />
-    </list>
+    <list default="true" id="3df47766-bd0d-44d8-9d5e-755754b7705f" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -163,7 +156,7 @@
       <workItem from="1593548462108" duration="28000" />
       <workItem from="1593601090102" duration="72000" />
       <workItem from="1594809353592" duration="49924000" />
-      <workItem from="1595316017585" duration="51638000" />
+      <workItem from="1595316017585" duration="51649000" />
     </task>
     <servers />
   </component>
