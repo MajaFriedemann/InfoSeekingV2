@@ -166,8 +166,11 @@
         isTutorialMode: [],
         moreRedSide: [],
         confidences: [],
-        partner_confidences: [],
-        meanColorPairs: [],
+        moreRedMean: [],
+        moreBlueMean: [],
+        colorMeanDifference: [],
+        colorSD: [],
+
         moreAsked: [],
         isCorrect: [],
         RTs: [],
@@ -263,9 +266,9 @@
 
     var Instructions1 = {
         type: 'jspsych-notice',
-        section1_text: 'In this experiment, you will be playing a game with dots.',
-        section2_text: 'During this game, you will see two boxes containing dots briefly flash on either side of the centre of the screen (marked with a "+" sign). Your task is to decide whether the left or right box contains more dots. If you think the left box contained more dots, you respond with a <u>left mouse-click</u>. If you think the right box contained more dots, you respond with a <u>right mouse-click</u>. The task will start off quite easy <u>but will become harder</u> as you progress. ' +
-            '<br><br> Press the "continue" button to start the game. <u>The first phase of the game can take up to 8 minutes.</u> You should reach a stable performance level to continue to the next phase.',
+        section1_text: 'In this experiment, you will be playing a game of comparing colours.',
+        section2_text: 'During this game, there will be two circles made up of smaller circles briefly flashing on either side of the centre of the screen (marked with a "+" sign). The small circles will be of a colour between completely red and completely blue. Your task is to determine which of the two circles (left or right) is more red compared to the other one. If you think the left circle was more red, you respond with a <u>left mouse-click</u>. If you think the right circle was more red, you respond with a <u>right mouse-click</u>.' +
+            '<br><br> Press the "continue" button to start the game.',
         img_id: 'dotTask-gif1'
     };
 

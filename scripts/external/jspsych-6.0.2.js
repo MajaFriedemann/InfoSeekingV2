@@ -979,7 +979,7 @@ jsPsych.plugins = (function() {
       type: module.parameterType.OBJECT,
       pretty_name: 'Data',
       default: {},
-      description: 'Data to add to this trial (key-value meanColorPairs)'
+      description: 'Data to add to this trial'
     },
     on_start: {
       type: module.parameterType.FUNCTION,

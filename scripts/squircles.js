@@ -35,7 +35,6 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
     var displayedConfidence = 0;
     var secondTimeAround = false;  // set to true when more info is sought and the stimuli are shown a second time
     var start_timer;
-    var meanColorPairs = [];
     var confidences = [];
     var RTs = [];
     var choice_timer;
@@ -63,9 +62,10 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
     var color_sd = randInt(0, 1);
     color_sd = color_sds[color_sd];
 
-    var color_mean_differences = [0.01, 0.02, 0.03, 0.04, 0.05];
-    var color_mean_difference = randInt(0, 4);
+    var color_mean_differences = [0.005, 0.01, 0.015, 0.02, 0.025, 0.03];
+    var color_mean_difference = randInt(0, 5);
     color_mean_difference = color_mean_differences[color_mean_difference];
+
 
     var moreRedSide;
     var randomiser = Math.random();
@@ -259,8 +259,6 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
 
                     // same grid (simple mask-lifting)
 
-                    meanColorPairs.push(meanColorPairs);
-
                     $('.response-area').css('visibility', 'hidden');
                     $('.confidence-question').css('visibility', 'hidden');
                     $('.grid-mask').css('visibility', 'hidden');
@@ -319,7 +317,11 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
 
                     trialDataVariable['waitTimes'].push(waitTime);
                     trialDataVariable['isCorrect'].push(correctResponse); // this is for calculating the bonus
-                    trialDataVariable['meanColorPairs'].push(meanColorPairs);
+                    trialDataVariable['moreRedMean'].push(color_mean+color_mean_difference);
+                    trialDataVariable['moreBlueMean'].push(color_mean);
+                    trialDataVariable['colorMeanDifference'].push(color_mean_difference);
+                    trialDataVariable['colorSD'].push(color_sd);
+
                     trialDataVariable['confidences'].push(confidences);
                     trialDataVariable['RTs'].push(RTs);
                     trialDataVariable['isTutorialMode'].push(isTutorialMode);
@@ -400,7 +402,10 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                                     $('#dots-tutorial-continue').on('click', function () {
                                         console.log(trialDataVariable);
                                         permanentDataVariable["accuracy"].push(accuracy);
-                                        permanentDataVariable["meanColorPairs"].push(trialDataVariable["meanColorPairs"]);
+                                        permanentDataVariable['moreRedMean'].push(trialDataVariable["moreRedMean"]);
+                                        permanentDataVariable['moreBlueMean'].push(trialDataVariable["moreBlueMean"]);
+                                        permanentDataVariable['colorMeanDifference'].push(trialDataVariable["colorMeanDifference"]);
+                                        permanentDataVariable['colorSD'].push(trialDataVariable["coloSD"]);
                                         permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
                                         permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
                                         permanentDataVariable["moreAsked"].push(trialDataVariable["moreAsked"]);
@@ -422,7 +427,10 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                                 // if not in tutorial mode
                                 permanentDataVariable["accuracy"].push(accuracy);
                                 permanentDataVariable["isTutorialMode"].push(trialDataVariable["isTutorialMode"]);
-                                permanentDataVariable["meanColorPairs"].push(trialDataVariable["meanColorPairs"]);
+                                permanentDataVariable['moreRedMean'].push(trialDataVariable["moreRedMean"]);
+                                permanentDataVariable['moreBlueMean'].push(trialDataVariable["moreBlueMean"]);
+                                permanentDataVariable['colorMeanDifference'].push(trialDataVariable["colorMeanDifference"]);
+                                permanentDataVariable['colorSD'].push(trialDataVariable["coloSD"]);
                                 permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
                                 permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
                                 permanentDataVariable["moreAsked"].push(trialDataVariable["moreAsked"]);

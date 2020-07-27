@@ -109,15 +109,16 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
 
     var tempStorage = {
       trial_count: [],
-      meanColorPairs: [],
+      moreRedMean: [],
+      moreBlueMean: [],
+      colorMeanDifference: [],
+      colorSD: [],
+
       moreRedSide: [],
       confidences: [],
       initial_choices: [],
-      partner_confidences: [],
       moreAsked: [],
       isCorrect: [],
-      jointCorrect: [],
-      partnerCorrect: [],
       isTutorialMode: [],
       firstIsCorrect: [],
       RTs: [],
