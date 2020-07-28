@@ -84,10 +84,6 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
     drawSquircleStimuli(parent, canvasID, canvasWidth, canvasHeight, total_circles, radius,
         color_mean, color_sd, color_mean_difference, moreRedSide);
 
-    // which buttons to show (make this dependent on the condition)
-    yellowButtonEnabled = true;
-    redButtonEnabled = false;
-    greenButtonEnabled = true;
 
     var buttonsToShow = {};
     if (redButtonEnabled) {
@@ -127,28 +123,32 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
     $('.response-area').css('visibility', 'hidden');
 
 
-    //cover half of the stimuli
-    var cover1 = createGeneral(
-        cover1,
-        document.getElementById('jspsych-canvas-sliders-response-stimulus'),
-        'div',
-        'grid-cover cover-left',
-        'grid-cover-left',
-        ''
-    );
+    //if we are not in tutorial mode, we cover half the stimuli
+    if (isTutorialMode===false) {
+        //cover half of the stimuli
+        var cover1 = createGeneral(
+            cover1,
+            document.getElementById('jspsych-canvas-sliders-response-stimulus'),
+            'div',
+            'grid-cover cover-left',
+            'grid-cover-left',
+            ''
+        );
 
-    var cover2 = createGeneral(
-        cover2,
-        document.getElementById('jspsych-canvas-sliders-response-stimulus'),
-        'div',
-        'grid-cover cover-right',
-        'grid-cover-right',
-        ''
-    );
+        var cover2 = createGeneral(
+            cover2,
+            document.getElementById('jspsych-canvas-sliders-response-stimulus'),
+            'div',
+            'grid-cover cover-right',
+            'grid-cover-right',
+            ''
+        );
 
-    $('.grid-cover').css('width', radius+20);
-    $('.grid-cover.cover-right').css('right', radius+22);
-    $('.grid-cover').css('visibility', 'visible');
+        $('.grid-cover').css('width', radius+20);
+        $('.grid-cover.cover-right').css('right', radius+22);
+        $('.grid-cover').css('visibility', 'visible');
+    }
+
 
     //draw the stimulus masks
     setTimeout(function () {
@@ -328,21 +328,18 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                     trialCounterVariable++;
 
                     // give feedback
-                    if (isTutorialMode) {
-                        if (correctResponse) {
-                            document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(13,255,146)">CORRECT</h1>';
-                        } else {
-                            document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,51)">INCORRECT</h1>';
-                        }
-                        setTimeout(function () {
-                            // clear the display on a timer
-                            document.getElementById('jspsych-canvas-sliders-response-wrapper').remove();
-                            document.getElementById('response-area').remove();
-                        }, 1000);
+                    if (correctResponse) {
+                        document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(13,255,146)">CORRECT</h1>';
                     } else {
-                        // clear the display directly
+                        document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,51)">INCORRECT</h1>';
+                    }
+                    setTimeout(function () {
+                        // clear the display on a timer
                         document.getElementById('jspsych-canvas-sliders-response-wrapper').remove();
                         document.getElementById('response-area').remove();
+                    }, 1000);
+
+                    if (isTutorialMode===false) {
                         totalTrials++;
                     }
 
