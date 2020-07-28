@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3df47766-bd0d-44d8-9d5e-755754b7705f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/dotTask_2.4.0.gif" beforeDir="false" afterPath="$PROJECT_DIR$/assets/dotTask_2.4.0.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/dotTask_2.6.0.gif" beforeDir="false" afterPath="$PROJECT_DIR$/assets/dotTask_2.6.0.gif" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/squircles.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/squircles.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +161,7 @@
       <workItem from="1594809353592" duration="49924000" />
       <workItem from="1595316017585" duration="52491000" />
       <workItem from="1595860465172" duration="974000" />
-      <workItem from="1595926282049" duration="1913000" />
+      <workItem from="1595926282049" duration="3244000" />
     </task>
     <servers />
   </component>
