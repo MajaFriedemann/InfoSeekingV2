@@ -488,10 +488,10 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
 
                     var barWidth = Math.abs((displayedConfidence - 50) * 0.5);
                     if (backendConfidence >= 50) {
-                        $('#scale-right-fill, #confidence-value-right').css('width', barWidth.toString() + 'vmin').css('border-right', '5px solid rgb(10,128,128)'); //color of confidence slider indicator
+                        $('#scale-right-fill, #confidence-value-right').css('width', barWidth.toString() + 'vmin').css('border-right', '5px solid rgb(30, 132, 73)'); //color of confidence slider indicator
                         $('#scale-left-fill, #confidence-value-left').css('width', '0vmin').css('border-left', '5px solid rgba(0,0,0,0)');
                     } else if (backendConfidence < 50) {
-                        $('#scale-left-fill, #confidence-value-left').css('width', barWidth.toString() + 'vmin').css('border-left', '5px solid rgb(10,128,128)'); //color of confidence slider indicator
+                        $('#scale-left-fill, #confidence-value-left').css('width', barWidth.toString() + 'vmin').css('border-left', '5px solid rgb(30, 132, 73)'); //color of confidence slider indicator
                         $('#scale-right-fill, #confidence-value-right').css('width', '0vmin').css('border-right', '5px solid rgba(0,0,0,0)');
                     }
                 }
