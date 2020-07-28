@@ -337,7 +337,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                         // clear the display on a timer
                         document.getElementById('jspsych-canvas-sliders-response-wrapper').remove();
                         document.getElementById('response-area').remove();
-                    }, 1000);
+                    }, 3000);
 
                     if (isTutorialMode===false) {
                         totalTrials++;
