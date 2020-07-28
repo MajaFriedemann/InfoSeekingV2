@@ -297,14 +297,6 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
 
                     if (secondTimeAround) {
                         trialDataVariable['moreAsked'].push(true);
-
-                        // cancel the wait time
-                        if (isTutorialMode) {
-                            var waitTime = 1000;
-                        } else {
-                            var waitTime = 0;
-                        }
-
                     } else {
                         trialDataVariable['moreAsked'].push(false);
 
@@ -337,15 +329,15 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                         // clear the display on a timer
                         document.getElementById('jspsych-canvas-sliders-response-wrapper').remove();
                         document.getElementById('response-area').remove();
-                    }, 3000);
+                    }, 1000);
 
                     if (isTutorialMode===false) {
                         totalTrials++;
                     }
 
                     if (trialCounterVariable < trialCount) {
-                        // draw the fixation dot
-                        setTimeout(function () { drawFixation(parent, canvasWidth, canvasHeight, upperColor, lowerColor, tooltipLabels, endLabels, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName); }, waitTime);
+                        // draw the fixation cross
+                        setTimeout(function () { drawFixation(parent, canvasWidth, canvasHeight, upperColor, lowerColor, tooltipLabels, endLabels, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName); }, 1000);
 
                     } else {
                         // evaluate accuracy

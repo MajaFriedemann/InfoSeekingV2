@@ -423,14 +423,6 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
 
           if (secondTimeAround) {
             trialDataVariable['moreAsked'].push(true);
-
-            // cancel the wait time
-            if (isTutorialMode) {
-              var waitTime = 1000;
-            } else {
-              var waitTime = 0;
-            }
-
           } else {
             trialDataVariable['moreAsked'].push(false);
 
