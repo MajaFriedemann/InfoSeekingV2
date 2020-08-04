@@ -84,6 +84,7 @@
     var PIS_date = '2020/01/01';
     var startExperiment = Date.now();
     var currentAttempt = 1;
+    var difference = 0.1;
 
 
     /* SEEDED RANDOMISATION
@@ -120,6 +121,24 @@
         'assets/partner.png',
     ];
 
+    var squircleStaircase = new Staircase({
+        logSpace: {
+            firstVal: 100,
+            down: 2,
+            up: 1,
+            wait: true,
+            operation: 'logspace',          // accuracy is staircased to .71
+            breaks: [0, 5, 10],
+            stepSizeDown: [0.4, 0.2, 0.1],
+            stepSizeUp: [0.4, 0.2, 0.1],
+            direction: -1,
+            limits: [1, 100],
+            verbosity: 1
+        }
+    });
+
+    squircleStaircase.init();
+
 
     /* DATA VARIABLES */
     var blockCount = 0;
@@ -130,6 +149,8 @@
 
     var totalCorrect = 0;
     var cumulativeScore = 0;
+    var points = 0;
+    var cumulativePoints = 0;
     var accuracy = 0;
     var overallAccuracy = 0;
 
@@ -164,12 +185,17 @@
 
         accuracy: [],
         isTutorialMode: [],
+        condition: [],
+        betterColor: [],
         moreRedSide: [],
         confidences: [],
         moreRedMean: [],
         moreBlueMean: [],
-        colorMeanDifference: [],
+        differenceStep: [],
+        moreRedMeanLevel: [],
+        moreBlueMeanLevel: [],
         colorSD: [],
+        points: [],
 
         moreAsked: [],
         isCorrect: [],
@@ -218,7 +244,7 @@
 
 
     // task
-    var Practice = {
+    var PracticeR = {
         type: 'jspsych-squircles',
         canvasWidth: 500,
         canvasHeight: 180,
@@ -226,7 +252,9 @@
         rightColor: 'rgb(255,255,255)',
         waitTimeLimit: 2000,
         isTutorialMode: true,
-        trial_count: 3,             //make trial count 100 here
+        betterColor: "red",            //red vs blue
+        condition: "value-based",    //for the practice it does not matter which condition it is because feedback is just correct/incorrect anyways and points are not counted
+        trial_count: 3,             //make trial count 50 here
         yellowButtonEnabled: false,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -235,7 +263,26 @@
         seeMore: 'practice1',
     };
 
-    var Task1 = {
+    var PracticeB = {
+        type: 'jspsych-squircles',
+        canvasWidth: 500,
+        canvasHeight: 180,
+        leftColor: 'rgb(255,255,255)',
+        rightColor: 'rgb(255,255,255)',
+        waitTimeLimit: 2000,
+        isTutorialMode: true,
+        betterColor: "blue",            //red vs blue
+        condition: "value-value",    //for the practice it does not matter which condition it is because feedback is just correct/incorrect anyways and points are not counted
+        trial_count: 3,             //make trial count 50 here
+        yellowButtonEnabled: false,
+        yellowButtonName: 'SEE MORE',
+        greenButtonEnabled: true,
+        greenButtonName: 'CONTINUE',
+        redButtonEnabled: false,
+        seeMore: 'practice1',
+    };
+
+    var TaskRV = {
         type: 'jspsych-squircles',
         canvasWidth: 500,
         canvasHeight: 180,
@@ -243,7 +290,9 @@
         rightColor: 'rgb(255,255,255)',
         waitTimeLimit: 2000,
         isTutorialMode: false,
-        trial_count: 100,             //make trial count 100 here
+        betterColor: "red",            //red vs blue
+        condition: "value-value",       //value-value vs value-nothing
+        trial_count: 3,             //make trial count 100 here
         yellowButtonEnabled: true,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -252,35 +301,105 @@
         seeMore: 'practice1',
     };
 
-    var Instructions1 = {
+    var TaskBV = {
+        type: 'jspsych-squircles',
+        canvasWidth: 500,
+        canvasHeight: 180,
+        leftColor: 'rgb(255,255,255)',
+        rightColor: 'rgb(255,255,255)',
+        waitTimeLimit: 2000,
+        isTutorialMode: false,
+        betterColor: "blue",            //red vs blue
+        condition: "value-value",       //value-value vs value-nothing
+        trial_count: 3,             //make trial count 100 here
+        yellowButtonEnabled: true,
+        yellowButtonName: 'SEE MORE',
+        greenButtonEnabled: true,
+        greenButtonName: 'CONTINUE',
+        redButtonEnabled: false,
+        seeMore: 'practice1',
+    };
+
+    var TaskRN = {
+        type: 'jspsych-squircles',
+        canvasWidth: 500,
+        canvasHeight: 180,
+        leftColor: 'rgb(255,255,255)',
+        rightColor: 'rgb(255,255,255)',
+        waitTimeLimit: 2000,
+        isTutorialMode: false,
+        betterColor: "red",            //red vs blue
+        condition: "value-nothing",       //value-value vs value-nothing
+        trial_count: 3,             //make trial count 100 here
+        yellowButtonEnabled: true,
+        yellowButtonName: 'SEE MORE',
+        greenButtonEnabled: true,
+        greenButtonName: 'CONTINUE',
+        redButtonEnabled: false,
+        seeMore: 'practice1',
+    };
+
+    var TaskBN = {
+        type: 'jspsych-squircles',
+        canvasWidth: 500,
+        canvasHeight: 180,
+        leftColor: 'rgb(255,255,255)',
+        rightColor: 'rgb(255,255,255)',
+        waitTimeLimit: 2000,
+        isTutorialMode: false,
+        betterColor: "blue",            //red vs blue
+        condition: "value-nothing",       //value-value vs value-nothing
+        trial_count: 3,             //make trial count 100 here
+        yellowButtonEnabled: true,
+        yellowButtonName: 'SEE MORE',
+        greenButtonEnabled: true,
+        greenButtonName: 'CONTINUE',
+        redButtonEnabled: false,
+        seeMore: 'practice1',
+    };
+
+
+    var Instructions = {
         type: 'jspsych-notice',
         section1_text: 'In this experiment, you will be playing a game of comparing colours.',
         section2_text: 'Practice part - complete stimuli visible, no "see more" button. Set to 3 trials just for now. Could make those ones easier?',
         img_id: 'dotTask-gif1'
     };
 
-    var Instructions2 = {
-        type: 'jspsych-notice',
-        section1_text: 'From now on, you will indicate your confidence in your decisions.',
-        section2_text: 'After responding with a left or right click, you will now <u>indicate your confidence</u> in the decision <u>on a sliding scale</u>. Hover over the slider bar to change the slider position - towards the middle if you aren\'t sure of your answer, and towards the left/right side if you\'re confident that the respective side is the correct answer - then click on the slider bar to register your confidence rating. ' +
-            ' <br><br>Press the "continue" button to do a few trials with the confidence slider.',
-        img_id: 'dotTask-gif2'
-    };
 
-
-    var Start = {
+    var StartV = {
         type: 'jspsych-notice',
-        section1_text: 'You have now completed the practice phase of the game.',
+        section1_text: 'Value value',
         section2_text: 'Now half the stimuli are covered, unless the "see more" button is clicked for more info. Adjust feedback - how many points per option & change gif on the left',
         img_id: 'dotTask-gif3'
     };
 
-    var Rest = {
+    var StartN = {
+        type: 'jspsych-notice',
+        section1_text: 'All or Nothing.',
+        section2_text: 'Now half the stimuli are covered, unless the "see more" button is clicked for more info. Adjust feedback - how many points per option & change gif on the left',
+        img_id: 'dotTask-gif3'
+    };
+
+    var RestR = {
         type: 'jspsych-message-splash',
         name: 'dotTaskRest',
         subjectID: subjectID,
         message: '',
-        variableMessage: 'dotRest flat',
+        variableMessage: 'red',
+        backgroundColor: 'rgb(0,0,0)',
+        buttonEnabled: true,
+        buttonText: 'CONTINUE',
+        lineSpacing: '130%',
+        submessageSize: '2.8vmin'
+    };
+
+    var RestB = {
+        type: 'jspsych-message-splash',
+        name: 'dotTaskRest',
+        subjectID: subjectID,
+        message: '',
+        variableMessage: 'blue',
         backgroundColor: 'rgb(0,0,0)',
         buttonEnabled: true,
         buttonText: 'CONTINUE',
@@ -332,10 +451,21 @@
                 // PIS,
                 // consent,
                 // demographics,
-                Instructions1,
-                Practice,
-                Start,
-                Task1,
+                // Instructions,
+                // RestR,
+                // PracticeR,
+                // RestB,
+                PracticeB,
+                StartV,
+                RestR,
+                TaskRV,
+                RestB,
+                TaskBV,
+                StartN,
+                RestR,
+                TaskRN,
+                RestB,
+                TaskBN,
                 //ScoreReveal,
                 feedbackPoll,
                 debriefing,
@@ -364,7 +494,6 @@
             var endExperiment = Date.now();
             var testTime = msToMinSec(endExperiment - startExperiment);
             // add all experimental details to dataObject
-            dataObject["staircase"] = dotsStaircase.get('logSpace');
             dataObject["overallAccuracy"] = overallAccuracy;
             dataObject["bonus_earned"] = bonusPayment;
             dataObject["date_completed"] = longformDate();

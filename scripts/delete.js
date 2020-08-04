@@ -528,6 +528,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
                   $('#dots-tutorial-continue').on('click', function () {
                     console.log(trialDataVariable);
                     permanentDataVariable["accuracy"].push(accuracy);
+                    permanentDataVariable["points"].push(points);
                     permanentDataVariable["meanColorPairs"].push(trialDataVariable["meanColorPairs"]);
                     permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
                     permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
@@ -549,6 +550,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
               } else {
                 // if not in tutorial mode
                 permanentDataVariable["accuracy"].push(accuracy);
+                permanentDataVariable["points"].push(points);
                 permanentDataVariable["isTutorialMode"].push(trialDataVariable["isTutorialMode"]);
                 permanentDataVariable["meanColorPairs"].push(trialDataVariable["meanColorPairs"]);
                 permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
@@ -746,7 +748,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, dotCount, do
      * @param {int} accuracyThreshold
      */
 
-function drawFixation(parent, canvasWidth, canvasHeight, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeMore, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled) {
+function drawFixation(parent, canvasWidth, canvasHeight, Staircase, dotCount, dotsStaircase, upperColor, lowerColor, tooltipLabels, endLabels, showPercentage, seeMore, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, defaultOptionEnabled) {
 
   // set style defaults for page
   parent.innerHTML = '';

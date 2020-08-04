@@ -122,6 +122,24 @@ jsPsych.plugins['jspsych-message-splash'] = (function () {
         trial.name + '-' + 'message',
         '<h1>' + dotRestMessageFlat + '</h1>'
       );
+    } else if (trial.variableMessage === "red") {
+      var fullscreenMessage = createGeneral(
+          fullscreenMessage,
+          splashPage,
+          'div',
+          'main-message',
+          trial.name + '-' + 'message',
+          '<h1>RED</h1>'
+      );
+    } else if (trial.variableMessage === "blue") {
+      var fullscreenMessage = createGeneral(
+          fullscreenMessage,
+          splashPage,
+          'div',
+          'main-message',
+          trial.name + '-' + 'message',
+          '<h1>BLUE</h1>'
+      );
     } else {
       var fullscreenMessage = createGeneral(
         fullscreenMessage,
@@ -133,14 +151,6 @@ jsPsych.plugins['jspsych-message-splash'] = (function () {
       );
     }
 
-    if (partner === 'overconfident'){
-      var highlight = '<highlight style="color: ' + color2 + '">';
-    } else {
-      var highlight = '<highlight style="color: ' + color1 + '">';
-    }
-
-    var partnerChosen = 20-participantChosen;
-
 
     var subMessage = createGeneral(
         subMessage,
@@ -150,11 +160,6 @@ jsPsych.plugins['jspsych-message-splash'] = (function () {
         trial.name + '-' + 'submessage',
         '<h1>You may take a short break if you like.</h1>',
     );
-
-    //reset variable that counts how many times participant's answer was chosen
-    participantChosen = 0;
-
-
 
 
     if (trial.submessageSize !== 'default') {

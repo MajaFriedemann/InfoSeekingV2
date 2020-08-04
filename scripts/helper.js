@@ -7,11 +7,11 @@
  /* get color samples */
  /**
   * @function generateColorSamples()
-  * @param {int} array_mean
+  * @param {int} color_mean
   * @param {int} array_sd
   * @param {int} total_circles - number of items (color circles)
   */
- function generateColorSamples(array_mean,array_sd,total_circles) {
+ function generateColorSamples(color_mean,array_sd,total_circles) {
    function randomList(n, a, b) {
      // create a list of n numbers between a and b
      var list = [],
@@ -65,7 +65,7 @@
    }
 
    // transform the list to have an exact mean of 5 and sd of 2
-   var newList = forceDescriptives(list, array_mean, array_sd);
+   var newList = forceDescriptives(list, color_mean, array_sd);
 
    // display the transformed list and descriptive statistics (mean and sd)
    console.log(descriptives(newList));
@@ -86,20 +86,20 @@
 
  /* draw the squircle stimuli */
  /**
-  * @function drawSquircles()
+  * @function drawSquircleStimuli()
   * @param {Object} parent - parent div
   * @param {string} canvasID - ID for the canvas object
   * @param {int} canvasWidth
   * @param {int} canvasHeight
   * @param {int} total_circles
   * @param {int} radius
-  * @param {int} array_mean
+  * @param {int} color_mean
   * @param {int} array_sd
-  * @param {int} color_mean_difference
+  * @param {int} color_mean_two
   * @param {string} moreRedSide - "left" or "right"
   */
  function drawSquircleStimuli(parent, canvasID, canvasWidth, canvasHeight, total_circles, radius,
-                              array_mean,array_sd, color_mean_difference, moreRedSide) {
+                              color_mean,array_sd, color_mean_two, moreRedSide) {
 
    var canvas = document.getElementById(canvasID);
    var ctx = canvas.getContext("2d");
@@ -113,8 +113,8 @@
    var colorValuesArrayLeft = [];
    var colorValuesArrayRight = [];
 
-   var moreRedMean = array_mean + color_mean_difference;
-   var moreBlueMean = array_mean;
+   var moreRedMean = Math.max(color_mean, color_mean_two);
+   var moreBlueMean = Math.min(color_mean, color_mean_two);
 
    if (moreRedSide === "left") {
      colorValuesArrayLeft = generateColorSamples(moreRedMean, array_sd, total_circles); //one number for each circle with defined mean and sd for the numbers
@@ -268,6 +268,19 @@
  /******************
  * BASIC FUNCTIONS
  *******************/
+
+ /*random sequence of 0s and 1s where half the sequence is 0 and half is 1*/
+ function myEvenLengthSequence(total_number) {
+   var sequence = [];
+   for (i=0; i<total_number/2; i++) {
+     sequence[i] = 0;
+   }
+   for (i=total_number/2; i<total_number; i++) {
+     sequence[i] = 1;
+   }
+   sequence = sequence.sort(() => Math.random() - 0.5);
+   return sequence;
+ }
 
  /* calculate standard deviation of array*/
  function getStandardDeviation (array) {

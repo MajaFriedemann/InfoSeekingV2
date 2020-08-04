@@ -4,6 +4,7 @@
  * @param {string} canvasID - ID for the canvas object
  * @param {int} canvasWidth
  * @param {int} canvasHeight
+ * @param {Object} squircleStaircase
  * @param {string} upperColor - colour for the right side of the scale
  * @param {string} lowerColor - colour for the left side of the scale
  * @param {Array} tooltipLabels
@@ -24,9 +25,11 @@
  * @param {string} yellowButtonName
  * @param {boolean} greenButtonEnabled
  * @param {string} greenButtonName
+ * @param {string} condition
+ * @param {string} betterColor
  */
 
-function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, lowerColor, tooltipLabels, endLabels,  waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName) {
+function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStaircase, upperColor, lowerColor, tooltipLabels, endLabels,  waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, condition, betterColor) {
 
     //default variables
     var backendConfidence = 50;
@@ -37,6 +40,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
     var start_timer;
     var confidences = [];
     var RTs = [];
+    var points = [];
     var choice_timer;
     var confidence_timer;
 
@@ -54,17 +58,30 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
     var total_circles = 8;
     var radius = 60;
 
-    var color_means = [.15, .35, .55, .75];
-    var color_mean = randInt(0, 3);
-    color_mean = color_means[color_mean];
+    //var color_sds = [.0333, .1];
+    //var color_sd = randInt(0, 1);
+    var color_sd = .1;
 
-    var color_sds = [.0333, .1];
-    var color_sd = randInt(0, 1);
-    color_sd = color_sds[color_sd];
+    if (isTutorialMode) {
+        difference = 0.001*squircleStaircase.getLast('logSpace');
+    }
 
-    var color_mean_differences = [0.005, 0.01, 0.015, 0.02, 0.025, 0.03];
-    var color_mean_difference = randInt(0, 5);
-    color_mean_difference = color_mean_differences[color_mean_difference];
+    //var difference = .05; //staircase 70% accuracy for 3*difference
+    var color_means = [.5-4*difference, .5-3*difference, .5-2*difference, .5-difference, .5,
+        .5+difference, .5+2*difference, .5+3*difference, .5+4*difference, .5+5*difference];
+    var color_mean_level = randInt(0, 8); //anything from 1 to 9
+    var color_mean_two_level;
+
+    if (color_mean_level > 4) {
+        color_mean_two_level = color_mean_level - randInt(1, 5);
+    } else if (color_mean_level <= 4) {
+        color_mean_two_level = color_mean_level + randInt(1, 5);
+    }
+
+    console.log("THE DIFFERENCE WAS " + difference);
+
+    var color_mean = color_means[color_mean_level];
+    var color_mean_two = color_means[color_mean_two_level];
 
 
     var moreRedSide;
@@ -77,12 +94,34 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
 
     console.log(color_mean);
     console.log(color_sd);
-    console.log(color_mean+color_mean_difference);
+    console.log(color_mean_two);
     console.log(moreRedSide);
 
     //draw the squircle stimuli
     drawSquircleStimuli(parent, canvasID, canvasWidth, canvasHeight, total_circles, radius,
-        color_mean, color_sd, color_mean_difference, moreRedSide);
+        color_mean, color_sd, color_mean_two, moreRedSide);
+
+    if (isTutorialMode === false) {
+        //catch trials (10% of trials (1% is lost below))
+        var catchRandomiser = Math.random();
+        if (catchRandomiser > 0.89) {
+            yellowButtonEnabled = false;
+        } else {
+            yellowButtonEnabled = true;
+        }
+        //forced see more trials (10% of trials)
+        var forcedRandomiser = Math.random();
+        if (forcedRandomiser > 0.89) {
+            greenButtonEnabled = false;
+        } else {
+            greenButtonEnabled = true;
+        }
+        //ensure that it doesnt happen that there is no button at all (loosing 1%)
+        if (yellowButtonEnabled === false && greenButtonEnabled === false) {
+            yellowButtonEnabled = true;
+            greenButtonEnabled = true;
+        }
+    }
 
 
     var buttonsToShow = {};
@@ -110,14 +149,26 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
     var confidence_meter = noDragSlider('slider', response_area, tooltipLabels, endLabels, buttonsToShow);
 
     //draw the confidence question
-    var confidence_question = createGeneral(
-        confidence_question,
-        response_area,
-        'div',
-        'confidence-question',
-        'confidence-question',
-        '<h1>Which side was more red?</h1>'
-    );
+    if (betterColor === "red") {
+        var confidence_question = createGeneral(
+            confidence_question,
+            response_area,
+            'div',
+            'confidence-question',
+            'confidence-question',
+            '<h1 style="color: rgb(255,0,0)">Which side was more red?</h1>'
+        );
+    } else {
+        var confidence_question = createGeneral(
+            confidence_question,
+            response_area,
+            'div',
+            'confidence-question',
+            'confidence-question',
+            '<h1 style="color: rgb(0,100,255)">Which side was more blue?</h1>'
+        );
+    }
+
 
     //hide the response area
     $('.response-area').css('visibility', 'hidden');
@@ -126,27 +177,72 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
     //if we are not in tutorial mode, we cover half the stimuli
     if (isTutorialMode===false) {
         //cover half of the stimuli
-        var cover1 = createGeneral(
-            cover1,
-            document.getElementById('jspsych-canvas-sliders-response-stimulus'),
-            'div',
-            'grid-cover cover-left',
-            'grid-cover-left',
-            ''
-        );
+        // var cover1 = createGeneral(
+        //     cover1,
+        //     document.getElementById('jspsych-canvas-sliders-response-stimulus'),
+        //     'div',
+        //     'grid-cover cover-left',
+        //     'grid-cover-left',
+        //     ''
+        // );
+        //
+        // var cover2 = createGeneral(
+        //     cover2,
+        //     document.getElementById('jspsych-canvas-sliders-response-stimulus'),
+        //     'div',
+        //     'grid-cover cover-right',
+        //     'grid-cover-right',
+        //     ''
+        // );
+        //
+        // $('.grid-cover').css('width', radius+20);
+        // $('.grid-cover.cover-right').css('right', radius+22);
+        // $('.grid-cover').css('visibility', 'visible');
 
-        var cover2 = createGeneral(
-            cover2,
-            document.getElementById('jspsych-canvas-sliders-response-stimulus'),
-            'div',
-            'grid-cover cover-right',
-            'grid-cover-right',
-            ''
-        );
 
-        $('.grid-cover').css('width', radius+20);
-        $('.grid-cover.cover-right').css('right', radius+22);
-        $('.grid-cover').css('visibility', 'visible');
+        var coverCanvas = document.createElement('canvas');
+        div = document.getElementById("jspsych-canvas-sliders-response-stimulus");
+        coverCanvas.id     = "coverCanvas";
+        coverCanvas.width  = canvasWidth;
+        coverCanvas.height = canvasHeight;
+        coverCanvas.style.position = "absolute";
+        div.appendChild(coverCanvas);
+
+        var ctx = coverCanvas.getContext("2d");
+
+        ctx.fillStyle = "black";
+
+        var cy = coverCanvas.height/2;
+        var cxl = coverCanvas.width / 2 - coverCanvas.width / 3;
+        var cxr = coverCanvas.width / 2 + coverCanvas.width / 3;
+
+        /*draw the left cover*/
+        var sequence = myEvenLengthSequence(total_circles);
+        for (i = 0; i < total_circles; i++) {
+            if (sequence[i] === 1) {
+                var angle = i * 2 * Math.PI / total_circles;
+                var xl = cxl + Math.cos(angle) * radius;
+                var y = cy + Math.sin(angle) * radius;
+                ctx.beginPath();
+                ctx.arc(xl, y, 21 - 0.5 * total_circles, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        /*draw the right cover*/
+        var sequence = myEvenLengthSequence(total_circles);
+        for (i = 0; i < total_circles; i++) {
+            if (sequence[i] === 1) {
+                var angle = i * 2 * Math.PI / total_circles;
+                var xr = cxr + Math.cos(angle) * radius;
+                var y = cy + Math.sin(angle) * radius;
+                ctx.beginPath();
+                ctx.arc(xr, y, 21 - 0.5 * total_circles, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
     }
 
 
@@ -172,8 +268,13 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
 
         $('.grid-mask').css('visibility', 'visible');
 
-        //hide the stimulus covers (so they are not there the second time around)
-        $('.grid-cover').css('visibility', 'hidden');
+        if (isTutorialMode === false) {
+            //hide the stimulus covers (so they are not there the second time around)
+            var coverCanvas = document.getElementById("coverCanvas");
+            var ctx = coverCanvas.getContext("2d");
+            ctx.clearRect(0, 0, coverCanvas.width, coverCanvas.height);
+        }
+        //$('.grid-cover').css('visibility', 'hidden');
 
         // reset the event loggers
         $('.mask-left').off('click');
@@ -198,7 +299,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
         }, transitionPeriod);
 
 
-        function recordRating(backendConfidence, moreRedSide, type) {
+        function recordRating(backendConfidence, moreRedSide, type, betterColor) {
             if (backendConfidence !== undefined) {
                 // record correct/incorrect confidence
                 if (moreRedSide === 'left') {
@@ -206,9 +307,17 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                     confidences.push(invertedConfidence);
 
                     if (invertedConfidence > 50) {
-                        correctResponse = true;
+                        if (betterColor === "red") {
+                            correctResponse = true;
+                        } else {
+                            correctResponse = false
+                        }
                     } else {
-                        correctResponse = false;
+                        if (betterColor === "red") {
+                            correctResponse = false;
+                        } else {
+                            correctResponse = true;
+                        }
                     }
 
                     if (!isTutorialMode && type === "submit") {
@@ -218,9 +327,17 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                     confidences.push(backendConfidence);
 
                     if (backendConfidence > 50) {
-                        correctResponse = true;
+                        if (betterColor === "red") {
+                            correctResponse = true;
+                        } else {
+                            correctResponse = false;
+                        }
                     } else {
-                        correctResponse = false;
+                        if (betterColor === "red") {
+                            correctResponse = false;
+                        } else {
+                            correctResponse = true;
+                        }
                     }
 
                     if (!isTutorialMode && type === "submit") {
@@ -250,7 +367,8 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                 // yellow button for More Info is clicked
                 case 'seeMore':
                     secondTimeAround = true;
-                    recordRating(backendConfidence, moreRedSide, type);
+                    greenButtonEnabled = true;
+                    recordRating(backendConfidence, moreRedSide, type, betterColor);
 
                     // reset the trial timer
                     start_timer = Date.now();
@@ -293,7 +411,11 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                     break;
 
                 default:
-                    recordRating(backendConfidence, moreRedSide, type);
+                    recordRating(backendConfidence, moreRedSide, type, betterColor);
+
+                    if (isTutorialMode) {
+                        squircleStaircase.next(correctResponse);
+                    }
 
                     if (secondTimeAround) {
                         trialDataVariable['moreAsked'].push(true);
@@ -309,22 +431,78 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
 
                     trialDataVariable['waitTimes'].push(waitTime);
                     trialDataVariable['isCorrect'].push(correctResponse); // this is for calculating the bonus
-                    trialDataVariable['moreRedMean'].push(color_mean+color_mean_difference);
-                    trialDataVariable['moreBlueMean'].push(color_mean);
-                    trialDataVariable['colorMeanDifference'].push(color_mean_difference);
+                    trialDataVariable['moreRedMean'].push(Math.max(color_mean, color_mean_two));
+                    trialDataVariable['moreBlueMean'].push(Math.min(color_mean, color_mean_two));
+                    trialDataVariable['differenceStep'].push(difference);
+                    trialDataVariable['moreRedMeanLevel'].push(Math.max(color_mean_level, color_mean_two_level));
+                    trialDataVariable['moreBlueMeanLevel'].push(Math.min(color_mean_level, color_mean_two_level));
                     trialDataVariable['colorSD'].push(color_sd);
 
                     trialDataVariable['confidences'].push(confidences);
                     trialDataVariable['RTs'].push(RTs);
                     trialDataVariable['isTutorialMode'].push(isTutorialMode);
+                    trialDataVariable['condition'].push(condition);
+                    trialDataVariable['betterColor'].push(betterColor);
                     trialCounterVariable++;
 
                     // give feedback
-                    if (correctResponse) {
-                        document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(13,255,146)">CORRECT</h1>';
+                    if (isTutorialMode) {
+                        points = 0;
+                        if (correctResponse) {
+                            if (betterColor === "red") {
+                                document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">CORRECT</h1>';
+                            } else {
+                                document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">CORRECT</h1>';
+                            }
+                        } else {
+                            if (betterColor === "red") {
+                                document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">INCORRECT</h1>';
+                            } else {
+                                document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">INCORRECT</h1>';
+                            }
+                        }
                     } else {
-                        document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,51)">INCORRECT</h1>';
+                        if (condition === "value-value") {
+                            if (correctResponse) {
+                                if (betterColor === "red") {
+                                    points = 10*(Math.max(color_mean_level, color_mean_two_level) + 1);
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
+                                } else {
+                                    points = 100-(10*(Math.min(color_mean_level, color_mean_two_level)));
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
+                                }
+                            } else {
+                                if (betterColor === "red") {
+                                    points = 10*(Math.min(color_mean_level, color_mean_two_level) + 1);
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
+                                } else if (betterColor === "blue")  {
+                                    points = 100-(10*(Math.max(color_mean_level, color_mean_two_level)));
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
+                                }
+                            }
+                        } else {
+                            if (correctResponse) {
+                                if (betterColor === "red") {
+                                    points = 10*(Math.max(color_mean_level, color_mean_two_level) + 1);
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
+                                } else if (betterColor === "blue") {
+                                    points = 100-(10*(Math.min(color_mean_level, color_mean_two_level)));
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
+                                }
+                            } else {
+                                if (betterColor === "red") {
+                                    points = 0;
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
+                                } else if (betterColor === "blue")  {
+                                    points = 0;
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
+                                }
+                            }
+                        }
+
                     }
+                    trialDataVariable['points'].push(points);
+
                     setTimeout(function () {
                         // clear the display on a timer
                         document.getElementById('jspsych-canvas-sliders-response-wrapper').remove();
@@ -337,7 +515,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
 
                     if (trialCounterVariable < trialCount) {
                         // draw the fixation cross
-                        setTimeout(function () { drawFixation(parent, canvasWidth, canvasHeight, upperColor, lowerColor, tooltipLabels, endLabels, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName); }, 1000);
+                        setTimeout(function () { drawFixation(parent, canvasWidth, canvasHeight, squircleStaircase, upperColor, lowerColor, tooltipLabels, endLabels, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, condition, betterColor); }, 1000);
 
                     } else {
                         // evaluate accuracy
@@ -391,9 +569,12 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                                     $('#dots-tutorial-continue').on('click', function () {
                                         console.log(trialDataVariable);
                                         permanentDataVariable["accuracy"].push(accuracy);
+                                        permanentDataVariable["points"].push(points);
                                         permanentDataVariable['moreRedMean'].push(trialDataVariable["moreRedMean"]);
                                         permanentDataVariable['moreBlueMean'].push(trialDataVariable["moreBlueMean"]);
-                                        permanentDataVariable['colorMeanDifference'].push(trialDataVariable["colorMeanDifference"]);
+                                        permanentDataVariable['moreRedMeanLevel'].push(trialDataVariable["moreRedMeanLevel"]);
+                                        permanentDataVariable['moreBlueMeanLevel'].push(trialDataVariable["moreBlueMeanLevel"]);
+                                        permanentDataVariable['differenceStep'].push(trialDataVariable["differenceStep"]);
                                         permanentDataVariable['colorSD'].push(trialDataVariable["coloSD"]);
                                         permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
                                         permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
@@ -408,17 +589,22 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                                     });
                                 } else {
                                     $('#dots-tutorial-continue').on('click', function () {
-                                        drawFixation(parent, canvasWidth, canvasHeight, upperColor, lowerColor, tooltipLabels, endLabels, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName);
+                                        drawFixation(parent, canvasWidth, canvasHeight, squircleStaircase, upperColor, lowerColor, tooltipLabels, endLabels, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, condition, betterColor);
                                         return;
                                     });
                                 }
                             } else {
                                 // if not in tutorial mode
                                 permanentDataVariable["accuracy"].push(accuracy);
+                                permanentDataVariable["points"].push(points);
                                 permanentDataVariable["isTutorialMode"].push(trialDataVariable["isTutorialMode"]);
+                                permanentDataVariable["condition"].push(trialDataVariable["condition"]);
+                                permanentDataVariable["betterColor"].push(trialDataVariable["betterColor"]);
                                 permanentDataVariable['moreRedMean'].push(trialDataVariable["moreRedMean"]);
                                 permanentDataVariable['moreBlueMean'].push(trialDataVariable["moreBlueMean"]);
-                                permanentDataVariable['colorMeanDifference'].push(trialDataVariable["colorMeanDifference"]);
+                                permanentDataVariable['differenceStep'].push(trialDataVariable["differenceStep"]);
+                                permanentDataVariable['moreRedMeanLevel'].push(trialDataVariable["moreRedMeanLevel"]);
+                                permanentDataVariable['moreBlueMeanLevel'].push(trialDataVariable["moreBlueMeanLevel"]);
                                 permanentDataVariable['colorSD'].push(trialDataVariable["coloSD"]);
                                 permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
                                 permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
@@ -496,7 +682,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
                 confidence_timer = Date.now();
                 var RT = calculateRT(start_timer, confidence_timer);
                 RTs.push(RT);
-                recordRating(backendConfidence, moreRedSide, 'initial');
+                recordRating(backendConfidence, moreRedSide, 'initial', betterColor);
             },
         });
 
@@ -521,9 +707,9 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
 /**
  * @function drawFixation()
  * @param {Object} parent - parent div
- * @param {Object} canvasID - canvas object in which to draw grids
  * @param {int} canvasWidth - width of the canvas for dot grids
  * @param {int} canvasHeight - height of the canvas for dot grids
+ * @param {Object} squircleStaircase
  * @param {string} upperColor - colour for the right side of the scale
  * @param {string} lowerColor - colour for the left side of the scale
  * @param {Array} tooltipLabels
@@ -544,10 +730,12 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, 
  * @param {string} yellowButtonName
  * @param {boolean} greenButtonEnabled
  * @param {string} greenButtonName
+ * @param {string} condition
+ * @param {string} betterColor
  */
 
 //the script starts with the drawFixation function which is called in the jspsych-squircles (this is also where all the necessary variable values are specified!)
-function drawFixation(parent, canvasWidth, canvasHeight, upperColor, lowerColor, tooltipLabels, endLabels, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName) {
+function drawFixation(parent, canvasWidth, canvasHeight, squircleStaircase, upperColor, lowerColor, tooltipLabels, endLabels, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, condition, betterColor) {
 
     // set style defaults for page
     parent.innerHTML = '';
@@ -590,7 +778,7 @@ function drawFixation(parent, canvasWidth, canvasHeight, upperColor, lowerColor,
 
         parent.innerHTML += html;
 
-        // call the draw dots function
-        drawSquircles(parent, canvasID, canvasWidth, canvasHeight, upperColor, lowerColor, tooltipLabels, endLabels,  waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName);
+        // call the draw squircles function
+        drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStaircase, upperColor, lowerColor, tooltipLabels, endLabels,  waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, condition, betterColor);
     }, fixationPeriod);
 }

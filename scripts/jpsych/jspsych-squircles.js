@@ -10,6 +10,16 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
         default: false,
         description: 'Specifies whether the block is in tutorial mode or not.'
       },
+      betterColor: {
+        type: jsPsych.plugins.parameterType.STRING,
+        default: "red",
+        description: 'Specifies whether the better color is blue or red, ie if color to value scale goes from blue(0) to red (100) or the other way around.'
+      },
+      condition: {
+        type: jsPsych.plugins.parameterType.STRING,
+        default: "value-value",
+        description: 'Specifies whether the condition is value-value or value-nothing'
+      },
       canvasHTML: {
         type: jsPsych.plugins.parameterType.HTML_STRING,
         pretty_name: 'Canvas HTML',
@@ -111,7 +121,11 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
       trial_count: [],
       moreRedMean: [],
       moreBlueMean: [],
-      colorMeanDifference: [],
+      differenceStep: [],
+      moreRedMeanLevel: [],
+      moreBlueMeanLevel: [],
+      condition: [],
+      betterColor: [],
       colorSD: [],
 
       moreRedSide: [],
@@ -122,7 +136,8 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
       isTutorialMode: [],
       firstIsCorrect: [],
       RTs: [],
-      waitTimes: []
+      waitTimes: [],
+      points: [],
     };
 
     // set confidence slider options
@@ -155,6 +170,7 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
       display_element,
       trial.canvasWidth,
       trial.canvasHeight,
+      squircleStaircase,
       upperColor,
       lowerColor,
       tooltipLabels,
@@ -175,6 +191,8 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
       trial.yellowButtonName,
       trial.greenButtonEnabled,
       trial.greenButtonName,
+      trial.condition,
+      trial.betterColor,
       ));
 
   };

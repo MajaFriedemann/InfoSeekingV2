@@ -930,7 +930,7 @@ button.default-white-button.start-tutorial, .button.default-white-button.start-t
 #partnerOval {
   z-index: 100;
   position: absolute;
-  border: 6px solid orangered;
+  border: 6px solid rgb(255,0,0);
   background: transparent;
   align-self: center;
   width: 24vmax;
