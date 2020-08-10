@@ -43,6 +43,9 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
     var points = [];
     var choice_timer;
     var confidence_timer;
+    var forcedSeeMore = false;
+    var forcedSeeMoreTemp = false;
+    var forcedContinue = false;
 
     // prevent context menu from opening on right click
     document.addEventListener("contextmenu", function (e) {
@@ -62,7 +65,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
     //var color_sd = randInt(0, 1);
     var color_sd = .1;
 
-    if (isTutorialMode) {
+    if (isTutorialMode && condition !="practice2") {
         difference = 0.001*squircleStaircase.getLast('logSpace');
     }
 
@@ -105,24 +108,23 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
         //catch trials (10% of trials (1% is lost below))
         var catchRandomiser = Math.random();
         if (catchRandomiser > 0.89) {
+            forcedContinue = true;
             yellowButtonEnabled = false;
-        } else {
-            yellowButtonEnabled = true;
         }
         //forced see more trials (10% of trials)
         var forcedRandomiser = Math.random();
         if (forcedRandomiser > 0.89) {
-            greenButtonEnabled = false;
-        } else {
-            greenButtonEnabled = true;
+            forcedSeeMore = true;
+            forcedSeeMoreTemp = true;
         }
         //ensure that it doesnt happen that there is no button at all (loosing 1%)
-        if (yellowButtonEnabled === false && greenButtonEnabled === false) {
+        if (yellowButtonEnabled === false && forcedSeeMoreTemp === true) {
             yellowButtonEnabled = true;
-            greenButtonEnabled = true;
+            forcedSeeMore = false;
+            forcedSeeMoreTemp = false;
+            forcedContinue = false;
         }
     }
-
 
     var buttonsToShow = {};
     if (redButtonEnabled) {
@@ -168,6 +170,9 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
             '<h1 style="color: rgb(0,100,255)">Which side was more blue?</h1>'
         );
     }
+    if (condition === "value-value") {
+        document.getElementById('confidence-question').innerHTML = '<h1>Which circle do you pick?</h1>';
+    }
 
 
     //hide the response area
@@ -175,7 +180,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
 
 
     //if we are not in tutorial mode, we cover half the stimuli
-    if (isTutorialMode===false) {
+    if (isTutorialMode===false || condition === "practice2") {
         //cover half of the stimuli
         // var cover1 = createGeneral(
         //     cover1,
@@ -268,7 +273,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
 
         $('.grid-mask').css('visibility', 'visible');
 
-        if (isTutorialMode === false) {
+        if (isTutorialMode === false || condition === "practice2") {
             //hide the stimulus covers (so they are not there the second time around)
             var coverCanvas = document.getElementById("coverCanvas");
             var ctx = coverCanvas.getContext("2d");
@@ -301,48 +306,30 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
 
         function recordRating(backendConfidence, moreRedSide, type, betterColor) {
             if (backendConfidence !== undefined) {
+                var invertedConfidence = 100 - backendConfidence;
+                var confidence;
                 // record correct/incorrect confidence
                 if (moreRedSide === 'left') {
-                    var invertedConfidence = 100 - backendConfidence;
-                    confidences.push(invertedConfidence);
-
-                    if (invertedConfidence > 50) {
-                        if (betterColor === "red") {
-                            correctResponse = true;
-                        } else {
-                            correctResponse = false
-                        }
+                    if (betterColor === "red") {
+                        confidences.push(invertedConfidence);
+                        confidence = invertedConfidence;
+                    } else if (betterColor === "blue") {
+                        confidences.push(backendConfidence);
+                        confidence = backendConfidence;
+                    }
+                } else if (moreRedSide === "right") {
+                    if (betterColor === "red") {
+                        confidences.push(backendConfidence);
+                        confidence = backendConfidence;
                     } else {
-                        if (betterColor === "red") {
-                            correctResponse = false;
-                        } else {
-                            correctResponse = true;
-                        }
+                        confidences.push(invertedConfidence);
+                        confidence = invertedConfidence;
                     }
-
-                    if (!isTutorialMode && type === "submit") {
-                        cumulativeScore += reverseBrierScore(invertedConfidence, correctResponse);
-                    }
+                }
+                if (confidence > 50) {
+                    correctResponse = true;
                 } else {
-                    confidences.push(backendConfidence);
-
-                    if (backendConfidence > 50) {
-                        if (betterColor === "red") {
-                            correctResponse = true;
-                        } else {
-                            correctResponse = false;
-                        }
-                    } else {
-                        if (betterColor === "red") {
-                            correctResponse = false;
-                        } else {
-                            correctResponse = true;
-                        }
-                    }
-
-                    if (!isTutorialMode && type === "submit") {
-                        cumulativeScore += reverseBrierScore(backendConfidence, correctResponse);
-                    }
+                    correctResponse = false;
                 }
             }
         }
@@ -367,7 +354,6 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                 // yellow button for More Info is clicked
                 case 'seeMore':
                     secondTimeAround = true;
-                    greenButtonEnabled = true;
                     recordRating(backendConfidence, moreRedSide, type, betterColor);
 
                     // reset the trial timer
@@ -381,6 +367,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                     $('.confidence-question').css('visibility', 'hidden');
                     $('.grid-mask').css('visibility', 'hidden');
                     $('#jspsych-canvas-sliders-response-canvas').css('visibility', 'hidden');
+
 
                     var fixationCross = createGeneral(
                         fixationCross,
@@ -413,7 +400,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                 default:
                     recordRating(backendConfidence, moreRedSide, type, betterColor);
 
-                    if (isTutorialMode) {
+                    if (isTutorialMode && condition != "practice2") {
                         squircleStaircase.next(correctResponse);
                     }
 
@@ -437,13 +424,19 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                     trialDataVariable['moreRedMeanLevel'].push(Math.max(color_mean_level, color_mean_two_level));
                     trialDataVariable['moreBlueMeanLevel'].push(Math.min(color_mean_level, color_mean_two_level));
                     trialDataVariable['colorSD'].push(color_sd);
-
+                    trialDataVariable['moreRedSide'].push(moreRedSide);
                     trialDataVariable['confidences'].push(confidences);
                     trialDataVariable['RTs'].push(RTs);
                     trialDataVariable['isTutorialMode'].push(isTutorialMode);
                     trialDataVariable['condition'].push(condition);
                     trialDataVariable['betterColor'].push(betterColor);
+                    trialDataVariable['forcedSeeMore'].push(forcedSeeMore);
+                    trialDataVariable['forcedContinue'].push(forcedContinue);
+                    trialDataVariable['cumulativePoints'].push(cumulativePoints);
                     trialCounterVariable++;
+                    totalTrials++;
+                    trialDataVariable['trial_count'].push(totalTrials);
+
 
                     // give feedback
                     if (isTutorialMode) {
@@ -484,24 +477,25 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                             if (correctResponse) {
                                 if (betterColor === "red") {
                                     points = 10*(Math.max(color_mean_level, color_mean_two_level) + 1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">CORRECT + '+ points + '</h1>';
                                 } else if (betterColor === "blue") {
                                     points = 100-(10*(Math.min(color_mean_level, color_mean_two_level)));
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">CORRECT + '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
                                     points = 0;
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">INCORRECT + '+ points + '</h1>';
                                 } else if (betterColor === "blue")  {
                                     points = 0;
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">INCORRECT + '+ points + '</h1>';
                                 }
                             }
                         }
 
                     }
                     trialDataVariable['points'].push(points);
+                    cumulativePoints = cumulativePoints + points;
 
                     setTimeout(function () {
                         // clear the display on a timer
@@ -523,12 +517,12 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                             var accuracy = round(mean(trialDataVariable['isCorrect']), 2) * 100;
                             console.log('accuracy: ' + accuracy);
 
-                            if (isTutorialMode) {
+                            if (isTutorialMode && condition != "practice2") {
                                 if (accuracy >= accuracyThreshold) {
-                                    var section4_text = 'Congratulations, your accuracy during the last set of practice trials was ' + accuracy + '%.';
+                                    var section4_text = 'Congratulations, your accuracy during the last set of trials was ' + accuracy + '%.';
                                     var section4_button = 'CONTINUE';
                                 } else {
-                                    var section4_text = 'Your accuracy during these practice trials was ' + accuracy + '%, which is below the required accuracy threshold. Please click "Repeat" below to repeat the practice round.';
+                                    var section4_text = 'Your accuracy during these trials was ' + accuracy + '%, which is below the required accuracy threshold. Please click "Repeat" below to repeat the last block.';
                                     var section4_button = 'REPEAT';
                                 }
 
@@ -582,6 +576,16 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                         permanentDataVariable["isCorrect"].push(trialDataVariable["isCorrect"]);
                                         permanentDataVariable["RTs"].push(trialDataVariable["RTs"]);
                                         permanentDataVariable["waitTimes"].push(trialDataVariable["waitTimes"]);
+                                        permanentDataVariable["betterColor"].push(trialDataVariable["betterColor"]);
+                                        permanentDataVariable["condition"].push(trialDataVariable["condition"]);
+                                        permanentDataVariable["isTutorialMode"].push(trialDataVariable["isTutorialMode"]);
+                                        permanentDataVariable["forcedSeeMore"].push(trialDataVariable["forcedSeeMore"]);
+                                        permanentDataVariable["forcedContinue"].push(trialDataVariable["forcedContinue"]);
+                                        permanentDataVariable["cumulativePoints"].push(trialDataVariable["cumulativePoints"]);
+                                        permanentDataVariable["trial_count"].push(trialDataVariable["trial_count"]);
+
+
+                                        saveCSV(subjectID, currentAttempt);
 
                                         $('body').css('cursor', 'auto');
                                         jsPsych.finishTrial();
@@ -612,9 +616,16 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                 permanentDataVariable["isCorrect"].push(trialDataVariable["isCorrect"]);
                                 permanentDataVariable["RTs"].push(trialDataVariable["RTs"]);
                                 permanentDataVariable["waitTimes"].push(trialDataVariable["waitTimes"]);
+                                permanentDataVariable["forcedSeeMore"].push(trialDataVariable["forcedSeeMore"]);
+                                permanentDataVariable["forcedContinue"].push(trialDataVariable["forcedContinue"]);
+                                permanentDataVariable["cumulativePoints"].push(trialDataVariable["cumulativePoints"]);
+                                permanentDataVariable["trial_count"].push(trialDataVariable["trial_count"]);
 
                                 totalCorrect += trialDataVariable.isCorrect.filter(Boolean).length;
                                 blockCount++;
+                                permanentDataVariable["block_count"].push(blockCount);
+
+                                saveCSV(subjectID, currentAttempt);
 
                                 $('body').css('cursor', 'auto');
                                 jsPsych.finishTrial();
@@ -663,10 +674,18 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
 
                     var barWidth = Math.abs((displayedConfidence - 50) * 0.5);
                     if (backendConfidence >= 50) {
-                        $('#scale-right-fill, #confidence-value-right').css('width', barWidth.toString() + 'vmin').css('border-right', '5px solid rgb(30, 132, 73)'); //color of confidence slider indicator
+                        if (betterColor === "red") {
+                            $('#scale-right-fill, #confidence-value-right').css('width', barWidth.toString() + 'vmin').css('border-right', '5px solid rgb(255,0,0)'); //color of confidence slider indicator
+                        } else {
+                            $('#scale-right-fill, #confidence-value-right').css('width', barWidth.toString() + 'vmin').css('border-right', '5px solid rgb(0, 100, 255)'); //color of confidence slider indicator
+                        }
                         $('#scale-left-fill, #confidence-value-left').css('width', '0vmin').css('border-left', '5px solid rgba(0,0,0,0)');
                     } else if (backendConfidence < 50) {
-                        $('#scale-left-fill, #confidence-value-left').css('width', barWidth.toString() + 'vmin').css('border-left', '5px solid rgb(30, 132, 73)'); //color of confidence slider indicator
+                        if (betterColor === "red") {
+                            $('#scale-left-fill, #confidence-value-left').css('width', barWidth.toString() + 'vmin').css('border-left', '5px solid rgb(255,0,0)'); //color of confidence slider indicator
+                        } else {
+                            $('#scale-left-fill, #confidence-value-left').css('width', barWidth.toString() + 'vmin').css('border-left', '5px solid rgb(0, 100, 255)'); //color of confidence slider indicator
+                        }
                         $('#scale-right-fill, #confidence-value-right').css('width', '0vmin').css('border-right', '5px solid rgba(0,0,0,0)');
                     }
                 }
@@ -677,6 +696,10 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                 // show buttons
                 if (!sliderActive) {
                     $('.scale-button').removeClass('invisible');
+                    if (forcedSeeMoreTemp === true) {
+                        $('.submit-button').addClass('invisible');
+                        forcedSeeMoreTemp = false;
+                    }
                 }
                 // record data
                 confidence_timer = Date.now();

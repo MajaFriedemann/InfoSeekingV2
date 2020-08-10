@@ -129,7 +129,7 @@ jsPsych.plugins['jspsych-message-splash'] = (function () {
           'div',
           'main-message',
           trial.name + '-' + 'message',
-          '<h1>RED</h1>'
+          '<h1>choose the more <highlight style="color: rgb(255, 0, 0)">RED</highlight> circle</h1>'
       );
     } else if (trial.variableMessage === "blue") {
       var fullscreenMessage = createGeneral(
@@ -138,7 +138,7 @@ jsPsych.plugins['jspsych-message-splash'] = (function () {
           'div',
           'main-message',
           trial.name + '-' + 'message',
-          '<h1>BLUE</h1>'
+          '<h1>choose the more <highlight style="color: rgb(0, 100, 255)">BLUE</highlight> circle</h1>'
       );
     } else {
       var fullscreenMessage = createGeneral(
@@ -158,7 +158,7 @@ jsPsych.plugins['jspsych-message-splash'] = (function () {
         'div',
         'sub-message',
         trial.name + '-' + 'submessage',
-        '<h1>You may take a short break if you like.</h1>',
+        '<h1></h1>',
     );
 
 

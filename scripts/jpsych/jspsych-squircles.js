@@ -66,7 +66,7 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
       accuracyThreshold: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Accuracy threshold',
-        default: 0,
+        default: 50,
         description: 'Accuracy threshold (in %)'
       },
       redButtonEnabled: {
@@ -138,6 +138,10 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
       RTs: [],
       waitTimes: [],
       points: [],
+
+      forcedSeeMore: [],
+      forcedContinue: [],
+      cumulativePoints: [],
     };
 
     // set confidence slider options
@@ -163,7 +167,6 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
 
     if (trial.blockCounterEnabled) {
       blockCounter++;
-      permanentDataVariable["block_count"].push(blockCounter);
     }
 
     $(document).ready(drawFixation(

@@ -46,6 +46,7 @@
     <script src="scripts/jpsych/jspsych-feedback-form.js"></script>
     <script src="scripts/jpsych/jspsych-loading.js"></script>
     <script src="scripts/jpsych/jspsych-message-splash.js"></script>
+    <script src="scripts/jpsych/jspsych-message-splash-image.js"></script>
     <script src="scripts/jpsych/jspsych-notice.js"></script>
     <script src="scripts/jpsych/jspsych-PIS.js"></script>
     <script src="scripts/jpsych/jspsych-score-reveal.js"></script>
@@ -72,7 +73,7 @@
     var studyName = 'Information seeking & confidence';
     var version = 'first pilot';
     var release_date = '2020/07/30';
-    var trialTypeOrder = 'all';    /* "testing" or "all"*/
+    var trialTypeOrder = 'testing';
     var cohort = 'PR';             /*PR for prolific*/
     var CUREC_studyName = 'Contextual influences on metacognitive judgements';
     var CUREC_ID = 'R67369/RE001';
@@ -108,6 +109,30 @@
     Math.seedrandom(seed);
 
 
+    /*randomise trial type order*/
+    var conditionRandomiser = Math.random();
+    var colorRandomiser = Math.random();
+    if (conditionRandomiser > 0.5) {
+        //value value first
+        if (colorRandomiser > 0.5) {
+            //blue first
+            trialTypeOrder = "VNBR"; //Value Nothing Blue Red
+        } else {
+            //red first
+            trialTypeOrder = "VNRB"; //Value Nothing Red Blue
+        }
+    } else {
+        //value nothing first
+        if (colorRandomiser > 0.5) {
+            //blue first
+            trialTypeOrder = "NVBR" //Nothing Value Blue Red
+        } else {
+            //red first
+            trialTypeOrder = "NVRB" //Nothing Value Red Blue
+        }
+    }
+
+
     /* IMAGES TO PRELOAD */
     var images = [
         'assets/oxford-logo.jpg',
@@ -115,10 +140,13 @@
         'assets/checkmark-black.svg',
         'assets/down-arrow-2.svg',
         'assets/up-arrow.svg',
-        'assets/dotTask_2.5.0 practice.gif',
-        'assets/dotTask_2.4.0.gif',
-        'assets/dotTask_2.6.0.gif',
-        'assets/partner.png',
+        'assets/practice1.gif',
+        'assets/practice2.gif',
+        'assets/value-value.gif',
+        'assets/value-nothing.gif',
+        'assets/ScaleBlue.png',
+        'assets/ScaleRed.png',
+        'assets/partner.png'
     ];
 
     var squircleStaircase = new Staircase({
@@ -145,7 +173,7 @@
     var blockCounter = 0;
 
     var totalTrials = 0;
-    var trialsPerBlock = 20; //make trial count 20 here (5x20 trials = 100 trials per partner)
+    var trialsPerBlock = 10; //change to 50
 
     var totalCorrect = 0;
     var cumulativeScore = 0;
@@ -196,11 +224,13 @@
         moreBlueMeanLevel: [],
         colorSD: [],
         points: [],
-
+        cumulativePoints: [],
         moreAsked: [],
         isCorrect: [],
         RTs: [],
         waitTimes: [],
+        forcedSeeMore: [],
+        forcedContinue: [],
 
         technical_issues: undefined,
         feedback_technical: undefined,
@@ -253,8 +283,8 @@
         waitTimeLimit: 2000,
         isTutorialMode: true,
         betterColor: "red",            //red vs blue
-        condition: "value-based",    //for the practice it does not matter which condition it is because feedback is just correct/incorrect anyways and points are not counted
-        trial_count: 3,             //make trial count 50 here
+        condition: "practice1",
+        trial_count: 10,             //make trial count 50 here
         yellowButtonEnabled: false,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -272,9 +302,47 @@
         waitTimeLimit: 2000,
         isTutorialMode: true,
         betterColor: "blue",            //red vs blue
-        condition: "value-value",    //for the practice it does not matter which condition it is because feedback is just correct/incorrect anyways and points are not counted
-        trial_count: 3,             //make trial count 50 here
+        condition: "practice1",
+        trial_count: 10,             //make trial count 50 here
         yellowButtonEnabled: false,
+        yellowButtonName: 'SEE MORE',
+        greenButtonEnabled: true,
+        greenButtonName: 'CONTINUE',
+        redButtonEnabled: false,
+        seeMore: 'practice1',
+    };
+
+    var PracticeR2 = {
+        type: 'jspsych-squircles',
+        canvasWidth: 500,
+        canvasHeight: 180,
+        leftColor: 'rgb(255,255,255)',
+        rightColor: 'rgb(255,255,255)',
+        waitTimeLimit: 2000,
+        isTutorialMode: true,
+        betterColor: "red",            //red vs blue
+        condition: "practice2",
+        trial_count: 5,
+        yellowButtonEnabled: true,
+        yellowButtonName: 'SEE MORE',
+        greenButtonEnabled: true,
+        greenButtonName: 'CONTINUE',
+        redButtonEnabled: false,
+        seeMore: 'practice1',
+    };
+
+    var PracticeB2 = {
+        type: 'jspsych-squircles',
+        canvasWidth: 500,
+        canvasHeight: 180,
+        leftColor: 'rgb(255,255,255)',
+        rightColor: 'rgb(255,255,255)',
+        waitTimeLimit: 2000,
+        isTutorialMode: true,
+        betterColor: "blue",            //red vs blue
+        condition: "practice2",
+        trial_count: 5,
+        yellowButtonEnabled: true,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
         greenButtonName: 'CONTINUE',
@@ -292,7 +360,7 @@
         isTutorialMode: false,
         betterColor: "red",            //red vs blue
         condition: "value-value",       //value-value vs value-nothing
-        trial_count: 3,             //make trial count 100 here
+        trial_count: trialsPerBlock,
         yellowButtonEnabled: true,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -311,7 +379,7 @@
         isTutorialMode: false,
         betterColor: "blue",            //red vs blue
         condition: "value-value",       //value-value vs value-nothing
-        trial_count: 3,             //make trial count 100 here
+        trial_count: trialsPerBlock,
         yellowButtonEnabled: true,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -328,9 +396,9 @@
         rightColor: 'rgb(255,255,255)',
         waitTimeLimit: 2000,
         isTutorialMode: false,
-        betterColor: "red",            //red vs blue
-        condition: "value-nothing",       //value-value vs value-nothing
-        trial_count: 3,             //make trial count 100 here
+        betterColor: "red",              //red vs blue
+        condition: "value-nothing",      //value-value vs value-nothing
+        trial_count: trialsPerBlock,
         yellowButtonEnabled: true,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -347,9 +415,9 @@
         rightColor: 'rgb(255,255,255)',
         waitTimeLimit: 2000,
         isTutorialMode: false,
-        betterColor: "blue",            //red vs blue
-        condition: "value-nothing",       //value-value vs value-nothing
-        trial_count: 3,             //make trial count 100 here
+        betterColor: "blue",              //red vs blue
+        condition: "value-nothing",      //value-value vs value-nothing
+        trial_count: trialsPerBlock,               
         yellowButtonEnabled: true,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -362,26 +430,88 @@
     var Instructions = {
         type: 'jspsych-notice',
         section1_text: 'In this experiment, you will be playing a game of comparing colours.',
-        section2_text: 'Practice part - complete stimuli visible, no "see more" button. Set to 3 trials just for now. Could make those ones easier?',
-        img_id: 'dotTask-gif1'
+        section2_text: 'During this game, you will see 2 circles, made up of 8 small circles, that will briefly flash on either side of the centre ' +
+            'of the screen (marked with a "+" sign). The small circles will have colours ranging from <highlight style="color: rgb(255, 0, 0)">red</highlight> to <highlight style="color: rgb(0, 100, 255)">blue</highlight>. Your task is to estimate the average colour of the big circles ' +
+            'and <u>decide which of them (left or right) was more <highlight style="color: rgb(255, 0, 0)">red</highlight> / <highlight style="color: rgb(0, 100, 255)">blue</highlight> compared to the other one.</u> ' +
+            'After seeing the circles flash on the screen, you can <u>indicate your response and how confident you are</u> in your choice on a sliding scale ranging from "certainly left" to "certainly right". ' +
+            'The task will start off quite easy <u>but will become harder</u> as you progress. ' +
+            '<br><br> The rules of the game will change throughout - you will learn more about this in the next phase of the game' +
+            '<br><br> Press the "continue" button to start the game. You ' +
+            'should reach a stable performance level to continue to the next phase. This might take up to 8 minutes.',
+        img_id: 'practice1'
     };
 
-
-    var StartV = {
+    var Instructions2 = {
         type: 'jspsych-notice',
-        section1_text: 'Value value',
-        section2_text: 'Now half the stimuli are covered, unless the "see more" button is clicked for more info. Adjust feedback - how many points per option & change gif on the left',
-        img_id: 'dotTask-gif3'
+        section1_text: 'Great! You have reached a stable performance level and completed phase 1 of 3 of our game.',
+        section2_text: 'From now on, you will only see 4 of the 8 small circles making up each big circle. This will make it harder for you to judge the average ' +
+            'circle colour. However, we are adding a "see more" button for you. If you are unsure of your response, you can click this button to reveal all ' +
+            '8 circles and briefly see them again before committing to a final response. It is still important to respond as accurately as possible on ' +
+            'your first try though because some trials will not have the "see more" option. Moreover, on some trials you will have to click the "see more" button before ' +
+            'you can click "continue" to move on to the next trial. <br><br> Press the "continue" button to do a few practice trials before we move on to the next phase of the game.',
+        img_id: 'practice2'
     };
 
-    var StartN = {
+    var StartV1 = {
         type: 'jspsych-notice',
-        section1_text: 'All or Nothing.',
-        section2_text: 'Now half the stimuli are covered, unless the "see more" button is clicked for more info. Adjust feedback - how many points per option & change gif on the left',
-        img_id: 'dotTask-gif3'
+        section1_text: 'Let\'s move on to phase 2 of 3. From now on you can earn points in the game!',
+        section2_text: 'Now that you have reached a stable performance level and practiced the task, you can start earning points in this game. <u>The points will be converted into a monetary reward at the end of the experiment.</u> ' +
+            'The points you get <u>depend on the average colour of the circle you choose</u>. If your task is to choose the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circles, points will ' +
+            'range from 0 for most the blue circles to 10 for the most red circles. If your task is to choose the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circles, the scale will be inverted with' +
+            ' points ranging from 0 for the most red circles to 10 for the most blue circles. ' +
+            '<br><br> Press the "continue" button to do 2 blocks of 50 trials each.',
+        img_id: 'value-value'
     };
 
-    var RestR = {
+    var StartN1 = {
+        type: 'jspsych-notice',
+        section1_text: 'Let\'s move on to phase 2 of 3. From now on you can earn points in the game!',
+        section2_text: 'Now that you have reached a stable performance level and practiced the task, you can start earning points in this game. <u>The points will be converted into a monetary reward at the end of the experiment.</u> ' +
+            'The points you get depend on the average colour of the circle you choose. If your task is to choose the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circles, points will ' +
+            'range from 0 for the most blue circles to 10 for the most red circles. If your task is to choose the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circles, the scale will be inverted with' +
+            ' points ranging from 0 for the most red circles to 10 for the most blue circles. <u>If your response is correct</u>, you will get the points corresponding to the average circle colour. ' +
+            'If you response is incorrect, you won\'t get any points on that trial.' +
+            '<br><br> Press the "continue" button to do 2 blocks of 50 trials each.',
+        img_id: 'value-nothing'
+    };
+
+    var StartV2 = {
+        type: 'jspsych-notice',
+        section1_text: 'It\'s time for the 3rd and last phase of the game!',
+        section2_text: 'The basic task is still the same as before - the points you get <u>depend on the average colour of the circle you choose</u>. But from now on you will get the number of points associated with your ' +
+            'choice. This means there is no correct and incorrect choice as before. However, if your task is to choose the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circles, points will ' +
+            'range from 0 for most the blue circles to 10 for the most red circles. If your task is to choose the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circles, the scale will be inverted with' +
+            ' points ranging from 0 for the most red circles to 10 for the most blue circles. ' +
+            '<br><br> Press the "continue" button to do 2 more blocks of 50 trials each.',
+        img_id: 'value-value'
+    };
+
+    var StartN2 = {
+        type: 'jspsych-notice',
+        section1_text: 'It\'s time for the 3rd and last phase of the game!',
+        section2_text: 'The basic task is still the same as before - the points you get <u>depend on the average colour of the circle you choose</u>. But from now on you will only get the number of points associated with your ' +
+            'choice <u>if you make the correct decision</u>. If your task is to choose the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circles, points will ' +
+            'range from 0 for most the blue circles to 10 for the most red circles. If your task is to choose the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circles, the scale will be inverted with' +
+            ' points ranging from 0 for the most red circles to 10 for the most blue circles. ' +
+            '<br><br> Press the "continue" button to do 2 more blocks of 50 trials each.',
+        img_id: 'value-nothing'
+    };
+
+    var RestBV = {
+        type: 'jspsych-message-splash-image',
+        text: 'The most blue circles are worth 10 points. The most red circles are worth 0 points. The marker on the confidence slider will be blue to remind you that blue is worth more in this block.',
+        img_id: 'ScaleBlue',
+        buttonText: 'CONTINUE'
+    };
+
+    var RestRV = {
+        type: 'jspsych-message-splash-image',
+        text: 'The most red circles are worth 10 points. The most blue circles are worth 0 points. The marker on the confidence slider will be red to remind you that red is worth more in this block.',
+        img_id: 'ScaleRed',
+        buttonText: 'CONTINUE'
+    };
+
+    var RestRN = {
         type: 'jspsych-message-splash',
         name: 'dotTaskRest',
         subjectID: subjectID,
@@ -394,7 +524,7 @@
         submessageSize: '2.8vmin'
     };
 
-    var RestB = {
+    var RestBN = {
         type: 'jspsych-message-splash',
         name: 'dotTaskRest',
         subjectID: subjectID,
@@ -445,28 +575,132 @@
 
     /* TIMELINES FOR RELEASE & TESTING */
     switch(trialTypeOrder) {
-        case 'all':
+        case 'VNRB':
             var timeline = [
                 // loading,
-                // PIS,
-                // consent,
-                // demographics,
-                // Instructions,
-                // RestR,
-                // PracticeR,
-                // RestB,
+                PIS,
+                consent,
+                demographics,
+                Instructions,
+                RestRN,
+                PracticeR,
+                RestBN,
                 PracticeB,
-                StartV,
-                RestR,
+                Instructions2,
+                RestRN,
+                PracticeR2,
+                RestBN,
+                PracticeB2,
+                StartV1,
+                RestRV,
                 TaskRV,
-                RestB,
+                RestBV,
                 TaskBV,
-                StartN,
-                RestR,
+                StartN2,
+                RestRN,
                 TaskRN,
-                RestB,
+                RestBN,
                 TaskBN,
-                //ScoreReveal,
+                ScoreReveal,
+                feedbackPoll,
+                debriefing,
+                thankYou
+            ];
+            break;
+
+        case 'VNBR':
+            var timeline = [
+                // loading,
+                PIS,
+                consent,
+                demographics,
+                Instructions,
+                RestBN,
+                PracticeB,
+                RestRN,
+                PracticeR,
+                Instructions2,
+                RestBN,
+                PracticeB2,
+                RestRN,
+                PracticeR2,
+                StartV1,
+                RestBV,
+                TaskBV,
+                RestRV,
+                TaskRV,
+                StartN2,
+                RestBN,
+                TaskBN,
+                RestRN,
+                TaskRN,
+                ScoreReveal,
+                feedbackPoll,
+                debriefing,
+                thankYou
+            ];
+            break;
+
+        case 'NVRB':
+            var timeline = [
+                // loading,
+                PIS,
+                consent,
+                demographics,
+                Instructions,
+                RestRN,
+                PracticeR,
+                RestBN,
+                PracticeB,
+                Instructions2,
+                RestRN,
+                PracticeR2,
+                RestBN,
+                PracticeB2,
+                StartN1,
+                RestRN,
+                TaskRN,
+                RestBN,
+                TaskBN,
+                StartV2,
+                RestRV,
+                TaskRV,
+                RestBV,
+                TaskBV,
+                ScoreReveal,
+                feedbackPoll,
+                debriefing,
+                thankYou
+            ];
+            break;
+
+        case 'NVBR':
+            var timeline = [
+                // loading,
+                PIS,
+                consent,
+                demographics,
+                Instructions,
+                RestBN,
+                PracticeB,
+                RestRN,
+                PracticeR,
+                Instructions2,
+                RestBN,
+                PracticeB2,
+                RestRN,
+                PracticeR2,
+                StartN1,
+                RestBN,
+                TaskBN,
+                RestRN,
+                TaskRN,
+                StartV2,
+                RestBV,
+                TaskBV,
+                RestRV,
+                TaskRV,
+                ScoreReveal,
                 feedbackPoll,
                 debriefing,
                 thankYou
@@ -475,7 +709,7 @@
 
         case 'testing':
             var timeline = [
-                Instructions1,
+                Instructions,
                 thankYou
             ];
             break;

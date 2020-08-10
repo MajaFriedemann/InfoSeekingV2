@@ -290,12 +290,13 @@ section.tutorial-section.section2 .tutorial-text, .section.tutorial-section.sect
   line-height: 2.5vmax;
 }
 
+
 section.tutorial-section.section3, .section.tutorial-section.section3 {
   margin-top: -5vh;
 }
 
 section.tutorial-section.section4, .section.tutorial-section.section4 {
-  background-color: #00c896;
+  background-color: rgb(31, 130, 128);
   font-size: 2vmax;
   font-weight: 900;
   text-align: center;
@@ -899,30 +900,44 @@ button.default-white-button.start-tutorial, .button.default-white-button.start-t
   background-repeat: no-repeat;
 }
 
-.gameboard-gif#dotTask-gif1 {
-  background: url("../assets/dotTask_2.5.0 practice.gif");
+.gameboard-gif#practice1 {
+  background: url("../assets/practice1.gif");
   background-size: 35vmax 35vmax;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.gameboard-gif#dotTask-gif2 {
-  background: url("../assets/dotTask_2.4.0.gif");
+.gameboard-gif#practice2 {
+  background: url("../assets/practice2.gif");
   background-size: 35vmax 35vmax;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.gameboard-gif#dotTask-gif3 {
-  background: url("../assets/dotTask_2.6.0.gif");
+.gameboard-gif#value-value {
+  background: url("../assets/value-value.gif");
   background-size: 35vmax 35vmax;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.gameboard-gif#dotTask-partner {
-  background: url("../assets/partner.png");
-  background-size: 18vmax 18vmax;
+.gameboard-gif#value-nothing {
+  background: url("../assets/value-nothing.gif");
+  background-size: 35vmax 35vmax;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gameboard-gif#ScaleRed {
+  background: url("../assets/ScaleRed.png");
+  background-size: 35%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gameboard-gif#ScaleBlue {
+  background: url("../assets/ScaleBlue.png");
+  background-size: 35%;
   background-position: center;
   background-repeat: no-repeat;
 }
