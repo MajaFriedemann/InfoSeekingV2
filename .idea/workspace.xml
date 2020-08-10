@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3df47766-bd0d-44d8-9d5e-755754b7705f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-message-splash-image.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-message-splash-image.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,6 +166,7 @@
       <workItem from="1596450782182" duration="66587000" />
       <workItem from="1597049636919" duration="1051000" />
       <workItem from="1597050762360" duration="12000" />
+      <workItem from="1597050929861" duration="340000" />
     </task>
     <servers />
   </component>
