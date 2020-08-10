@@ -444,10 +444,10 @@
     var Instructions2 = {
         type: 'jspsych-notice',
         section1_text: 'Great! You have reached a stable performance level and completed phase 1 of 3 of our game.',
-        section2_text: 'From now on, you will only see 4 of the 8 small circles making up each big circle. This will make it harder for you to judge the average ' +
-            'circle colour. However, we are adding a "see more" button for you. If you are unsure of your response, you can click this button to reveal all ' +
-            '8 circles and briefly see them again before committing to a final response. It is still important to respond as accurately as possible on ' +
-            'your first try though because some trials will not have the "see more" option. Moreover, on some trials you will have to click the "see more" button before ' +
+        section2_text: 'From now on, you will <u>only see 4 of the 8 small circles</u> making up each big circle. This will make it harder for you to judge the average ' +
+            'circle colour. However, we are adding a <u>"see more" button</u> for you. If you are unsure of your response, you can click this button to <u>reveal all ' +
+            '8 circles</u> and briefly see them again before committing to a final response. It is still important to respond as accurately as possible on ' +
+            'your first try though because <u>some trials will not have the "see more" option</u>. Moreover, <u>on some trials you will have to click the "see more" button</u> before ' +
             'you can click "continue" to move on to the next trial. <br><br> Press the "continue" button to do a few practice trials before we move on to the next phase of the game.',
         img_id: 'practice2'
     };
@@ -499,14 +499,28 @@
 
     var RestBV = {
         type: 'jspsych-message-splash-image',
-        text: 'The most blue circles are worth 10 points. The most red circles are worth 0 points. The marker on the confidence slider will be blue to remind you that blue is worth more in this block.',
+        text: 'The most blue circles are worth 10 points. The most red circles are worth 0 points. The marker on the confidence slider will be blue to remind you that blue is worth more in this block. The points will appear in <highlight style="color: rgb(255, 0, 0)">red</highlight> if you choose the more red circle and in <highlight style="color: rgb(0, 100, 255)">blue</highlight> if you choose the more blue circle.',
         img_id: 'ScaleBlue',
         buttonText: 'CONTINUE'
     };
 
     var RestRV = {
         type: 'jspsych-message-splash-image',
-        text: 'The most red circles are worth 10 points. The most blue circles are worth 0 points. The marker on the confidence slider will be red to remind you that red is worth more in this block.',
+        text: 'The most red circles are worth 10 points. The most blue circles are worth 0 points. The marker on the confidence slider will be red to remind you that red is worth more in this block. The points will appear in <highlight style="color: rgb(255, 0, 0)">red</highlight> if you choose the more red circle and in <highlight style="color: rgb(0, 100, 255)">blue</highlight> if you choose the more blue circle.',
+        img_id: 'ScaleRed',
+        buttonText: 'CONTINUE'
+    };
+
+    var RestBV2 = {
+        type: 'jspsych-message-splash-image',
+        text: 'For the next block, the scale is inverted. The most blue circles are worth 10 points. The most red circles are worth 0 points. The marker on the confidence slider will be blue to remind you that blue is worth more in this block. The points will appear in <highlight style="color: rgb(255, 0, 0)">red</highlight> if you choose the more red circle and in <highlight style="color: rgb(0, 100, 255)">blue</highlight> if you choose the more blue circle.',
+        img_id: 'ScaleBlue',
+        buttonText: 'CONTINUE'
+    };
+
+    var RestRV2 = {
+        type: 'jspsych-message-splash-image',
+        text: 'For the next block, the scale is inverted. The most red circles are worth 10 points. The most blue circles are worth 0 points. The marker on the confidence slider will be red to remind you that red is worth more in this block. The points will appear in <highlight style="color: rgb(255, 0, 0)">red</highlight> if you choose the more red circle and in <highlight style="color: rgb(0, 100, 255)">blue</highlight> if you choose the more blue circle.',
         img_id: 'ScaleRed',
         buttonText: 'CONTINUE'
     };
@@ -594,7 +608,7 @@
                 StartV1,
                 RestRV,
                 TaskRV,
-                RestBV,
+                RestBV2,
                 TaskBV,
                 StartN2,
                 RestRN,
@@ -627,7 +641,7 @@
                 StartV1,
                 RestBV,
                 TaskBV,
-                RestRV,
+                RestRV2,
                 TaskRV,
                 StartN2,
                 RestBN,
@@ -665,7 +679,7 @@
                 StartV2,
                 RestRV,
                 TaskRV,
-                RestBV,
+                RestBV2,
                 TaskBV,
                 ScoreReveal,
                 feedbackPoll,
@@ -677,8 +691,8 @@
         case 'NVBR':
             var timeline = [
                 // loading,
-                // RestBV,
-                // RestRV,
+                RestBV,
+                RestRV,
                 PIS,
                 consent,
                 demographics,
@@ -700,7 +714,7 @@
                 StartV2,
                 RestBV,
                 TaskBV,
-                RestRV,
+                RestRV2,
                 TaskRV,
                 ScoreReveal,
                 feedbackPoll,
