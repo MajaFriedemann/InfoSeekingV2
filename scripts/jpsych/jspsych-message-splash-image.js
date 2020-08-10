@@ -64,6 +64,10 @@ jsPsych.plugins['jspsych-message-splash-image'] = (function(){
             '<div id="section2-text">' + trial.text + '</div>'
         );
 
+        $('.section2 .tutorial-text').css('font-size', '2vmax');
+        $('.section2 .tutorial-text').css('margin-top', '50vh');
+        $('.section2 .tutorial-text').css('line-height', '4vmax');
+
 
         var continueButton = createGeneral(
             continueButton,
