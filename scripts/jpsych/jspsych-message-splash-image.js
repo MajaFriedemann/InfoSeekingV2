@@ -65,7 +65,7 @@ jsPsych.plugins['jspsych-message-splash-image'] = (function(){
         );
 
         $('.section2 .tutorial-text').css('font-size', '2vmax');
-        $('.section2 .tutorial-text').css('margin-top', '50vh');
+        //$('.section2 .tutorial-text').css('margin-top', '50vh');
         $('.section2 .tutorial-text').css('line-height', '4vmax');
 
 
