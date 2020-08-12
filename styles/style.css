@@ -900,29 +900,57 @@ button.default-white-button.start-tutorial, .button.default-white-button.start-t
   background-repeat: no-repeat;
 }
 
-.gameboard-gif#practice1 {
-  background: url("../assets/practice1.gif");
+.gameboard-gif#practice1R {
+  background: url("../assets/practice1R.gif");
   background-size: 35vmax 35vmax;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.gameboard-gif#practice2 {
-  background: url("../assets/practice2.gif");
+.gameboard-gif#practice2R {
+  background: url("../assets/practice2R.gif");
   background-size: 35vmax 35vmax;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.gameboard-gif#value-value {
-  background: url("../assets/value-value.gif");
+.gameboard-gif#value-valueR {
+  background: url("../assets/value-valueR.gif");
   background-size: 35vmax 35vmax;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.gameboard-gif#value-nothing {
-  background: url("../assets/value-nothing.gif");
+.gameboard-gif#value-nothingR {
+  background: url("../assets/value-nothingR.gif");
+  background-size: 35vmax 35vmax;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gameboard-gif#practice1B {
+  background: url("../assets/practice1B.gif");
+  background-size: 35vmax 35vmax;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gameboard-gif#practice2B {
+  background: url("../assets/practice2B.gif");
+  background-size: 35vmax 35vmax;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gameboard-gif#value-valueB {
+  background: url("../assets/value-valueB.gif");
+  background-size: 35vmax 35vmax;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gameboard-gif#value-nothingB {
+  background: url("../assets/value-nothingB.gif");
   background-size: 35vmax 35vmax;
   background-position: center;
   background-repeat: no-repeat;

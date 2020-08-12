@@ -38,7 +38,8 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
     var displayedConfidence = 0;
     var secondTimeAround = false;  // set to true when more info is sought and the stimuli are shown a second time
     var start_timer;
-    var confidences = [];
+    var confidences;
+    var secondConfidences;
     var RTs = [];
     var points = [];
     var choice_timer;
@@ -309,23 +310,45 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                 var invertedConfidence = 100 - backendConfidence;
                 var confidence;
                 // record correct/incorrect confidence
-                if (moreRedSide === 'left') {
-                    if (betterColor === "red") {
-                        confidences.push(invertedConfidence);
-                        confidence = invertedConfidence;
-                    } else if (betterColor === "blue") {
-                        confidences.push(backendConfidence);
-                        confidence = backendConfidence;
+                if (secondTimeAround === true) {
+                    if (moreRedSide === 'left') {
+                        if (betterColor === "red") {
+                            secondConfidences = invertedConfidence;
+                            confidence = invertedConfidence;
+                        } else if (betterColor === "blue") {
+                            secondConfidences = backendConfidence;
+                            confidence = backendConfidence;
+                        }
+                    } else if (moreRedSide === "right") {
+                        if (betterColor === "red") {
+                            secondConfidences = backendConfidence;
+                            confidence = backendConfidence;
+                        } else {
+                            secondConfidences = invertedConfidence;
+                            confidence = invertedConfidence;
+                        }
                     }
-                } else if (moreRedSide === "right") {
-                    if (betterColor === "red") {
-                        confidences.push(backendConfidence);
-                        confidence = backendConfidence;
-                    } else {
-                        confidences.push(invertedConfidence);
-                        confidence = invertedConfidence;
+
+                } else {
+                    if (moreRedSide === 'left') {
+                        if (betterColor === "red") {
+                            confidences = invertedConfidence;
+                            confidence = invertedConfidence;
+                        } else if (betterColor === "blue") {
+                            confidences = backendConfidence;
+                            confidence = backendConfidence;
+                        }
+                    } else if (moreRedSide === "right") {
+                        if (betterColor === "red") {
+                            confidences = backendConfidence;
+                            confidence = backendConfidence;
+                        } else {
+                            confidences = invertedConfidence;
+                            confidence = invertedConfidence;
+                        }
                     }
                 }
+
                 if (confidence > 50) {
                     correctResponse = true;
                 } else {
@@ -426,6 +449,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                     trialDataVariable['colorSD'].push(color_sd);
                     trialDataVariable['moreRedSide'].push(moreRedSide);
                     trialDataVariable['confidences'].push(confidences);
+                    trialDataVariable['secondConfidences'].push(secondConfidences);
                     trialDataVariable['RTs'].push(RTs);
                     trialDataVariable['isTutorialMode'].push(isTutorialMode);
                     trialDataVariable['condition'].push(condition);
@@ -458,37 +482,37 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                         if (condition === "value-value") {
                             if (correctResponse) {
                                 if (betterColor === "red") {
-                                    points = 10*(Math.max(color_mean_level, color_mean_two_level) + 1);
+                                    points = (Math.max(color_mean_level, color_mean_two_level) + 1);
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
                                 } else {
-                                    points = 100-(10*(Math.min(color_mean_level, color_mean_two_level)));
+                                    points = 10-((Math.min(color_mean_level, color_mean_two_level)));
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
-                                    points = 10*(Math.min(color_mean_level, color_mean_two_level) + 1);
+                                    points = (Math.min(color_mean_level, color_mean_two_level) + 1);
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
                                 } else if (betterColor === "blue")  {
-                                    points = 100-(10*(Math.max(color_mean_level, color_mean_two_level)));
+                                    points = 10-((Math.max(color_mean_level, color_mean_two_level)));
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
                                 }
                             }
                         } else {
                             if (correctResponse) {
                                 if (betterColor === "red") {
-                                    points = 10*(Math.max(color_mean_level, color_mean_two_level) + 1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">CORRECT + '+ points + '</h1>';
+                                    points = (Math.max(color_mean_level, color_mean_two_level) + 1);
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
                                 } else if (betterColor === "blue") {
-                                    points = 100-(10*(Math.min(color_mean_level, color_mean_two_level)));
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">CORRECT + '+ points + '</h1>';
+                                    points = 10-((Math.min(color_mean_level, color_mean_two_level)));
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
                                     points = 0;
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">INCORRECT + '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
                                 } else if (betterColor === "blue")  {
                                     points = 0;
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">INCORRECT + '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
                                 }
                             }
                         }
@@ -572,6 +596,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                         permanentDataVariable['colorSD'].push(trialDataVariable["coloSD"]);
                                         permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
                                         permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
+                                        permanentDataVariable["secondConfidences"].push(trialDataVariable["secondConfidences"]);
                                         permanentDataVariable["moreAsked"].push(trialDataVariable["moreAsked"]);
                                         permanentDataVariable["isCorrect"].push(trialDataVariable["isCorrect"]);
                                         permanentDataVariable["RTs"].push(trialDataVariable["RTs"]);
@@ -612,6 +637,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                 permanentDataVariable['colorSD'].push(trialDataVariable["coloSD"]);
                                 permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
                                 permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
+                                permanentDataVariable["secondConfidences"].push(trialDataVariable["secondConfidences"]);
                                 permanentDataVariable["moreAsked"].push(trialDataVariable["moreAsked"]);
                                 permanentDataVariable["isCorrect"].push(trialDataVariable["isCorrect"]);
                                 permanentDataVariable["RTs"].push(trialDataVariable["RTs"]);
@@ -693,13 +719,21 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
             click: function () {
                 sliderActive = false;
 
-                // show buttons
                 if (!sliderActive) {
-                    $('.scale-button').removeClass('invisible');
-                    if (forcedSeeMoreTemp === true) {
-                        $('.submit-button').addClass('invisible');
-                        forcedSeeMoreTemp = false;
+                    if (condition === "practice1") {
+                        //automatically trigger the continue button in practice 1 because there is no choice anyways
+                        setTimeout(function () {
+                            buttonBackend('submit');
+                        }, 600)
+                    } else {
+                        // otherwise show buttons
+                        $('.scale-button').removeClass('invisible');
+                        if (forcedSeeMoreTemp === true) {
+                            $('.submit-button').addClass('invisible');
+                            forcedSeeMoreTemp = false;
+                        }
                     }
+
                 }
                 // record data
                 confidence_timer = Date.now();

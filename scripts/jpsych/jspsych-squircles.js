@@ -130,6 +130,7 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
 
       moreRedSide: [],
       confidences: [],
+      secondConfidences: [],
       initial_choices: [],
       moreAsked: [],
       isCorrect: [],
