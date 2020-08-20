@@ -71,12 +71,12 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
     }
 
     //var difference = .05; //staircase 70% accuracy for 3*difference
-    var color_means = [.5-4*difference, .5-3*difference, .5-2*difference, .5-difference, .5,
-        .5+difference, .5+2*difference, .5+3*difference, .5+4*difference, .5+5*difference];
-    var color_mean_level = randInt(0, 8); //anything from 1 to 9
+    var color_means = [.5-4.5*difference, .5-3.5*difference, .5-2.5*difference, .5-1.5*difference, .5-0.5*difference,
+                        .5+0.5*difference, .5+1.5*difference, .5+2.5*difference, .5+3.5*difference, .5+4.5*difference];
+    var color_mean_level = randInt(0, 9); //anything from 1 to 10
     var color_mean_two_level;
 
-    if (color_mean_level > 4) {
+    if (color_mean_level >= 5) {
         color_mean_two_level = color_mean_level - randInt(1, 5);
     } else if (color_mean_level <= 4) {
         color_mean_two_level = color_mean_level + randInt(1, 5);
@@ -106,15 +106,15 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
         color_mean, color_sd, color_mean_two, moreRedSide);
 
     if (isTutorialMode === false) {
-        //catch trials (10% of trials (1% is lost below))
+        //catch trials (5% of trials (1% is lost below))
         var catchRandomiser = Math.random();
-        if (catchRandomiser > 0.89) {
+        if (catchRandomiser > 0.94) {
             forcedContinue = true;
             yellowButtonEnabled = false;
         }
-        //forced see more trials (10% of trials)
+        //forced see more trials (15% of trials)
         var forcedRandomiser = Math.random();
-        if (forcedRandomiser > 0.89) {
+        if (forcedRandomiser > 0.84) {
             forcedSeeMore = true;
             forcedSeeMoreTemp = true;
         }
@@ -150,6 +150,14 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
 
     //draw the confidence slider
     var confidence_meter = noDragSlider('slider', response_area, tooltipLabels, endLabels, buttonsToShow);
+    var middleMarker = createGeneral(
+        middleMarker,
+        document.getElementById('scale'),
+        'div',
+        '',
+        'middleMarker',
+        ''
+    );
 
     //draw the confidence question
     if (betterColor === "red") {
@@ -587,7 +595,6 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                     $('#dots-tutorial-continue').on('click', function () {
                                         console.log(trialDataVariable);
                                         permanentDataVariable["accuracy"].push(accuracy);
-                                        permanentDataVariable["points"].push(points);
                                         permanentDataVariable['moreRedMean'].push(trialDataVariable["moreRedMean"]);
                                         permanentDataVariable['moreBlueMean'].push(trialDataVariable["moreBlueMean"]);
                                         permanentDataVariable['moreRedMeanLevel'].push(trialDataVariable["moreRedMeanLevel"]);
@@ -606,6 +613,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                         permanentDataVariable["isTutorialMode"].push(trialDataVariable["isTutorialMode"]);
                                         permanentDataVariable["forcedSeeMore"].push(trialDataVariable["forcedSeeMore"]);
                                         permanentDataVariable["forcedContinue"].push(trialDataVariable["forcedContinue"]);
+                                        permanentDataVariable["points"].push(trialDataVariable["points"]);
                                         permanentDataVariable["cumulativePoints"].push(trialDataVariable["cumulativePoints"]);
                                         permanentDataVariable["trial_count"].push(trialDataVariable["trial_count"]);
 
@@ -625,7 +633,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                             } else {
                                 // if not in tutorial mode
                                 permanentDataVariable["accuracy"].push(accuracy);
-                                permanentDataVariable["points"].push(points);
+                                permanentDataVariable["points"].push(trialDataVariable["points"]);
                                 permanentDataVariable["isTutorialMode"].push(trialDataVariable["isTutorialMode"]);
                                 permanentDataVariable["condition"].push(trialDataVariable["condition"]);
                                 permanentDataVariable["betterColor"].push(trialDataVariable["betterColor"]);

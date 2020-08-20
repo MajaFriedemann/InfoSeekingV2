@@ -178,7 +178,7 @@
     var blockCounter = 0;
 
     var totalTrials = 0;
-    var trialsPerBlock = 2; //50
+    var trialsPerBlock = 50; //50
 
     var totalCorrect = 0;
     var cumulativeScore = 0;
@@ -290,7 +290,7 @@
         isTutorialMode: true,
         betterColor: "red",            //red vs blue
         condition: "practice1",         //continue button automatically triggered
-        trial_count: 4,             //make trial count 80 here for staircase
+        trial_count: 100,             //make trial count 80 here for staircase
         yellowButtonEnabled: false,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -309,7 +309,7 @@
         isTutorialMode: true,
         betterColor: "blue",            //red vs blue
         condition: "practice1",         //continue button automatically triggered
-        trial_count: 4,             //make trial count 80 here for staircase
+        trial_count: 100,             //make trial count 80 here for staircase
         yellowButtonEnabled: false,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -817,7 +817,7 @@
 
         case 'testing': //NVR
             var timeline = [
-                Instructions1R,
+                //Instructions1R,
                 Practice1R,
                 Instructions2R,
                 Practice2R,

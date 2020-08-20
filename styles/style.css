@@ -1537,12 +1537,12 @@ button.default-white-button.start-tutorial, .button.default-white-button.start-t
   border-right: 5px solid white;
 }
 
-#partnerMarker {
-  width: 6px;
+#middleMarker {
+  width: 1px;
   height: 100%;
-  background-color: yellow;
+  background-color: grey;
   position: absolute;
-  left: 20%;
+  left: 50%;
   z-index:1;
   transform: translateX(-50%);
 }
