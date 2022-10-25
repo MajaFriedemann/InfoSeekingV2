@@ -135,6 +135,23 @@
     //trialTypeOrder = "testing";
 
 
+    /*set trial types (mean diff x variance conditions) to make sure they are balanced*/
+    //check how to make number of trials right here, exclude the practice where we just use level 3
+    var trialsPractice1 = 100;
+    var trialsPractice2 = 5;
+    var trialsPerBlock = 50; // there are 3 blocks per condition
+    var numberOfBlocks = 3; // this is actually done manually later in the trial order but just declaring here to know what is happening
+
+    var repeats = Math.ceil(trialsPerBlock * numberOfBlocks / 9); // divided by 9 for the 3 mean levels (1,3,5) and 3 variance levels (.0333, .1, .1666)
+
+    var color_conditions_practice = Array(trialsPractice1+trialsPractice2).fill([[3,.1]]).flat(1);
+    var color_conditions_1 = shuffle(Array(repeats).fill([[1, .0333], [1, .1], [1, .1666], [3, .0333], [3, .1], [3, .1666], [5, .0333], [5, .1], [5, .1666]]).flat(1)).slice(0, trialsPerBlock*numberOfBlocks); // no1 is for first condition (value/accuracy) delete too many trials from end
+    var color_conditions_2 = shuffle(Array(repeats).fill([[1, .0333], [1, .1], [1, .1666], [3, .0333], [3, .1], [3, .1666], [5, .0333], [5, .1], [5, .1666]]).flat(1)).slice(0, trialsPerBlock*numberOfBlocks);  // no2 is for second condition (value/accuracy) delete too many trials from end
+
+    var color_conditions = color_conditions_practice.concat(color_conditions_1);
+    color_conditions = color_conditions.concat(color_conditions_2);
+
+
     /* IMAGES TO PRELOAD */
     var images = [
         'assets/oxford-logo.jpg',
@@ -176,17 +193,13 @@
     /* DATA VARIABLES */
     var blockCount = 0;
     var blockCounter = 0;
-
     var totalTrials = 0;
-    var trialsPerBlock = 50; //50
-
     var totalCorrect = 0;
     var cumulativeScore = 0;
     var points = 0;
     var cumulativePoints = 0;
     var accuracy = 0;
     var overallAccuracy = 0;
-
     var bonusPayment = 0;
 
     var dataObject = {
@@ -290,7 +303,7 @@
         isTutorialMode: true,
         betterColor: "red",            //red vs blue
         condition: "practice1",         //continue button automatically triggered
-        trial_count: 100,             //make trial count 80 here for staircase
+        trial_count: trialsPractice1,             //make trial count 80 here for staircase
         yellowButtonEnabled: false,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -309,7 +322,7 @@
         isTutorialMode: true,
         betterColor: "blue",            //red vs blue
         condition: "practice1",         //continue button automatically triggered
-        trial_count: 100,             //make trial count 80 here for staircase
+        trial_count: trialsPractice1,             //make trial count 80 here for staircase
         yellowButtonEnabled: false,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -328,7 +341,7 @@
         isTutorialMode: true,          //true tutorial mode means that there won't be any forced see more or catch trials
         betterColor: "red",            //red vs blue
         condition: "practice2",
-        trial_count: 5,                 //trial count 5 here because it is only to show the task
+        trial_count: trialsPractice2,                 //trial count 5 here because it is only to show the task
         yellowButtonEnabled: true,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,
@@ -347,7 +360,7 @@
         isTutorialMode: true,           //true tutorial mode means that there won't be any forced see more or catch trials
         betterColor: "blue",            //red vs blue
         condition: "practice2",
-        trial_count: 5,                 //trial count 5 here because it is only to show the task
+        trial_count: trialsPractice2,                 //trial count 5 here because it is only to show the task
         yellowButtonEnabled: true,
         yellowButtonName: 'SEE MORE',
         greenButtonEnabled: true,

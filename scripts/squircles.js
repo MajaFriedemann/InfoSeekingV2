@@ -62,12 +62,11 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
     var total_circles = 8;
     var radius = 60;
 
-    //var color_sds = [.0333, .1];
-    //var color_sd = randInt(0, 1);
-    var color_sd = .1;
+    var color_sd = color_conditions[trialCount];  //check if trialCount is correct here!!!!
+    var color_mean_level_dif = color_conditions[trialCount];
 
-    if (isTutorialMode && condition !="practice2") {
-        difference = 0.001*squircleStaircase.getLast('logSpace');
+    if (isTutorialMode && condition !=="practice2") {
+        difference = 0.001*squircleStaircase.getLast('logSpace'); // difference is only updated when in practice mode and thereafter just kept constant
     }
 
     //var difference = .05; //staircase 70% accuracy for 3*difference
@@ -77,9 +76,9 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
     var color_mean_two_level;
 
     if (color_mean_level >= 5) {
-        color_mean_two_level = color_mean_level - randInt(1, 5);
+        color_mean_two_level = color_mean_level - color_mean_level_dif;
     } else if (color_mean_level <= 4) {
-        color_mean_two_level = color_mean_level + randInt(1, 5);
+        color_mean_two_level = color_mean_level + color_mean_level_dif;
     }
 
     console.log("THE DIFFERENCE WAS " + difference);
