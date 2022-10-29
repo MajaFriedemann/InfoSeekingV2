@@ -1715,7 +1715,7 @@ button.default-white-button.start-tutorial, .button.default-white-button.start-t
 }
 
 .grid-mask {
-  z-index: 100;
+  z-index: 50;
   position: absolute;
   width: 250px;
   height: 166px;

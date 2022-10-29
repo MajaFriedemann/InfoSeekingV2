@@ -490,36 +490,36 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                             if (correctResponse) {
                                 if (betterColor === "red") {
                                     points = (Math.max(color_mean_level, color_mean_two_level) + 1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 } else {
                                     points = 10-((Math.min(color_mean_level, color_mean_two_level)));
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
                                     points = (Math.min(color_mean_level, color_mean_two_level) + 1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 } else if (betterColor === "blue")  {
                                     points = 10-((Math.max(color_mean_level, color_mean_two_level)));
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 }
                             }
                         } else {
                             if (correctResponse) {
                                 if (betterColor === "red") {
                                     points = (Math.max(color_mean_level, color_mean_two_level) + 1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 } else if (betterColor === "blue") {
                                     points = 10-((Math.min(color_mean_level, color_mean_two_level)));
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
                                     points = -(Math.min(color_mean_level, color_mean_two_level) + 1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em">- '+ Math.abs(points) + '</h1>'; // only using the minus in the string and then the absolute point value here because otherwise the minus is difficult to see!
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">- '+ Math.abs(points) + '</h1>'; // only using the minus in the string and then the absolute point value here because otherwise the minus is difficult to see!
                                 } else if (betterColor === "blue")  {
                                     points = -10-((Math.max(color_mean_level, color_mean_two_level)));
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em">- '+ Math.abs(points) + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">- '+ Math.abs(points) + '</h1>';
                                 }
                             }
                         }
@@ -624,6 +624,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                         return;
                                     });
                                 } else {
+                                    totalTrials = 0; // reset the trial count
                                     $('#dots-tutorial-continue').on('click', function () {
                                         drawFixation(parent, canvasWidth, canvasHeight, squircleStaircase, upperColor, lowerColor, tooltipLabels, endLabels, waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, condition, betterColor);
                                         return;

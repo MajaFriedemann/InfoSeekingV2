@@ -66,7 +66,7 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
       accuracyThreshold: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Accuracy threshold',
-        default: 50,
+        default: 55,
         description: 'Accuracy threshold (in %)'
       },
       redButtonEnabled: {
