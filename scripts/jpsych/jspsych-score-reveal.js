@@ -123,7 +123,7 @@ jsPsych.plugins['jspsych-score-reveal'] = (function () {
     );
 
     continueButton.onclick = function() {
-      bonusPayment = newBonusPayment;
+      bonusPayment = 2; // newBonusPayment;
       jsPsych.finishTrial();
       return;
     };

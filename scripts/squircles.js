@@ -62,8 +62,8 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
     var total_circles = 8;
     var radius = 60;
 
-    var color_sd = color_conditions[trialCount];  //check if trialCount is correct here!!!!
-    var color_mean_level_dif = color_conditions[trialCount];
+    var color_sd = color_conditions[totalTrials][1];  //check if trialCount is correct here!!!!
+    var color_mean_level_dif = color_conditions[totalTrials][0];
 
     if (isTutorialMode && condition !=="practice2") {
         difference = 0.001*squircleStaircase.getLast('logSpace'); // difference is only updated when in practice mode and thereafter just kept constant
@@ -490,36 +490,36 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                             if (correctResponse) {
                                 if (betterColor === "red") {
                                     points = (Math.max(color_mean_level, color_mean_two_level) + 1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em">+ '+ points + '</h1>';
                                 } else {
                                     points = 10-((Math.min(color_mean_level, color_mean_two_level)));
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em">+ '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
                                     points = (Math.min(color_mean_level, color_mean_two_level) + 1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em">+ '+ points + '</h1>';
                                 } else if (betterColor === "blue")  {
                                     points = 10-((Math.max(color_mean_level, color_mean_two_level)));
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em">+ '+ points + '</h1>';
                                 }
                             }
                         } else {
                             if (correctResponse) {
                                 if (betterColor === "red") {
                                     points = (Math.max(color_mean_level, color_mean_two_level) + 1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em">+ '+ points + '</h1>';
                                 } else if (betterColor === "blue") {
                                     points = 10-((Math.min(color_mean_level, color_mean_two_level)));
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em">+ '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
-                                    points = 0;
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255)">+ '+ points + '</h1>';
+                                    points = -(Math.min(color_mean_level, color_mean_two_level) + 1);
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em">- '+ Math.abs(points) + '</h1>'; // only using the minus in the string and then the absolute point value here because otherwise the minus is difficult to see!
                                 } else if (betterColor === "blue")  {
-                                    points = 0;
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0)">+ '+ points + '</h1>';
+                                    points = -10-((Math.max(color_mean_level, color_mean_two_level)));
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em">- '+ Math.abs(points) + '</h1>';
                                 }
                             }
                         }
@@ -599,7 +599,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                         permanentDataVariable['moreRedMeanLevel'].push(trialDataVariable["moreRedMeanLevel"]);
                                         permanentDataVariable['moreBlueMeanLevel'].push(trialDataVariable["moreBlueMeanLevel"]);
                                         permanentDataVariable['differenceStep'].push(trialDataVariable["differenceStep"]);
-                                        permanentDataVariable['colorSD'].push(trialDataVariable["coloSD"]);
+                                        permanentDataVariable['colorSD'].push(trialDataVariable["colorSD"]);
                                         permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
                                         permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
                                         permanentDataVariable["secondConfidences"].push(trialDataVariable["secondConfidences"]);
@@ -641,7 +641,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                 permanentDataVariable['differenceStep'].push(trialDataVariable["differenceStep"]);
                                 permanentDataVariable['moreRedMeanLevel'].push(trialDataVariable["moreRedMeanLevel"]);
                                 permanentDataVariable['moreBlueMeanLevel'].push(trialDataVariable["moreBlueMeanLevel"]);
-                                permanentDataVariable['colorSD'].push(trialDataVariable["coloSD"]);
+                                permanentDataVariable['colorSD'].push(trialDataVariable["colorSD"]);
                                 permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
                                 permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
                                 permanentDataVariable["secondConfidences"].push(trialDataVariable["secondConfidences"]);
