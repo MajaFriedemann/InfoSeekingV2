@@ -83,7 +83,7 @@ jsPsych.plugins['jspsych-score-reveal'] = (function () {
         newBonusPayment = bonusPayment + currentBonus;
         // update messages
         //paymentMessage = 'Congratulations, you have scored a total of ' + roundedScore + ' points in the previous ' + totalTrials + ' game rounds!';
-        paymentMessage = 'Congratulations! You scored a total of '+ cumulativePoints + ' and earned yourself a cash bonus of £2 :)';
+        paymentMessage = 'Congratulations! You scored a total of '+ round(cumulativePoints,1) + ' and earned yourself a cash bonus of £2 :)';
         break;
     }
 

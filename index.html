@@ -85,7 +85,7 @@
     var PIS_date = '2020/01/01';
     var startExperiment = Date.now();
     var currentAttempt = 1;
-    var difference = 0.1;
+    var difference = 0.01;
 
 
     /* SEEDED RANDOMISATION
@@ -132,21 +132,26 @@
         }
     }
 
-    trialTypeOrder = "testing";
+    trialTypeOrder = "NVR";
 
 
     /*set trial types (mean diff x variance conditions) to make sure they are balanced*/
     //check how to make number of trials right here, exclude the practice where we just use level 3
-    var trialsPractice1 = 2; // SET THIS TO 80?
-    var trialsPractice2 = 2; // SET THIS TO 20 ??? FORCED SEE MORE ???
-    var trialsPerBlock = 3; // there are 3 blocks per condition
+    var trialsPractice1 = 60; // SET THIS TO 60
+    var trialsPractice2 = 15; // SET THIS TO 30
+    var trialsPerBlock = 10; // SET THIS TO 50
     var numberOfBlocks = 3; // this is actually done manually later in the trial order but just declaring here to know what is happening and for instructions
 
+    var repeats_practice2 = Math.ceil(trialsPractice2 / 9);
     var repeats = Math.ceil(trialsPerBlock * numberOfBlocks / 9); // divided by 9 for the 3 mean levels (1,3,5) and 3 variance levels (.0333, .1, .1666)
 
-    var color_conditions_practice = Array(trialsPractice1+trialsPractice2).fill([[3,.1]]).flat(1);
-    var color_conditions_1 = shuffle(Array(repeats).fill([[1, .0333], [1, .1], [1, .1666], [3, .0333], [3, .1], [3, .1666], [5, .0333], [5, .1], [5, .1666]]).flat(1)).slice(0, trialsPerBlock*numberOfBlocks); // no1 is for first condition (value/accuracy) delete too many trials from end
-    var color_conditions_2 = shuffle(Array(repeats).fill([[1, .0333], [1, .1], [1, .1666], [3, .0333], [3, .1], [3, .1666], [5, .0333], [5, .1], [5, .1666]]).flat(1)).slice(0, trialsPerBlock*numberOfBlocks);  // no2 is for second condition (value/accuracy) delete too many trials from end
+    var color_conditions_demo = [[40, .1], [40, .1], [30, .1], [30, .1], [20, .1]]; // 5 super easy trials to begin
+    var color_conditions_practice1 = Array(trialsPractice1-color_conditions_demo.length).fill([[8, .1]]).flat(1);
+    color_conditions_practice1 = color_conditions_demo.concat(color_conditions_practice1);
+    var color_conditions_practice2 = shuffle(Array(repeats_practice2).fill([[2, .0333], [2, .1], [2, .1666], [8, .0333], [8, .1], [8, .1666], [14, .0333], [14, .1], [14, .1666]]).flat(1)).slice(0, trialsPractice2);
+    color_conditions_practice = color_conditions_practice1.concat(color_conditions_practice2);
+    var color_conditions_1 = shuffle(Array(repeats).fill([[2, .0333], [2, .1], [2, .1666], [8, .0333], [8, .1], [8, .1666], [14, .0333], [14, .1], [14, .1666]]).flat(1)).slice(0, trialsPerBlock*numberOfBlocks); // no1 is for first condition (value/accuracy) delete too many trials from end
+    var color_conditions_2 = shuffle(Array(repeats).fill([[2, .0333], [2, .1], [2, .1666], [8, .0333], [8, .1], [8, .1666], [14, .0333], [14, .1], [14, .1666]]).flat(1)).slice(0, trialsPerBlock*numberOfBlocks);  // no2 is for second condition (value/accuracy) delete too many trials from end
 
     var color_conditions = color_conditions_practice.concat(color_conditions_1);
     color_conditions = color_conditions.concat(color_conditions_2);
@@ -457,7 +462,7 @@
             '<u>indicate your response and how confident you are</u> in your choice on a sliding scale ranging from "certainly left" to "certainly right". ' +
             '<br><br>The task will <u>start off quite easy but will become harder</u> as you progress' +
             '<br><br> Press the "continue" button to start the game. You ' +
-            'should reach a stable performance level to continue to the next phase. This might take up to 8 minutes.',
+            'should reach a stable performance level to continue to the next phase.',
         img_id: 'practice1B'
     };
 
@@ -472,7 +477,7 @@
             '<u>indicate your response and how confident you are</u> in your choice on a sliding scale ranging from "certainly left" to "certainly right". ' +
             '<br><br>The task will <u>start off quite easy but will become harder</u> as you progress' +
             '<br><br> Press the "continue" button to start the game. You ' +
-            'should reach a stable performance level to continue to the next phase. This might take up to 8 minutes.',
+            'should reach a stable performance level to continue to the next phase.',
         img_id: 'practice1R'
     };
 
@@ -531,8 +536,8 @@
             'game. <u>The points will be converted into a monetary reward at the end of the experiment.</u> ' +
             'Points range from 0 for the most <highlight style="color: rgb(255, 0, 0)">red</highlight> circles to 10 for the most ' +
             '<highlight style="color: rgb(0, 100, 255)">blue</highlight> circles. ' +
-            'If your response is <u>CORRECT</u> (i.e. you choose the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circle), you will get the <u>points corresponding to the average colour of the more ' +
-            '<highlight style="color: rgb(0, 100, 255)">blue</highlight> circle</u>. If your response is <u>INCORRECT, you won\'t get any points.</u>' +
+            'If your response is <u>CORRECT</u> (i.e. you choose the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circle), you will get the <u>points corresponding to the average colour of your chosen ' +
+            'circle</u>. If your response is <u>INCORRECT</u> (i.e. you choose the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circle), <u>you will lose those points</u> instead.' +
             '<br><br> Press the "continue" button to do ' + numberOfBlocks + ' blocks of ' + trialsPerBlock + ' trials each. You will have a chance to take breaks between the blocks.',
         img_id: 'value-nothingB'
     };
@@ -544,8 +549,8 @@
             'game. <u>The points will be converted into a monetary reward at the end of the experiment.</u> ' +
             'Points range from 0 for the most <highlight style="color: rgb(0, 100, 255)">blue</highlight> circles to 10 for the most ' +
             '<highlight style="color: rgb(255, 0, 0)">red</highlight> circles. ' +
-            'If your response is <u>CORRECT</u> (i.e. you choose the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circle), you will get the <u> points corresponding to the average colour of the more ' +
-            '<highlight style="color: rgb(255, 0, 0)">red</highlight> circle</u>. If your response is <u>INCORRECT, you won\'t get any points.</u>' +
+            'If your response is <u>CORRECT</u> (i.e. you choose the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circle), you will get the <u> points corresponding to the average colour of your chosen ' +
+            'circle</u>. If your response is <u>INCORRECT</u> (i.e. you choose the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circle), <u>you will lose those points</u> instead.' +
             '<br><br> Press the "continue" button to do ' + numberOfBlocks + ' blocks of ' + trialsPerBlock + ' trials each. You will have a chance to take breaks between the blocks.',
         img_id: 'value-nothingR'
     };
@@ -586,7 +591,7 @@
             '<highlight style="color: rgb(0, 100, 255)">blue</highlight> circles. ' +
             'If your response is <u>CORRECT</u> (i.e. you choose the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circle), you will ' +
             'get the <u>points corresponding to the average colour of the more ' +
-            '<highlight style="color: rgb(0, 100, 255)">blue</highlight> circle</u>. If your response is <u>INCORRECT, you won\'t get any points.</u>' +
+            '<highlight style="color: rgb(0, 100, 255)">blue</highlight> circle</u>. If your response is <u>INCORRECT, you will lose those points</u> instead.' +
             '<br><br> Press the "continue" button to do ' + numberOfBlocks + ' blocks of ' + trialsPerBlock + ' trials each. You will have a chance to take breaks between the blocks.',
         img_id: 'value-nothingB'
     };
@@ -601,7 +606,7 @@
             '<highlight style="color: rgb(255, 0, 0)">red</highlight> circles. ' +
             'If your response is <u>CORRECT</u> (i.e. you choose the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circle), you will ' +
             'get the <u>points corresponding to the average colour of the more ' +
-            '<highlight style="color: rgb(255, 0, 0)">red</highlight> circle</u>. If your response is <u>INCORRECT, you won\'t get any points.</u>' +
+            '<highlight style="color: rgb(255, 0, 0)">red</highlight> circle</u>. If your response is <u>INCORRECT, you will lose those points</u> instead.' +
             '<br><br> Press the "continue" button to do ' + numberOfBlocks + ' blocks of ' + trialsPerBlock + ' trials each. You will have a chance to take breaks between the blocks.',
         img_id: 'value-nothingR'
     };
@@ -638,7 +643,7 @@
             'that your task is to choose the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circles. ' +
             'The points will appear in <highlight style="color: rgb(0, 100, 255)">blue</highlight> if you choose ' +
             'the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circle. ' +
-            'You will get 0 points if you choose the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circle.',
+            'You will lose the points if you choose the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circle.',
         img_id: 'ScaleBlue',
         buttonText: 'CONTINUE'
     };
@@ -651,7 +656,7 @@
             'that you task is to choose the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circles. ' +
             'The points will appear in <highlight style="color: rgb(255, 0, 0)">red</highlight> if you choose ' +
             'the more <highlight style="color: rgb(255, 0, 0)">red</highlight> circle. ' +
-            'You will get 0 points if you choose the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circle.',
+            'You will lose the points if you choose the more <highlight style="color: rgb(0, 100, 255)">blue</highlight> circle.',
         img_id: 'ScaleRed',
         buttonText: 'CONTINUE'
     };

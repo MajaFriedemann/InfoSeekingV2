@@ -62,29 +62,54 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
     var total_circles = 8;
     var radius = 60;
 
-    var color_sd = color_conditions[totalTrials][1];  //check if trialCount is correct here!!!!
+    var color_sd = color_conditions[totalTrials][1];
     var color_mean_level_dif = color_conditions[totalTrials][0];
 
     if (isTutorialMode && condition !=="practice2") {
-        difference = 0.001*squircleStaircase.getLast('logSpace'); // difference is only updated when in practice mode and thereafter just kept constant
+        difference = 0.0001*squircleStaircase.getLast('logSpace'); // difference is only updated when in practice mode and thereafter just kept constant
+        if (difference > 0.01) {
+            difference = 0.01; // at 0.01 the colour scale is maxed out with 0.5-50.*0.01=0 or 0.5+50*0.01=1
+        }
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // // COMMENT THIS OUT; THIS IS JUST TO TRY OUT THE DIFFERENT STIMULI
+    // difference = 0.008; // 0.0111; // this is the median difference people get to
+    // var testConditions = [[2, .0333], [2, .0333], [2, .1], [2, .1666], [8, .0333], [8, .1], [8, .1666], [14, .0333], [14, .1], [14, .1666]];
+    // color_sd = testConditions[totalTrials][1];
+    // color_mean_level_dif = testConditions[totalTrials][0];
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     //var difference = .05; //staircase 70% accuracy for 3*difference
-    var color_means = [.5-4.5*difference, .5-3.5*difference, .5-2.5*difference, .5-1.5*difference, .5-0.5*difference,
-                        .5+0.5*difference, .5+1.5*difference, .5+2.5*difference, .5+3.5*difference, .5+4.5*difference];
-    var color_mean_level = randInt(0, 9); //anything from 1 to 10
+    var color_means_a = [0.5];
+    var color_means_b = [0.5];
+    for (var n=1; n<50; n++){
+        color_means_a[n]=color_means_a[n-1]+difference;
+        color_means_b[n]=color_means_b[n-1]-difference;
+    }
+    color_means_b.reverse();
+    var color_means = color_means_b.concat(color_means_a);
+
+    var color_mean_level = randInt(5, (color_means.length-6)); // not taking the extremes to allow for variance even when the colour scale is maxed out
     var color_mean_two_level;
 
-    if (color_mean_level >= 5) {
+    if (color_mean_level >= (color_means.length/2)) {
         color_mean_two_level = color_mean_level - color_mean_level_dif;
-    } else if (color_mean_level <= 4) {
+    } else if (color_mean_level < (color_means.length/2)) {
         color_mean_two_level = color_mean_level + color_mean_level_dif;
     }
 
-    console.log("THE DIFFERENCE WAS " + difference);
+    console.log("total trials " + totalTrials);
+    console.log("color means " + color_means);
+
 
     var color_mean = color_means[color_mean_level];
     var color_mean_two = color_means[color_mean_two_level];
+
+    console.log("color mean one "+ color_mean);
+    console.log("color level one "+ color_mean_level);
+    console.log("color mean two "+ color_mean_two);
+    console.log("color level two "+ color_mean_two_level);
 
 
     var moreRedSide;
@@ -94,6 +119,11 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
     } else {
         moreRedSide = 'right';
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // // COMMENT THIS OUT; THIS IS JUST TO TRY OUT THE DIFFERENT STIMULI
+    // moreRedSide = 'right';
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     console.log(color_mean);
     console.log(color_sd);
@@ -489,36 +519,36 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                         if (condition === "value-value") {
                             if (correctResponse) {
                                 if (betterColor === "red") {
-                                    points = (Math.max(color_mean_level, color_mean_two_level) + 1);
+                                    points = round(0.1*(Math.max(color_mean_level, color_mean_two_level) + 1),1);
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 } else {
-                                    points = 10-((Math.min(color_mean_level, color_mean_two_level)));
+                                    points = round(0.1*(10-((Math.min(color_mean_level, color_mean_two_level)))),1);
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
-                                    points = (Math.min(color_mean_level, color_mean_two_level) + 1);
+                                    points = round(0.1*(Math.min(color_mean_level, color_mean_two_level) + 1),1);
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 } else if (betterColor === "blue")  {
-                                    points = 10-((Math.max(color_mean_level, color_mean_two_level)));
+                                    points = round(0.1*(10-((Math.max(color_mean_level, color_mean_two_level)))),1);
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 }
                             }
                         } else {
                             if (correctResponse) {
                                 if (betterColor === "red") {
-                                    points = (Math.max(color_mean_level, color_mean_two_level) + 1);
+                                    points = round(0.1*(Math.max(color_mean_level, color_mean_two_level) + 1),1);
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 } else if (betterColor === "blue") {
-                                    points = 10-((Math.min(color_mean_level, color_mean_two_level)));
+                                    points = round(0.1*(10-((Math.min(color_mean_level, color_mean_two_level)))),1);
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
-                                    points = -(Math.min(color_mean_level, color_mean_two_level) + 1);
+                                    points = round(0.1*(-(Math.min(color_mean_level, color_mean_two_level) + 1)),1);
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">- '+ Math.abs(points) + '</h1>'; // only using the minus in the string and then the absolute point value here because otherwise the minus is difficult to see!
                                 } else if (betterColor === "blue")  {
-                                    points = -10-((Math.max(color_mean_level, color_mean_two_level)));
+                                    points = round(0.1*(-10-((Math.max(color_mean_level, color_mean_two_level)))),1);
                                     document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">- '+ Math.abs(points) + '</h1>';
                                 }
                             }
@@ -535,7 +565,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                     }, 1000);
 
                     if (isTutorialMode===false) {
-                        totalTrials++;
+                        //totalTrials++;
                     }
 
                     if (trialCounterVariable < trialCount) {
