@@ -99,17 +99,17 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
         color_mean_two_level = color_mean_level + color_mean_level_dif;
     }
 
-    console.log("total trials " + totalTrials);
-    console.log("color means " + color_means);
+    // console.log("total trials " + totalTrials);
+    // console.log("color means " + color_means);
 
 
     var color_mean = color_means[color_mean_level];
     var color_mean_two = color_means[color_mean_two_level];
 
-    console.log("color mean one "+ color_mean);
-    console.log("color level one "+ color_mean_level);
-    console.log("color mean two "+ color_mean_two);
-    console.log("color level two "+ color_mean_two_level);
+    // console.log("color mean one "+ color_mean);
+    // console.log("color level one "+ color_mean_level);
+    // console.log("color mean two "+ color_mean_two);
+    // console.log("color level two "+ color_mean_two_level);
 
 
     var moreRedSide;
@@ -125,14 +125,16 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
     // moreRedSide = 'right';
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    console.log(color_mean);
-    console.log(color_sd);
-    console.log(color_mean_two);
-    console.log(moreRedSide);
+    console.log('color mean one: '+color_mean);
+    console.log('color sd: '+color_sd);
+    console.log('color mean two: '+color_mean_two);
+    console.log('more red side '+moreRedSide);
 
     //draw the squircle stimuli
-    drawSquircleStimuli(parent, canvasID, canvasWidth, canvasHeight, total_circles, radius,
+    var stimuli = drawSquircleStimuli(parent, canvasID, canvasWidth, canvasHeight, total_circles, radius,
         color_mean, color_sd, color_mean_two, moreRedSide);
+    leftStimulus = stimuli[0];
+    rightStimulus = stimuli[1];
 
     if (isTutorialMode === false) {
         //catch trials (5% of trials (1% is lost below))
@@ -260,6 +262,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
         var cxr = coverCanvas.width / 2 + coverCanvas.width / 3;
 
         /*draw the left cover*/
+        leftStimulusHalf = [];
         var sequence = myEvenLengthSequence(total_circles);
         for (i = 0; i < total_circles; i++) {
             if (sequence[i] === 1) {
@@ -270,10 +273,13 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                 ctx.arc(xl, y, 21 - 0.5 * total_circles, 0, Math.PI * 2, true);
                 ctx.closePath();
                 ctx.fill();
+            } else {
+                leftStimulusHalf.push(leftStimulus[i]);
             }
         }
 
         /*draw the right cover*/
+        rightStimulusHalf = [];
         var sequence = myEvenLengthSequence(total_circles);
         for (i = 0; i < total_circles; i++) {
             if (sequence[i] === 1) {
@@ -284,6 +290,8 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                 ctx.arc(xr, y, 21 - 0.5 * total_circles, 0, Math.PI * 2, true);
                 ctx.closePath();
                 ctx.fill();
+            } else {
+                rightStimulusHalf.push(rightStimulus[i]);
             }
         }
     }
@@ -484,6 +492,10 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                     trialDataVariable['moreRedMeanLevel'].push(Math.max(color_mean_level, color_mean_two_level));
                     trialDataVariable['moreBlueMeanLevel'].push(Math.min(color_mean_level, color_mean_two_level));
                     trialDataVariable['colorSD'].push(color_sd);
+                    trialDataVariable['leftStimulus'].push(leftStimulus);
+                    trialDataVariable['rightStimulus'].push(rightStimulus);
+                    trialDataVariable['leftStimulusHalf'].push(leftStimulusHalf);
+                    trialDataVariable['rightStimulusHalf'].push(rightStimulusHalf);
                     trialDataVariable['moreRedSide'].push(moreRedSide);
                     trialDataVariable['confidences'].push(confidences);
                     trialDataVariable['secondConfidences'].push(secondConfidences);
@@ -497,6 +509,9 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                     trialCounterVariable++;
                     totalTrials++;
                     trialDataVariable['trial_count'].push(totalTrials);
+
+                    console.log('left stimulus: '+leftStimulus);
+                    console.log('right stimulus: '+rightStimulus);
 
 
                     // give feedback
@@ -576,7 +591,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                         // evaluate accuracy
                         setTimeout(function () {
                             var accuracy = round(mean(trialDataVariable['isCorrect']), 2) * 100;
-                            console.log('accuracy: ' + accuracy);
+                            // console.log('accuracy: ' + accuracy);
 
                             if (isTutorialMode && condition != "practice2") {
                                 if (accuracy >= accuracyThreshold) {
@@ -622,7 +637,7 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
 
                                 if (accuracy >= accuracyThreshold) {
                                     $('#dots-tutorial-continue').on('click', function () {
-                                        console.log(trialDataVariable);
+                                        // console.log(trialDataVariable);
                                         permanentDataVariable["accuracy"].push(accuracy);
                                         permanentDataVariable['moreRedMean'].push(trialDataVariable["moreRedMean"]);
                                         permanentDataVariable['moreBlueMean'].push(trialDataVariable["moreBlueMean"]);
@@ -630,6 +645,10 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                         permanentDataVariable['moreBlueMeanLevel'].push(trialDataVariable["moreBlueMeanLevel"]);
                                         permanentDataVariable['differenceStep'].push(trialDataVariable["differenceStep"]);
                                         permanentDataVariable['colorSD'].push(trialDataVariable["colorSD"]);
+                                        permanentDataVariable['leftStimulus'].push(trialDataVariable["leftStimulus"]);
+                                        permanentDataVariable['rightStimulus'].push(trialDataVariable["rightStimulus"]);
+                                        permanentDataVariable['leftStimulusHalf'].push(trialDataVariable["leftStimulusHalf"]);
+                                        permanentDataVariable['rightStimulusHalf'].push(trialDataVariable["rightStimulusHalf"]);
                                         permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
                                         permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
                                         permanentDataVariable["secondConfidences"].push(trialDataVariable["secondConfidences"]);
@@ -673,6 +692,10 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                 permanentDataVariable['moreRedMeanLevel'].push(trialDataVariable["moreRedMeanLevel"]);
                                 permanentDataVariable['moreBlueMeanLevel'].push(trialDataVariable["moreBlueMeanLevel"]);
                                 permanentDataVariable['colorSD'].push(trialDataVariable["colorSD"]);
+                                permanentDataVariable['leftStimulus'].push(trialDataVariable["leftStimulus"]);
+                                permanentDataVariable['rightStimulus'].push(trialDataVariable["rightStimulus"]);
+                                permanentDataVariable['leftStimulusHalf'].push(trialDataVariable["leftStimulusHalf"]);
+                                permanentDataVariable['rightStimulusHalf'].push(trialDataVariable["rightStimulusHalf"]);
                                 permanentDataVariable["moreRedSide"].push(trialDataVariable["moreRedSide"]);
                                 permanentDataVariable["confidences"].push(trialDataVariable["confidences"]);
                                 permanentDataVariable["secondConfidences"].push(trialDataVariable["secondConfidences"]);
@@ -874,6 +897,8 @@ function drawFixation(parent, canvasWidth, canvasHeight, squircleStaircase, uppe
         parent.innerHTML += html;
 
         // call the draw squircles function
-        drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStaircase, upperColor, lowerColor, tooltipLabels, endLabels,  waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, condition, betterColor);
+        var stimuli = drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStaircase, upperColor, lowerColor, tooltipLabels, endLabels,  waitTimeLimit, fixationPeriod, stimulusPeriod, transitionPeriod, trialCount, trialCounterVariable, trialDataVariable, permanentDataVariable, isTutorialMode, accuracyThreshold, redButtonEnabled, redButtonName, yellowButtonEnabled, yellowButtonName, greenButtonEnabled, greenButtonName, condition, betterColor);
+        leftStimulus = stimuli[0];
+        rightStimulus = stimuli[1];
     }, fixationPeriod);
 }

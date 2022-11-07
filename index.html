@@ -86,6 +86,10 @@
     var startExperiment = Date.now();
     var currentAttempt = 1;
     var difference = 0.01;
+    var leftStimulus;
+    var rightStimulus;
+    var leftStimulusHalf;
+    var rightStimulusHalf;
 
 
     /* SEEDED RANDOMISATION
@@ -110,8 +114,18 @@
 
 
     /*randomise trial type order*/
-    var conditionRandomiser = Math.random();
+    // var conditionRandomiser = Math.random();
     var colorRandomiser = Math.random();
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////// SET CONDITION ORDER HERE AND MAKE SURE IT IS BALANCED!!!!!!!!!!!!!!!!!!!!!!!!!! ///////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // conditionRandomiser = 1; // VALUE CONDITION FIRST
+    conditionRandomiser = 0.1; // ACCURACY CONDITION FIRST
+
+
+
     if (conditionRandomiser > 0.5) {
         //value value first
         if (colorRandomiser > 0.5) {
@@ -131,9 +145,6 @@
             trialTypeOrder = "NVR" //Nothing Value Red
         }
     }
-
-    trialTypeOrder = "NVR";
-
 
     /*set trial types (mean diff x variance conditions) to make sure they are balanced*/
     //check how to make number of trials right here, exclude the practice where we just use level 3
@@ -247,6 +258,10 @@
         moreRedMeanLevel: [],
         moreBlueMeanLevel: [],
         colorSD: [],
+        leftStimulus: [],
+        rightStimulus: [],
+        leftStimulusHalf: [],
+        rightStimulusHalf: [],
         points: [],
         cumulativePoints: [],
         moreAsked: [],

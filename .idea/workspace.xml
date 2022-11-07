@@ -4,7 +4,8 @@
     <list default="true" id="3df47766-bd0d-44d8-9d5e-755754b7705f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-score-reveal.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-score-reveal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/helper.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/helper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/jpsych/jspsych-squircles.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/jpsych/jspsych-squircles.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/squircles.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/squircles.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -174,7 +175,8 @@
       <workItem from="1597913885295" duration="3608000" />
       <workItem from="1597926677271" duration="1337000" />
       <workItem from="1597931512984" duration="22000" />
-      <workItem from="1666620933920" duration="47525000" />
+      <workItem from="1666620933920" duration="47677000" />
+      <workItem from="1667814976552" duration="6768000" />
     </task>
     <servers />
   </component>
@@ -185,11 +187,11 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="-1264" y="174" width="607" height="804" key="find.popup" timestamp="1667322874743">
+    <state x="-1264" y="174" width="609" height="804" key="find.popup" timestamp="1667822432429">
       <screen x="-1920" y="0" width="1920" height="1152" />
     </state>
     <state x="-1264" y="95" width="607" height="804" key="find.popup/0.0.1536.816/-1920.-79.1920.1152@-1920.-79.1920.1152" timestamp="1667070678762" />
-    <state x="-1264" y="174" width="607" height="804" key="find.popup/0.0.1536.816/-1920.0.1920.1152@-1920.0.1920.1152" timestamp="1667322874743" />
+    <state x="-1264" y="174" width="609" height="804" key="find.popup/0.0.1536.816/-1920.0.1920.1152@-1920.0.1920.1152" timestamp="1667822432429" />
     <state x="-1264" y="178" width="607" height="804" key="find.popup/0.0.1536.816/-1920.4.1920.1152@-1920.4.1920.1152" timestamp="1667251987733" />
     <state x="-1297" y="174" width="672" height="678" key="search.everywhere.popup" timestamp="1667060765974">
       <screen x="-1920" y="-79" width="1920" height="1152" />

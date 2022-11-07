@@ -127,6 +127,10 @@ jsPsych.plugins['jspsych-squircles'] = (function () {
       condition: [],
       betterColor: [],
       colorSD: [],
+      leftStimulus: [],
+      rightStimulus: [],
+      leftStimulusHalf: [],
+      rightStimulusHalf: [],
 
       moreRedSide: [],
       confidences: [],

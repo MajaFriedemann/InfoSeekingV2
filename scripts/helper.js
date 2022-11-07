@@ -152,6 +152,7 @@
      ctx.closePath();
      ctx.fill();
    }
+   return[colorValuesArrayLeft, colorValuesArrayRight];
  }
 
 
