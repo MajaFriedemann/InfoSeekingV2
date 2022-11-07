@@ -121,35 +121,37 @@
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////// SET CONDITION ORDER HERE AND MAKE SURE IT IS BALANCED!!!!!!!!!!!!!!!!!!!!!!!!!! ///////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // conditionRandomiser = 1; // VALUE CONDITION FIRST
-    conditionRandomiser = 0.1; // ACCURACY CONDITION FIRST
+    // // conditionRandomiser = 1; // VALUE CONDITION FIRST
+    // conditionRandomiser = 0.1; // ACCURACY CONDITION FIRST
+    //
+    // if (conditionRandomiser > 0.5) {
+    //     //value value first
+    //     if (colorRandomiser > 0.5) {
+    //         //blue
+    //         trialTypeOrder = "VNB"; //Value Nothing Blue
+    //     } else {
+    //         //red
+    //         trialTypeOrder = "VNR"; //Value Nothing Red
+    //     }
+    // } else {
+    //     //value nothing first
+    //     if (colorRandomiser > 0.5) {
+    //         //blue
+    //         trialTypeOrder = "NVB" //Nothing Value Blue
+    //     } else {
+    //         //red
+    //         trialTypeOrder = "NVR" //Nothing Value Red
+    //     }
+    // }
 
+    // trialTypeOrder = "VNR";
+    trialTypeOrder = "NVR";
 
-
-    if (conditionRandomiser > 0.5) {
-        //value value first
-        if (colorRandomiser > 0.5) {
-            //blue
-            trialTypeOrder = "VNB"; //Value Nothing Blue
-        } else {
-            //red
-            trialTypeOrder = "VNR"; //Value Nothing Red
-        }
-    } else {
-        //value nothing first
-        if (colorRandomiser > 0.5) {
-            //blue
-            trialTypeOrder = "NVB" //Nothing Value Blue
-        } else {
-            //red
-            trialTypeOrder = "NVR" //Nothing Value Red
-        }
-    }
 
     /*set trial types (mean diff x variance conditions) to make sure they are balanced*/
     //check how to make number of trials right here, exclude the practice where we just use level 3
-    var trialsPractice1 = 60; // SET THIS TO 60
-    var trialsPractice2 = 15; // SET THIS TO 30
+    var trialsPractice1 = 7; // SET THIS TO 60
+    var trialsPractice2 = 3; // SET THIS TO 30
     var trialsPerBlock = 10; // SET THIS TO 50
     var numberOfBlocks = 3; // this is actually done manually later in the trial order but just declaring here to know what is happening and for instructions
 
