@@ -72,6 +72,8 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
         }
     }
 
+    // difference = 0.008; //////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // // COMMENT THIS OUT; THIS IS JUST TO TRY OUT THE DIFFERENT STIMULI
     // difference = 0.008; // 0.0111; // this is the median difference people get to
@@ -99,6 +101,8 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
         color_mean_two_level = color_mean_level + color_mean_level_dif;
     }
 
+    // color_mean_level = 40; //////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // color_mean_two_level = 20; //////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // console.log("total trials " + totalTrials);
     // console.log("color means " + color_means);
 
@@ -122,12 +126,14 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // // COMMENT THIS OUT; THIS IS JUST TO TRY OUT THE DIFFERENT STIMULI
-    // moreRedSide = 'right';
+    // moreRedSide = 'left';
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     console.log('color mean one: '+color_mean);
-    console.log('color sd: '+color_sd);
+    console.log('color mean one level: '+color_mean_level);
     console.log('color mean two: '+color_mean_two);
+    console.log('color mean two level: '+color_mean_two_level);
+    console.log('color sd: '+color_sd);
     console.log('more red side '+moreRedSide);
 
     //draw the squircle stimuli
@@ -536,39 +542,39 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                                 if (betterColor === "red") {
                                     // get points of red stimulus
                                     points = round(0.1*(Math.max(color_mean_level, color_mean_two_level) + 1),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
                                 } else {
                                     // get points of blue stimulus which is 100 - blue stim level
                                     points = round(0.1*(100-((Math.min(color_mean_level, color_mean_two_level)))),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
                                     // get points of blue stimulus
                                     points = round(0.1*(Math.min(color_mean_level, color_mean_two_level) + 1),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
                                 } else if (betterColor === "blue")  {
                                     // get points of red stimulus which is 100 - red stim level
                                     points = round(0.1*(100-((Math.max(color_mean_level, color_mean_two_level)))),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
                                 }
                             }
                         } else {
                             if (correctResponse) {
                                 if (betterColor === "red") {
                                     points = round(0.1*(Math.max(color_mean_level, color_mean_two_level) + 1),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
                                 } else if (betterColor === "blue") {
                                     points = round(0.1*(100-((Math.min(color_mean_level, color_mean_two_level)))),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
                                     points = round(-0.1*(Math.min(color_mean_level, color_mean_two_level) + 1),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">- '+ Math.abs(points) + '</h1>'; // only using the minus in the string and then the absolute point value here because otherwise the minus is difficult to see!
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">- '+ Math.abs(points) + '</h1>'; // only using the minus in the string and then the absolute point value here because otherwise the minus is difficult to see!
                                 } else if (betterColor === "blue")  {
                                     points = round(-0.1*(100-((Math.max(color_mean_level, color_mean_two_level)))),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100">- '+ Math.abs(points) + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">- '+ Math.abs(points) + '</h1>';
                                 }
                             }
                         }

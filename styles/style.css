@@ -970,6 +970,24 @@ button.default-white-button.start-tutorial, .button.default-white-button.start-t
   background-repeat: no-repeat;
 }
 
+.gameboard-gif#ExamplesAccuracy {
+  background: url("../assets/Examples_Accuracy.png");
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 35vw;
+  width: 70%;
+}
+
+.gameboard-gif#ExamplesValue {
+  background: url("../assets/Examples_Value.png");
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 35vw;
+  width: 70%;
+}
+
 #partnerOval {
   z-index: 100;
   position: absolute;
