@@ -4,6 +4,7 @@
     <list default="true" id="3df47766-bd0d-44d8-9d5e-755754b7705f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/squircles.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/squircles.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,6 +181,7 @@
       <workItem from="1667833391465" duration="20000" />
       <workItem from="1668000658976" duration="16252000" />
       <workItem from="1668530337267" duration="500000" />
+      <workItem from="1669136579758" duration="507000" />
     </task>
     <servers />
   </component>

@@ -537,44 +537,96 @@ function drawSquircles(parent, canvasID, canvasWidth, canvasHeight, squircleStai
                             }
                         }
                     } else {
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        // VERSION 2
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        // if (condition === "value-value") {
+                        //     if (correctResponse) {
+                        //         if (betterColor === "red") {
+                        //             // get points of red stimulus
+                        //             points = round(0.1*(Math.max(color_mean_level, color_mean_two_level) + 1),1);
+                        //             document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                        //         } else {
+                        //             // get points of blue stimulus which is 100 - blue stim level
+                        //             points = round(0.1*(100-((Math.min(color_mean_level, color_mean_two_level)))),1);
+                        //             document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                        //         }
+                        //     } else {
+                        //         if (betterColor === "red") {
+                        //             // get points of blue stimulus
+                        //             points = round(0.1*(Math.min(color_mean_level, color_mean_two_level) + 1),1);
+                        //             document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                        //         } else if (betterColor === "blue")  {
+                        //             // get points of red stimulus which is 100 - red stim level
+                        //             points = round(0.1*(100-((Math.max(color_mean_level, color_mean_two_level)))),1);
+                        //             document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                        //         }
+                        //     }
+                        // } else {
+                        //     if (correctResponse) {
+                        //         if (betterColor === "red") {
+                        //             points = round(0.1*(Math.max(color_mean_level, color_mean_two_level) + 1),1);
+                        //             document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                        //         } else if (betterColor === "blue") {
+                        //             points = round(0.1*(100-((Math.min(color_mean_level, color_mean_two_level)))),1);
+                        //             document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                        //         }
+                        //     } else {
+                        //         if (betterColor === "red") {
+                        //             points = round(-0.1*(Math.min(color_mean_level, color_mean_two_level) + 1),1);
+                        //             document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">- '+ Math.abs(points) + '</h1>'; // only using the minus in the string and then the absolute point value here because otherwise the minus is difficult to see!
+                        //         } else if (betterColor === "blue")  {
+                        //             points = round(-0.1*(100-((Math.max(color_mean_level, color_mean_two_level)))),1);
+                        //             document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">- '+ Math.abs(points) + '</h1>';
+                        //         }
+
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        // VERSION 3 "WIN" or "LOSE" points to make it more salient
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         if (condition === "value-value") {
                             if (correctResponse) {
                                 if (betterColor === "red") {
                                     // get points of red stimulus
                                     points = round(0.1*(Math.max(color_mean_level, color_mean_two_level) + 1),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">WIN '+ points + '</h1>';
                                 } else {
                                     // get points of blue stimulus which is 100 - blue stim level
                                     points = round(0.1*(100-((Math.min(color_mean_level, color_mean_two_level)))),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">WIN '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
                                     // get points of blue stimulus
                                     points = round(0.1*(Math.min(color_mean_level, color_mean_two_level) + 1),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">WIN '+ points + '</h1>';
                                 } else if (betterColor === "blue")  {
                                     // get points of red stimulus which is 100 - red stim level
                                     points = round(0.1*(100-((Math.max(color_mean_level, color_mean_two_level)))),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">WIN '+ points + '</h1>';
                                 }
                             }
                         } else {
                             if (correctResponse) {
                                 if (betterColor === "red") {
                                     points = round(0.1*(Math.max(color_mean_level, color_mean_two_level) + 1),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">WIN '+ points + '</h1>';
                                 } else if (betterColor === "blue") {
                                     points = round(0.1*(100-((Math.min(color_mean_level, color_mean_two_level)))),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">+ '+ points + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">WIN '+ points + '</h1>';
                                 }
                             } else {
                                 if (betterColor === "red") {
                                     points = round(-0.1*(Math.min(color_mean_level, color_mean_two_level) + 1),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">- '+ Math.abs(points) + '</h1>'; // only using the minus in the string and then the absolute point value here because otherwise the minus is difficult to see!
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(0,100,255); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">LOSE '+ Math.abs(points) + '</h1>'; // only using the minus in the string and then the absolute point value here because otherwise the minus is difficult to see!
                                 } else if (betterColor === "blue")  {
                                     points = round(-0.1*(100-((Math.max(color_mean_level, color_mean_two_level)))),1);
-                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">- '+ Math.abs(points) + '</h1>';
+                                    document.getElementById('confidence-question').innerHTML = '<h1 style="color: rgb(255,0,0); font-size: 5em; margin: -3vh auto 2vh; z-index: 100; -webkit-transform:translate3d(0,0,0);">LOSE '+ Math.abs(points) + '</h1>';
                                 }
                             }
                         }

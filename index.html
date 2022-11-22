@@ -160,7 +160,14 @@
     var repeats_practice2 = Math.ceil(trialsPractice2 / 9);
     var repeats = Math.ceil(trialsPerBlock * numberOfBlocks / 9); // divided by 9 for the 3 mean levels (1,3,5) and 3 variance levels (.0333, .1, .1666)
 
-    var color_conditions_demo = [[40, .1], [40, .1], [30, .1], [30, .1], [20, .1]]; // 5 super easy trials to begin
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // VERSION 2
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*    var color_conditions_demo = [[40, .1], [40, .1], [30, .1], [30, .1], [20, .1]]; // 5 super easy trials to begin
     var color_conditions_practice1 = Array(trialsPractice1-color_conditions_demo.length).fill([[8, .1]]).flat(1);
     color_conditions_practice1 = color_conditions_demo.concat(color_conditions_practice1);
     var color_conditions_practice2 = shuffle(Array(repeats_practice2).fill([[2, .0333], [2, .1], [2, .1666], [8, .0333], [8, .1], [8, .1666], [14, .0333], [14, .1], [14, .1666]]).flat(1)).slice(0, trialsPractice2);
@@ -169,7 +176,26 @@
     var color_conditions_2 = shuffle(Array(repeats).fill([[2, .0333], [2, .1], [2, .1666], [8, .0333], [8, .1], [8, .1666], [14, .0333], [14, .1], [14, .1666]]).flat(1)).slice(0, trialsPerBlock*numberOfBlocks);  // no2 is for second condition (value/accuracy) delete too many trials from end
 
     var color_conditions = color_conditions_practice.concat(color_conditions_1);
+    color_conditions = color_conditions.concat(color_conditions_2);*/
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // VERSION 3 without variance manipulation and staircasing on the hardest version!
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var color_conditions_demo = [[40, .1], [40, .1], [30, .1], [30, .1], [20, .1]]; // 5 super easy trials to begin
+    var color_conditions_practice1 = Array(trialsPractice1-color_conditions_demo.length).fill([[2, .1]]).flat(1);
+    color_conditions_practice1 = color_conditions_demo.concat(color_conditions_practice1);
+    var color_conditions_practice2 = shuffle(Array(repeats_practice2).fill([[2, .1], [2, .1], [2, .1], [8, .1], [8, .1], [8, .1], [14, .1], [14, .1], [14, .1]]).flat(1)).slice(0, trialsPractice2);
+    color_conditions_practice = color_conditions_practice1.concat(color_conditions_practice2);
+    var color_conditions_1 = shuffle(Array(repeats).fill([[2, .1], [2, .1], [2, .1], [8, .1], [8, .1], [8, .1], [14, .1], [14, .1], [14, .1]]).flat(1)).slice(0, trialsPerBlock*numberOfBlocks); // no1 is for first condition (value/accuracy) delete too many trials from end
+    var color_conditions_2 = shuffle(Array(repeats).fill([[2, .1], [2, .1], [2, .1], [8, .1], [8, .1], [8, .1], [14, .1], [14, .1], [14, .1]]).flat(1)).slice(0, trialsPerBlock*numberOfBlocks);  // no2 is for second condition (value/accuracy) delete too many trials from end
+
+    var color_conditions = color_conditions_practice.concat(color_conditions_1);
     color_conditions = color_conditions.concat(color_conditions_2);
+
 
 
     /* IMAGES TO PRELOAD */
