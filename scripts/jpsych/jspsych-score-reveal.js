@@ -36,6 +36,8 @@ jsPsych.plugins['jspsych-score-reveal'] = (function () {
     var currentBonus;
     var newBonusPayment;
 
+    saveCSV(subjectID, currentAttempt);
+
     // calculate overall accuracy
     overallAccuracy = round(totalCorrect / totalTrials, 2) * 100;
 
