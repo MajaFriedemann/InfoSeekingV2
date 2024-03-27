@@ -1,3 +1,3 @@
 # About this project
 
-Code for Study 8 and Study 9
+Code for DPhil Studies 8 and 9
